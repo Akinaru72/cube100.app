@@ -1,0 +1,1000 @@
+// main. js
+import * as THREE from 'three';
+import { Cubie } from './js/Cubie';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+
+const size = 10;
+const cubeSize = 0.7;
+
+const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+
+const rightGeometry = geometry.clone();
+const frontGeometry = geometry.clone();
+const upGeometry = geometry.clone();
+
+stretchFace(rightGeometry, 'x', 10);
+stretchFace(frontGeometry, 'z', 10);
+stretchFace(upGeometry, 'y', 10);
+
+const bodyMaterial = new THREE.MeshStandardMaterial({
+  color: 0x111111,
+});
+// function stretchRight(geometry, amount) {
+//   const pos = geometry.attributes.position;
+
+//   for (let i = 0; i < pos.count; i++) {
+//     const x = pos.getX(i);
+
+//     if (x > 0) {
+//       pos.setX(i, x + amount);
+//     }
+//   }
+
+//   pos.needsUpdate = true;
+//   geometry.computeVertexNormals();
+// }
+
+const rightBodyMesh = new THREE.InstancedMesh(
+  rightGeometry,
+  bodyMaterial,
+  size * size
+);
+
+const frontBodyMesh = new THREE.InstancedMesh(
+  frontGeometry,
+  bodyMaterial,
+  size * size
+);
+
+// const stretchAmount = cubeSize * (5 - 1);
+
+// stretchRight(rightGeometry, 10);
+// stretchFront(frontGeometry, 10);
+
+// function stretchFront(geometry, amount) {
+//   const pos = geometry.attributes.position;
+
+//   for (let i = 0; i < pos.count; i++) {
+//     const z = pos.getZ(i);
+
+//     if (z > 0) {
+//       pos.setZ(i, z + amount);
+//     }
+//   }
+
+//   pos.needsUpdate = true;
+//   geometry.computeVertexNormals();
+// }
+
+if (cubie.x === size - 1) {
+  rightBodyMesh.setMatrixAt(rightIndex++, dummy.matrix);
+}
+
+if (cubie.z === size - 1) {
+  frontBodyMesh.setMatrixAt(frontBodyIndex++, dummy.matrix);
+}
+
+if (cubie.x !== size - 1 && cubie.z !== size - 1) {
+  bodyMesh.setMatrixAt(bodyIndex++, dummy.matrix);
+}
+
+// function stretchRight(geometry, amount) {
+//   const pos = geometry.attributes.position;
+
+//   for (let i = 0; i < pos.count; i++) {
+//     const x = pos.getX(i);
+
+//     // Только вершины правой стороны
+//     if (x > 0) {
+//       pos.setX(i, x + amount);
+//     }
+//   }
+
+//   pos.needsUpdate = true;
+//   geometry.computeVertexNormals();
+// }
+function stretchFace(geometry, axis, amount) {
+  const pos = geometry.attributes.position;
+
+  for (let i = 0; i < pos.count; i++) {
+    if (axis === 'x') {
+      const x = pos.getX(i);
+      if (x > 0) pos.setX(i, x + amount);
+    }
+
+    if (axis === 'y') {
+      const y = pos.getY(i);
+      if (y > 0) pos.setY(i, y + amount);
+    }
+
+    if (axis === 'z') {
+      const z = pos.getZ(i);
+      if (z > 0) pos.setZ(i, z + amount);
+    }
+  }
+
+  pos.needsUpdate = true;
+  geometry.computeVertexNormals();
+}
+// const materials = [
+//   new THREE.MeshStandardMaterial({ color: 0xff0000 }), // +X
+//   new THREE.MeshStandardMaterial({ color: 0xffa500 }), // -X
+//   new THREE.MeshStandardMaterial({ color: 0xffffff }), // +Y
+//   new THREE.MeshStandardMaterial({ color: 0xffff00 }), // -Y
+//   new THREE.MeshStandardMaterial({ color: 0x00ff00 }), // +Z
+//   new THREE.MeshStandardMaterial({ color: 0x0000ff }), // -Z
+// ];
+
+// const material = new THREE.MeshStandardMaterial({
+//   color: 0xffffff,
+//   wireframe: true,
+// });
+// const material = new THREE.MeshStandardMaterial({
+//   color: 0xffffff,
+// });
+// const cube = new RubiksCube(scene);
+
+const scene = new THREE.Scene();
+const dummy = new THREE.Object3D();
+const cubies = [];
+scene.add(rightBodyMesh);
+scene.add(frontBodyMesh);
+
+const stickerDummy = new THREE.Object3D();
+let bodyIndex = 0;
+
+for (let x = 0; x < size; x++) {
+  for (let y = 0; y < size; y++) {
+    for (let z = 0; z < size; z++) {
+      const visible =
+        x === 0 ||
+        x === size - 1 ||
+        y === 0 ||
+        y === size - 1 ||
+        z === 0 ||
+        z === size - 1;
+      if (!visible) continue;
+      cubies.push(new Cubie(x, y, z));
+    }
+  }
+}
+
+const count = cubies.length;
+// const cubes = new THREE.InstancedMesh(geometry, materials, count);
+const bodyMesh = new THREE.InstancedMesh(geometry, bodyMaterial, count);
+
+scene.add(bodyMesh);
+
+// scene.add(cubes);
+
+const layers = {
+  x: Array.from({ length: size }, () => []),
+  y: Array.from({ length: size }, () => []),
+  z: Array.from({ length: size }, () => []),
+};
+
+let frontIndex = 0;
+let rightIndex = 0;
+let upIndex = 0;
+let frontBodyIndex = 0;
+
+const stickerGeometry = new THREE.PlaneGeometry(0.7, 0.7);
+
+const frontMaterial = new THREE.MeshBasicMaterial({
+  color: 0x00ff00,
+  side: THREE.DoubleSide,
+});
+
+const frontMesh = new THREE.InstancedMesh(
+  stickerGeometry,
+  frontMaterial,
+  size * size
+);
+
+const rightMaterial = new THREE.MeshBasicMaterial({
+  color: 0xff0000,
+  side: THREE.DoubleSide,
+  polygonOffset: true,
+  polygonOffsetFactor: -1,
+  polygonOffsetUnits: -1,
+});
+
+const rightMesh = new THREE.InstancedMesh(
+  stickerGeometry,
+  rightMaterial,
+  size * size
+);
+
+const upMaterial = new THREE.MeshBasicMaterial({
+  color: 0xffffff,
+  side: THREE.DoubleSide,
+  polygonOffset: true,
+  polygonOffsetFactor: -1,
+  polygonOffsetUnits: -1,
+});
+
+const upMesh = new THREE.InstancedMesh(
+  stickerGeometry,
+  upMaterial,
+  size * size
+);
+
+scene.add(upMesh);
+scene.add(rightMesh);
+scene.add(frontMesh);
+
+cubies.forEach((cubie, index) => {
+  dummy.position.set(
+    cubie.x - (size - 1) / 2,
+    cubie.y - (size - 1) / 2,
+    cubie.z - (size - 1) / 2
+  );
+
+  // let scale = 1;
+
+  // const borders =
+  //   (cubie.x === 0 || cubie.x === size - 1) +
+  //   (cubie.y === 0 || cubie.y === size - 1) +
+  //   (cubie.z === 0 || cubie.z === size - 1);
+
+  // if (borders === 3)
+  //   scale = 5; // угол
+  // else if (borders === 2) scale = 5; // ребро
+
+  // dummy.scale.set(scale, scale, scale);
+
+  dummy.updateMatrix();
+  // bodyMesh.setMatrixAt(index, dummy.matrix);
+  const px = cubie.x - (size - 1) / 2;
+  const py = cubie.y - (size - 1) / 2;
+  const pz = cubie.z - (size - 1) / 2;
+
+  if (cubie.z === size - 1) {
+    // stickerDummy.position.set(px, py, pz + (cubeSize * scale) / 2 + 0.05);
+    // stickerDummy.rotation.set(0, 0, 0);
+    // stickerDummy.scale.set(scale, scale, scale);
+    // stickerDummy.updateMatrix();
+    stickerDummy.position.set(px, py, pz + cubeSize / 2 + 0.05);
+    stickerDummy.rotation.set(0, 0, 0);
+    stickerDummy.updateMatrix();
+    frontMesh.setMatrixAt(frontIndex++, stickerDummy.matrix);
+  }
+
+  if (cubie.x === size - 1) {
+    rightBodyMesh.setMatrixAt(rightIndex++, dummy.matrix);
+  }
+
+  if (cubie.z === size - 1) {
+    frontBodyMesh.setMatrixAt(frontBodyIndex++, dummy.matrix);
+  }
+
+  if (cubie.x !== size - 1 && cubie.z !== size - 1) {
+    bodyMesh.setMatrixAt(bodyIndex++, dummy.matrix);
+  }
+  // if (cubie.x === size - 1) {
+  //   stickerDummy.position.set(px + cubeSize / 2 + 0.05, py, pz);
+  //   stickerDummy.rotation.set(0, Math.PI / 2, 0);
+  //   stickerDummy.updateMatrix();
+  //   rightMesh.setMatrixAt(rightIndex++, stickerDummy.matrix);
+  // }
+
+  if (cubie.y === size - 1) {
+    // stickerDummy.position.set(px, py + (cubeSize * scale) / 2 + 0.05, pz);
+    // stickerDummy.rotation.set(-Math.PI / 2, 0, 0);
+    // stickerDummy.scale.set(scale, scale, scale);
+    // stickerDummy.updateMatrix();
+    stickerDummy.position.set(px, py + cubeSize / 2 + 0.05, pz);
+    stickerDummy.rotation.set(-Math.PI / 2, 0, 0);
+    stickerDummy.updateMatrix();
+    upMesh.setMatrixAt(upIndex++, stickerDummy.matrix);
+  }
+  cubie.instanceId = index;
+  layers.x[cubie.x].push(cubie);
+  layers.y[cubie.y].push(cubie);
+  layers.z[cubie.z].push(cubie);
+});
+
+bodyMesh.instanceMatrix.needsUpdate = true;
+frontMesh.instanceMatrix.needsUpdate = true;
+rightBodyMesh.instanceMatrix.needsUpdate = true;
+frontBodyMesh.instanceMatrix.needsUpdate = true;
+
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+
+camera.position.set(90, 90, 90);
+camera.lookAt(0, 0, 0);
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+scene.add(new THREE.AmbientLight(0xffffff, 2));
+const light = new THREE.DirectionalLight(0xffffff, 2);
+light.position.set(100, 100, 100);
+scene.add(light);
+
+const controls = new OrbitControls(camera, renderer.domElement);
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.enablePan = false;
+controls.minDistance = 20;
+controls.maxDistance = 400;
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+animate();
+
+
+
+function skewGeometry(geometry, amount) {
+  const pos = geometry.attributes.position;
+
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+
+    if (x > 0 && y > 0) {
+      pos.setX(i, x - amount);
+      pos.setY(i, y - amount);
+    }
+  }
+
+  pos.needsUpdate = true;
+  geometry.computeVertexNormals();
+}
+
+----------------------------------------,---------------
+
+import * as THREE from 'three';
+import { Cubie } from './js/Cubie';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
+const size = 100;
+const cubeSize = 0.7;
+
+const gap = 0.3;
+const sphereOffset = size * 1.25;
+const stretchAmount = 0;
+
+const cellSize = cubeSize + gap;
+
+const halfCenters = ((size - 1) / 2) * cellSize;
+
+// ====================
+// GEOMETRY
+// ====================
+
+const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
+// const geometry = new RoundedBoxGeometry(cubeSize, cubeSize, cubeSize, 3, 0.1);
+// const rightTopGeometry = geometry.clone();
+
+// const rightBottomGeometry = geometry.clone();
+// const rightFrontGeometry = geometry.clone();
+// const rightBackGeometry = geometry.clone();
+
+// stretchFace(rightTopGeometry, 'x', stretchAmount);
+// stretchFace(rightTopGeometry, 'y', stretchAmount);
+
+// stretchFace(rightBottomGeometry, 'x', stretchAmount);
+// stretchFace(rightBottomGeometry, 'y', -stretchAmount);
+
+// stretchFace(rightFrontGeometry, 'x', stretchAmount);
+// stretchFace(rightFrontGeometry, 'z', stretchAmount);
+
+// stretchFace(rightBackGeometry, 'x', stretchAmount);
+// stretchFace(rightBackGeometry, 'z', -stretchAmount);
+
+const rightGeometry = geometry.clone();
+const frontGeometry = geometry.clone();
+const upGeometry = geometry.clone();
+const leftGeometry = geometry.clone();
+const backGeometry = geometry.clone();
+const downGeometry = geometry.clone();
+
+stretchFace(rightGeometry, 'x', stretchAmount);
+stretchFace(frontGeometry, 'z', stretchAmount);
+stretchFace(upGeometry, 'y', stretchAmount);
+stretchFace(leftGeometry, 'x', -stretchAmount);
+stretchFace(backGeometry, 'z', -stretchAmount);
+stretchFace(downGeometry, 'y', -stretchAmount);
+
+const halfSize = (size * cellSize) / 2;
+
+const cornerX = halfSize + stretchAmount;
+const cornerY = halfSize + stretchAmount;
+const cornerZ = halfSize + stretchAmount;
+
+const sphereCenterX = -sphereOffset;
+const bulgeRadius = Math.sqrt(
+  (cornerX - sphereCenterX) ** 2 + cornerY ** 2 + cornerZ ** 2
+);
+
+console.log('bulgeRadius:', bulgeRadius);
+
+const sphereCenterY = -sphereOffset;
+const sphereCenterZ = -sphereOffset;
+const sphereCenterXLeft = sphereOffset;
+const sphereCenterYBottom = sphereOffset;
+const sphereCenterZBack = sphereOffset;
+
+const cornerSphereX =
+  sphereCenterX + Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+const cornerSphereY =
+  sphereCenterY + Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+const cornerSphereZ =
+  sphereCenterZ + Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+const cornerSphereXLeft =
+  sphereCenterXLeft -
+  Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+const cornerSphereYBottom =
+  sphereCenterYBottom -
+  Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+const cornerSphereZBack =
+  sphereCenterZBack -
+  Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+
+// ====================
+// MATERIAL
+// ====================
+
+const bodyMaterial = new THREE.MeshStandardMaterial({
+  color: 0x111111,
+});
+
+// const rightTopMesh = new THREE.InstancedMesh(
+//   rightTopGeometry,
+//   bodyMaterial,
+//   size
+// );
+
+// const rightBottomMesh = new THREE.InstancedMesh(
+//   rightBottomGeometry,
+//   bodyMaterial,
+//   size
+// );
+
+// const rightFrontMesh = new THREE.InstancedMesh(
+//   rightFrontGeometry,
+//   bodyMaterial,
+//   size
+// );
+
+// const rightBackMesh = new THREE.InstancedMesh(
+//   rightBackGeometry,
+//   bodyMaterial,
+//   size
+// );
+
+// ====================
+// SCENE
+// ====================
+
+const scene = new THREE.Scene();
+
+// scene.add(rightTopMesh);
+// scene.add(rightBottomMesh);
+// scene.add(rightFrontMesh);
+// scene.add(rightBackMesh);
+
+// ====================
+// MESHES
+// ====================
+
+const rightBodyMesh = new THREE.InstancedMesh(
+  rightGeometry,
+  bodyMaterial,
+  size * size
+);
+
+const frontBodyMesh = new THREE.InstancedMesh(
+  frontGeometry,
+  bodyMaterial,
+  size * size
+);
+
+const upBodyMesh = new THREE.InstancedMesh(
+  upGeometry,
+  bodyMaterial,
+  size * size
+);
+
+const bodyMesh = new THREE.InstancedMesh(
+  geometry,
+  bodyMaterial,
+  size * size * 6
+);
+
+const leftBodyMesh = new THREE.InstancedMesh(
+  leftGeometry,
+  bodyMaterial,
+  size * size
+);
+
+const backBodyMesh = new THREE.InstancedMesh(
+  backGeometry,
+  bodyMaterial,
+  size * size
+);
+
+const downBodyMesh = new THREE.InstancedMesh(
+  downGeometry,
+  bodyMaterial,
+  size * size
+);
+
+scene.add(leftBodyMesh);
+scene.add(backBodyMesh);
+scene.add(downBodyMesh);
+
+scene.add(bodyMesh);
+scene.add(rightBodyMesh);
+scene.add(frontBodyMesh);
+scene.add(upBodyMesh);
+
+// ====================
+// CUBIES
+// ====================
+
+const dummy = new THREE.Object3D();
+const cubies = [];
+
+for (let x = 0; x < size; x++) {
+  for (let y = 0; y < size; y++) {
+    for (let z = 0; z < size; z++) {
+      const visible =
+        x === 0 ||
+        x === size - 1 ||
+        y === 0 ||
+        y === size - 1 ||
+        z === 0 ||
+        z === size - 1;
+
+      if (!visible) continue;
+
+      cubies.push(new Cubie(x, y, z));
+    }
+  }
+}
+
+// ====================
+// LAYERS
+// ====================
+
+const layers = {
+  x: Array.from({ length: size }, () => []),
+  y: Array.from({ length: size }, () => []),
+  z: Array.from({ length: size }, () => []),
+};
+
+// ====================
+// INDICES
+// ====================
+
+let bodyIndex = 0;
+let rightIndex = 0;
+let frontIndex = 0;
+let upIndex = 0;
+let leftIndex = 0;
+let backIndex = 0;
+let downIndex = 0;
+
+let rightTopIndex = 0;
+let rightBottomIndex = 0;
+let rightFrontIndex = 0;
+let rightBackIndex = 0;
+
+// ====================
+// PLACE CUBIES
+// ====================
+cubies.forEach(cubie => {
+  const px = (cubie.x - (size - 1) / 2) * cellSize;
+  const py = (cubie.y - (size - 1) / 2) * cellSize;
+  const pz = (cubie.z - (size - 1) / 2) * cellSize;
+
+  // Исходная позиция
+  // Исходная позиция
+  dummy.position.set(px, py, pz);
+  dummy.updateMatrix();
+
+  const normalMatrix = dummy.matrix.clone();
+
+  // ====================
+  // RIGHT
+  // ====================
+
+  if (cubie.x === size - 1) {
+    const sphereX =
+      sphereCenterX + Math.sqrt(bulgeRadius ** 2 - py ** 2 - pz ** 2);
+    const bulgeOffset = sphereX - cornerSphereX;
+    dummy.position.x = px + bulgeOffset;
+    dummy.updateMatrix();
+  }
+
+  const rightMatrix = dummy.matrix.clone();
+
+  // ====================
+  // UP
+  // ====================
+
+  dummy.position.set(px, py, pz);
+  dummy.updateMatrix();
+
+  if (cubie.y === size - 1) {
+    const sphereY =
+      sphereCenterY + Math.sqrt(bulgeRadius ** 2 - px ** 2 - pz ** 2);
+    const bulgeOffsetY = sphereY - cornerSphereY;
+    dummy.position.y = py + bulgeOffsetY;
+    dummy.updateMatrix();
+  }
+
+  const upMatrix = dummy.matrix.clone();
+
+  dummy.position.set(px, py, pz);
+  dummy.updateMatrix();
+
+  if (cubie.z === size - 1) {
+    const sphereZ =
+      sphereCenterZ + Math.sqrt(bulgeRadius ** 2 - px ** 2 - py ** 2);
+
+    const bulgeOffset = sphereZ - cornerSphereZ;
+    dummy.position.z = pz + bulgeOffset;
+    dummy.updateMatrix();
+  }
+
+  const frontMatrix = dummy.matrix.clone();
+
+  // ====================
+  // LEFT
+  // ====================
+  dummy.position.set(px, py, pz);
+  dummy.updateMatrix();
+
+  if (cubie.x === 0) {
+    const sphereX =
+      sphereCenterXLeft - Math.sqrt(bulgeRadius ** 2 - py ** 2 - pz ** 2);
+    const bulgeOffsetX = sphereX - cornerSphereXLeft;
+    dummy.position.x = px + bulgeOffsetX;
+    dummy.updateMatrix();
+  }
+
+  const leftMatrix = dummy.matrix.clone();
+
+  // ====================
+  // DOWN
+  // ====================
+  dummy.position.set(px, py, pz);
+  dummy.updateMatrix();
+
+  if (cubie.y === 0) {
+    const sphereY =
+      sphereCenterYBottom - Math.sqrt(bulgeRadius ** 2 - px ** 2 - pz ** 2);
+    const bulgeOffsetY = sphereY - cornerSphereYBottom;
+    dummy.position.y = py + bulgeOffsetY;
+    dummy.updateMatrix();
+  }
+
+  const downMatrix = dummy.matrix.clone();
+
+  // ====================
+  // BACK
+  // ====================
+  dummy.position.set(px, py, pz);
+  dummy.updateMatrix();
+
+  if (cubie.z === 0) {
+    const sphereZ =
+      sphereCenterZBack - Math.sqrt(bulgeRadius ** 2 - px ** 2 - py ** 2);
+    const bulgeOffsetZ = sphereZ - cornerSphereZBack;
+    dummy.position.z = pz + bulgeOffsetZ;
+    dummy.updateMatrix();
+  }
+
+  const backMatrix = dummy.matrix.clone();
+
+  if (cubie.x === size - 1) {
+    rightBodyMesh.setMatrixAt(rightIndex++, rightMatrix);
+  }
+
+  if (cubie.y === size - 1) {
+    upBodyMesh.setMatrixAt(upIndex++, upMatrix);
+  }
+
+  if (cubie.z === size - 1) {
+    frontBodyMesh.setMatrixAt(frontIndex++, frontMatrix);
+  }
+
+  if (cubie.x === 0) {
+    leftBodyMesh.setMatrixAt(leftIndex++, leftMatrix);
+  }
+
+  if (cubie.y === 0) {
+    downBodyMesh.setMatrixAt(downIndex++, downMatrix);
+  }
+
+  if (cubie.z === 0) {
+    backBodyMesh.setMatrixAt(backIndex++, backMatrix);
+  }
+
+  // if (cubie.x === 0) {
+  //   leftBodyMesh.setMatrixAt(leftIndex++, normalMatrix);
+  // }
+
+  // if (cubie.z === 0) {
+  //   backBodyMesh.setMatrixAt(backIndex++, normalMatrix);
+  // }
+
+  // if (cubie.y === 0) {
+  //   downBodyMesh.setMatrixAt(downIndex++, normalMatrix);
+  // }
+
+  // ====================
+  // RIGHT EDGES / CORNERS
+  // ====================
+
+  // if (cubie.x === size - 1 && cubie.y === size - 1) {
+  //   rightTopMesh.setMatrixAt(rightTopIndex++, rightMatrix);
+  // }
+
+  // if (cubie.x === size - 1 && cubie.y === 0) {
+  //   rightBottomMesh.setMatrixAt(rightBottomIndex++, rightMatrix);
+  // }
+
+  // if (cubie.x === size - 1 && cubie.z === size - 1) {
+  //   rightFrontMesh.setMatrixAt(rightFrontIndex++, rightMatrix);
+  // }
+
+  // if (cubie.x === size - 1 && cubie.z === 0) {
+  //   rightBackMesh.setMatrixAt(rightBackIndex++, rightMatrix);
+  // }
+
+  layers.x[cubie.x].push(cubie);
+  layers.y[cubie.y].push(cubie);
+  layers.z[cubie.z].push(cubie);
+});
+
+// ====================
+// UPDATE
+// ====================
+
+bodyMesh.instanceMatrix.needsUpdate = true;
+rightBodyMesh.instanceMatrix.needsUpdate = true;
+frontBodyMesh.instanceMatrix.needsUpdate = true;
+upBodyMesh.instanceMatrix.needsUpdate = true;
+leftBodyMesh.instanceMatrix.needsUpdate = true;
+backBodyMesh.instanceMatrix.needsUpdate = true;
+downBodyMesh.instanceMatrix.needsUpdate = true;
+
+// rightTopMesh.instanceMatrix.needsUpdate = true;
+// rightBottomMesh.instanceMatrix.needsUpdate = true;
+// rightFrontMesh.instanceMatrix.needsUpdate = true;
+// rightBackMesh.instanceMatrix.needsUpdate = true;
+
+// ====================
+// CAMERA
+// ====================
+
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+camera.position.set(15, 15, 15);
+camera.lookAt(0, 0, 0);
+
+// ====================
+// RENDERER
+// ====================
+
+const renderer = new THREE.WebGLRenderer({
+  antialias: true,
+});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
+
+// ====================
+// LIGHT
+// ====================
+
+scene.add(new THREE.AmbientLight(0xffffff, 2));
+
+const light = new THREE.DirectionalLight(0xffffff, 2);
+light.position.set(100, 100, 100);
+scene.add(light);
+
+// ====================
+// CONTROLS
+// ====================
+
+const controls = new OrbitControls(camera, renderer.domElement);
+
+controls.enableDamping = true;
+controls.dampingFactor = 0.08;
+controls.enablePan = false;
+controls.minDistance = 50;
+controls.maxDistance = 600;
+
+// ====================
+// ANIMATION
+// ====================
+
+function animate() {
+  requestAnimationFrame(animate);
+  controls.update();
+  renderer.render(scene, camera);
+}
+
+animate();
+
+// ====================
+// FUNCTIONS
+// ====================
+function stretchFace(geometry, axis, amount) {
+  const pos = geometry.attributes.position;
+
+  for (let i = 0; i < pos.count; i++) {
+    if (axis === 'x') {
+      const x = pos.getX(i);
+
+      if (amount > 0 && x > 0) pos.setX(i, x + amount);
+      if (amount < 0 && x < 0) pos.setX(i, x + amount);
+    }
+
+    if (axis === 'y') {
+      const y = pos.getY(i);
+
+      if (amount > 0 && y > 0) pos.setY(i, y + amount);
+      if (amount < 0 && y < 0) pos.setY(i, y + amount);
+    }
+
+    if (axis === 'z') {
+      const z = pos.getZ(i);
+
+      if (amount > 0 && z > 0) pos.setZ(i, z + amount);
+      if (amount < 0 && z < 0) pos.setZ(i, z + amount);
+    }
+  }
+
+  pos.needsUpdate = true;
+  geometry.computeVertexNormals();
+}
+
+// function skewGeometry(geometry, axis, amount) {
+//   const pos = geometry.attributes.position;
+
+//   for (let i = 0; i < pos.count; i++) {
+//     const x = pos.getX(i);
+//     const y = pos.getY(i);
+//     const z = pos.getZ(i);
+
+//     if (axis === 'top' && x > 0 && y > 0) {
+//       pos.setX(i, x - amount);
+//       pos.setY(i, y - amount);
+//     }
+
+//     if (axis === 'bottom' && x > 0 && y < 0) {
+//       pos.setX(i, x - amount);
+//       pos.setY(i, y + amount);
+//     }
+
+//     if (axis === 'front' && x > 0 && z > 0) {
+//       pos.setX(i, x - amount);
+//       pos.setZ(i, z - amount);
+//     }
+
+//     if (axis === 'back' && x > 0 && z < 0) {
+//       pos.setX(i, x - amount);
+//       pos.setZ(i, z + amount);
+//     }
+//   }
+
+//   pos.needsUpdate = true;
+//   geometry.computeVertexNormals();
+// }
+
+// skewGeometry(rightTopGeometry, 'top', 0);
+// skewGeometry(rightBottomGeometry, 'bottom', 0);
+// skewGeometry(rightFrontGeometry, 'front', 0);
+// skewGeometry(rightBackGeometry, 'back', 0);
+==================================
+=====================================
+======================================
+
+// const curveLine = new THREE.Line(curveGeometry, curveMaterial);
+// curveLine.renderOrder = 999;
+
+// // RUF → CENTER
+// const radiusGeometryRUF = new THREE.BufferGeometry().setFromPoints([
+//   A,
+//   sphereCenterUR,
+// ]);
+
+// const radiusLineRUF = new THREE.Line(
+//   radiusGeometryRUF,
+//   new THREE.LineBasicMaterial({
+//     color: 0xffff00,
+//     depthTest: false,
+//   })
+// );
+
+// radiusLineRUF.renderOrder = 1000;
+
+// // RUB → CENTER
+// const radiusGeometryRUB = new THREE.BufferGeometry().setFromPoints([
+//   rub,
+//   sphereCenterUR,
+// ]);
+
+// const radiusLineRUB = new THREE.Line(
+//   radiusGeometryRUB,
+//   new THREE.LineBasicMaterial({
+//     color: 0xffff00,
+//     depthTest: false,
+//   })
+// );
+
+// radiusLineRUB.renderOrder = 1000;
+
+// const radiusRUF = sphereCenterUR.distanceTo(ruf);
+// const radiusRUB = sphereCenterUR.distanceTo(rub);
+// const line = ruf.distanceTo(rub);
+
+// console.log('line', line);
+// console.log('sphereCenterUR', sphereCenterUR);
+// console.log('bulgeRadius:', bulgeRadius);
+// console.log('radius RUF:', radiusRUF);
+// console.log('radius RUB:', radiusRUB);
+
+// console.log('RUF difference:', Math.abs(bulgeRadius - radiusRUF));
+
+// console.log('RUB difference:', Math.abs(bulgeRadius - radiusRUB));
+
+// =============================================================
+// console.log(ruf);
+// console.log(rub);
+// console.log(cornerX, cornerY, cornerZ);
+
+
+
+// const diagonal = sphereOffset / Math.sqrt(2);
+
+// const sphereCenterUR = new THREE.Vector3(-diagonal, -diagonal, 0);
+
+// const radiusRUF = sphereCenterUR.distanceTo(ruf);
+// const radiusRUB = sphereCenterUR.distanceTo(rub);
+
+// const radiusGeometry = new THREE.BufferGeometry().setFromPoints([
+//   sphereCenterUR,
+//   ruf,
+// ]);
+
+// const radiusLine1 = new THREE.Line(
+//   radiusGeometry,
+//   new THREE.LineBasicMaterial({
+//     color: 0xffff00,
+//   })
+// );
+
+// ====================
+// MATERIAL
+// ====================
+
+// ====================
+// SCENE
+// ====================
+
+// scene.add(curveLine);
+// scene.add(radiusLineRUF);
+// scene.add(radiusLineRUB);
+// scene.add(arcLine);
+// ====================
+// MESHES
+// ====================
