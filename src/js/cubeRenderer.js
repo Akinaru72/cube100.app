@@ -133,9 +133,17 @@ console.log('bulgeRadius', bulgeRadius);
 // ====================
 
 const geometry = new THREE.BoxGeometry(cubeSize, cubeSize, cubeSize);
-const bodyMaterial = new THREE.MeshStandardMaterial({
-  color: 0x808080,
+const bodyMaterial = new THREE.MeshPhysicalMaterial({
+  color: 0x111111,
+  roughness: 0.38,
+  metalness: 0.02,
+  clearcoat: 0.45,
+  clearcoatRoughness: 0.18,
+  emissive: 0x000000,
 });
+// const bodyMaterial = new THREE.MeshStandardMaterial({
+//   color: 0x808080,
+// });
 
 const cubies = [];
 
@@ -931,30 +939,51 @@ const cornerLDB = {
 
 // ==================================================================
 
-const stickerGeometry = new THREE.PlaneGeometry(cubeSize, cubeSize);
+// const stickerGeometry = new THREE.PlaneGeometry(cubeSize, cubeSize);
+const stickerGeometry = new THREE.BoxGeometry(
+  cubeSize * 0.82,
+  cubeSize * 0.82,
+  0.02
+);
 
-const rightMaterial = new THREE.MeshBasicMaterial({
-  color: 0xff0000,
-});
-const upMaterial = new THREE.MeshBasicMaterial({
-  color: 0xffffff,
-});
+const createStickerMaterial = color =>
+  new THREE.MeshStandardMaterial({
+    color,
+    roughness: 0.18,
+    metalness: 0,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -1,
+  });
+const rightMaterial = createStickerMaterial(0xff0000);
+const upMaterial = createStickerMaterial(0xffffff);
+const frontMaterial = createStickerMaterial(0x00ff00);
+const leftMaterial = createStickerMaterial(0xffa500);
+const backMaterial = createStickerMaterial(0x0000ff);
+const downMaterial = createStickerMaterial(0xffff00);
 
-const frontMaterial = new THREE.MeshBasicMaterial({
-  color: 0x00ff00,
-});
+// const rightMaterial = new THREE.MeshBasicMaterial({
+//   color: 0xff0000,
+// });
+// const upMaterial = new THREE.MeshBasicMaterial({
+//   color: 0xffffff,
+// });
 
-const leftMaterial = new THREE.MeshBasicMaterial({
-  color: 0xffa500,
-});
+// const frontMaterial = new THREE.MeshBasicMaterial({
+//   color: 0x00ff00,
+// });
 
-const backMaterial = new THREE.MeshBasicMaterial({
-  color: 0x0000ff,
-});
+// const leftMaterial = new THREE.MeshBasicMaterial({
+//   color: 0xffa500,
+// });
 
-const downMaterial = new THREE.MeshBasicMaterial({
-  color: 0xffff00,
-});
+// const backMaterial = new THREE.MeshBasicMaterial({
+//   color: 0x0000ff,
+// });
+
+// const downMaterial = new THREE.MeshBasicMaterial({
+//   color: 0xffff00,
+// });
 
 export const cubeGroup = new THREE.Group();
 // scene.add(cubeGroup);
@@ -1427,8 +1456,8 @@ function drawLine(start, end, color = 0xff0000) {
   scene.add(line);
   return line;
 }
-
-function createSurface(pointsAB, pointsCD, colorSF = 0x808080) {
+//  colorSF = 0x808080;
+function createSurface(pointsAB, pointsCD, colorSF = 0x111111) {
   const vertices = [];
   for (let i = 0; i < pointsAB.length - 1; i += 2) {
     const A = pointsAB[i];
@@ -1447,8 +1476,18 @@ function createSurface(pointsAB, pointsCD, colorSF = 0x808080) {
   );
   geometry.computeVertexNormals();
 
+  // const material = new THREE.MeshStandardMaterial({
+  //   color: colorSF,
+
+  //   side: THREE.DoubleSide,
+  // });
   const material = new THREE.MeshStandardMaterial({
     color: colorSF,
+    roughness: 0.18,
+    metalness: 0,
+    polygonOffset: true,
+    polygonOffsetFactor: -1,
+    polygonOffsetUnits: -1,
     side: THREE.DoubleSide,
   });
   const mesh = new THREE.Mesh(geometry, material);

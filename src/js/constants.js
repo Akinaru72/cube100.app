@@ -1,19 +1,27 @@
 // constants.js
-export const size = 20;
-export const cubeSize = 0.7;
-export const gap = 0.3;
+export const size = 50;
+export const cubeSize = 0.9;
+export const gap = 0.1;
 export const cellSize = cubeSize + gap;
 export const cornerSize = cellSize * 2;
 export const halfSize = (size * cellSize) / 2;
 export const cornerExpand = cornerSize - cellSize; //отодвинули грань
 export const faceOffsetFactor = 1.5; // коэффициент смещения грани
+// export const faceOffsetFactor = ; // коэффициент смещения грани
 export const sphereOffset = size * cellSize * 1.4;
+// export const sphereOffset = size * cellSize * 0;
 export const fullsize = (size - 2) * cellSize + cornerSize * 2;
 export const bulgeRadius = Math.sqrt(
   (halfSize + cornerExpand + sphereOffset) ** 2 +
     (halfSize + cornerExpand) ** 2 +
     (halfSize + cornerExpand) ** 2
 );
+
+export let expand;
+const expandValue = ((halfSize - cellSize) * (Math.sqrt(2) - 1)) / cellSize;
+expandValue > 1 ? (expand = expandValue) : (expand = 1);
+
+console.log('expand', expand);
 
 const halfCell = cellSize / 2;
 // console.log('bulgeRadius', bulgeRadius);
