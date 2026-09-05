@@ -1,6 +1,6 @@
 export class CubeState {
   constructor(size) {
-    console.log('CREATE CubeState', this);
+    // console.log('CREATE CubeState', this);
     this.size = size;
 
     // ====================
@@ -151,12 +151,23 @@ export class CubeState {
     });
   }
 
-  getRow(face, row) {
-    return Array.from({ length: this.size }, (_, col) => [row, col]);
+  // getRow(face, row) {
+  //   return Array.from({ length: this.size }, (_, col) => [row, col]);
+  // }
+
+  // getCol(face, col) {
+  //   return Array.from({ length: this.size }, (_, row) => [row, col]);
+  // }
+
+  getCell(face, r, c) {
+    return this[face][r][c];
   }
 
   getCol(face, col) {
-    return Array.from({ length: this.size }, (_, row) => [row, col]);
+    return this[face].map(row => row[col]);
+  }
+  getRow(face, row) {
+    return this[face][row];
   }
 
   // moveRightStrip(col, direction = 1) {
@@ -252,7 +263,7 @@ export class CubeState {
         layers.forEach(({ value }) => {
           const col = value - 1;
 
-          console.log(`=== слой ${value}, col ${col} ===`);
+          // console.log(`=== слой ${value}, col ${col} ===`);
 
           this.moveRightStrip(col);
 
@@ -265,19 +276,19 @@ export class CubeState {
             this.rotateFace('L', -1);
           }
 
-          console.log('U:', structuredClone(this.U));
-          console.log('B:', structuredClone(this.B));
-          console.log('D:', structuredClone(this.D));
-          console.log('F:', structuredClone(this.F));
-          console.log('R:', structuredClone(this.R));
-          console.log('L:', structuredClone(this.L));
+          // console.log('U:', structuredClone(this.U));
+          // console.log('B:', structuredClone(this.B));
+          // console.log('D:', structuredClone(this.D));
+          // console.log('F:', structuredClone(this.F));
+          // console.log('R:', structuredClone(this.R));
+          // console.log('L:', structuredClone(this.L));
         });
       }
       if (axis === 'y') {
         layers.forEach(({ value }) => {
           const row = this.size - value;
 
-          console.log(`Y: слой ${value}, row ${row}`);
+          // console.log(`Y: слой ${value}, row ${row}`);
 
           this.moveUpStrip(row);
 
@@ -289,19 +300,19 @@ export class CubeState {
           if (value === 1) {
             this.rotateFace('D', -1);
           }
-          console.log('F:', structuredClone(this.F));
-          console.log('L:', structuredClone(this.L));
-          console.log('B:', structuredClone(this.B));
-          console.log('R:', structuredClone(this.R));
-          console.log('U:', structuredClone(this.U));
-          console.log('D:', structuredClone(this.D));
+          // console.log('F:', structuredClone(this.F));
+          // console.log('L:', structuredClone(this.L));
+          // console.log('B:', structuredClone(this.B));
+          // console.log('R:', structuredClone(this.R));
+          // console.log('U:', structuredClone(this.U));
+          // console.log('D:', structuredClone(this.D));
         });
       }
 
       if (axis === 'z') {
         layers.forEach(({ value }) => {
           const row = value - 1;
-          console.log(`Z: слой ${value}, row ${row}`);
+          // console.log(`Z: слой ${value}, row ${row}`);
           this.moveFrontStrip(row);
           if (value === this.size) {
             this.rotateFace('F');
@@ -310,12 +321,12 @@ export class CubeState {
             this.rotateFace('B', -1);
           }
 
-          console.log('U:', structuredClone(this.U));
-          console.log('R:', structuredClone(this.R));
-          console.log('D:', structuredClone(this.D));
-          console.log('L:', structuredClone(this.L));
-          console.log('F:', structuredClone(this.F));
-          console.log('B:', structuredClone(this.B));
+          // console.log('U:', structuredClone(this.U));
+          // console.log('R:', structuredClone(this.R));
+          // console.log('D:', structuredClone(this.D));
+          // console.log('L:', structuredClone(this.L));
+          // console.log('F:', structuredClone(this.F));
+          // console.log('B:', structuredClone(this.B));
         });
       }
     }
@@ -340,22 +351,26 @@ export class CubeState {
     }
   }
   moveFrontStrip(row) {
+    // console.log('moveFrontStrip row:', row);
+    // console.log('size:', this.size);
+    // console.log('U length:', this.U.length);
+
     const size = this.size;
     // const edge = size - 1;
 
     const U = Array.from({ length: size }, (_, col) => this.U[row][col]);
 
-    console.log('Urow', U);
+    // console.log('Urow', U);
 
     const R = Array.from({ length: size }, (_, i) => this.R[i][size - 1 - row]);
 
-    console.log('Rcol', R);
+    // console.log('Rcol', R);
 
     const D = Array.from(
       { length: size },
       (_, col) => this.D[size - 1 - row][size - 1 - col]
     );
-    console.log('Draw', D);
+    // console.log('Draw', D);
 
     const L = Array.from({ length: size }, (_, i) => this.L[size - 1 - i][row]);
 
@@ -365,5 +380,295 @@ export class CubeState {
       this.L[size - 1 - i][row] = D[i];
       this.U[row][i] = L[i];
     }
+  }
+  isSolved() {
+    const colors = {
+      U: 'W',
+      D: 'Y',
+      F: 'G',
+      B: 'B',
+      R: 'R',
+      L: 'O',
+    };
+
+    return Object.entries(colors).every(([face, color]) =>
+      this[face].every(row => row.every(cell => cell[0] === color))
+    );
+  }
+  isSolvedU() {
+    for (let row = 1; row < this.size - 1; row++) {
+      for (let col = 1; col < this.size - 1; col++) {
+        if (this.U[row][col][0] !== 'W') {
+          return false;
+        }
+      }
+    }
+
+    return true;
+  }
+
+  clone() {
+    const cube = new CubeState(this.size);
+
+    cube.U = structuredClone(this.U);
+    cube.D = structuredClone(this.D);
+    cube.F = structuredClone(this.F);
+    cube.B = structuredClone(this.B);
+    cube.R = structuredClone(this.R);
+    cube.L = structuredClone(this.L);
+
+    return cube;
+  }
+  // R(layers) {
+  //   this.move({
+  //     axis: 'x',
+  //     layers: this.normalizeLayers(layers, this.size),
+  //     angle: -Math.PI / 2,
+  //   });
+  // }
+
+  // L(layers) {
+  //   this.move({
+  //     axis: 'x',
+  //     layers: this.normalizeLayers(layers, 1),
+  //     angle: Math.PI / 2,
+  //   });
+  // }
+
+  // U(layers) {
+  //   this.move({
+  //     axis: 'y',
+  //     layers: this.normalizeLayers(layers, this.size),
+  //     angle: -Math.PI / 2,
+  //   });
+  // }
+
+  // D(layers) {
+  //   this.move({
+  //     axis: 'y',
+  //     layers: this.normalizeLayers(layers, 1),
+  //     angle: Math.PI / 2,
+  //   });
+  // }
+
+  // F(layers) {
+  //   this.move({
+  //     axis: 'z',
+  //     layers: this.normalizeLayers(layers, this.size),
+  //     angle: -Math.PI / 2,
+  //   });
+  // }
+
+  // B(layers) {
+  //   this.move({
+  //     axis: 'z',
+  //     layers: this.normalizeLayers(layers, 1),
+  //     angle: Math.PI / 2,
+  //   });
+  // }
+
+  // Rprime(layers) {
+  //   this.move({
+  //     axis: 'x',
+  //     layers: this.normalizeLayers(layers, this.size),
+  //     angle: Math.PI / 2,
+  //   });
+  // }
+
+  // Lprime(layers) {
+  //   this.move({
+  //     axis: 'x',
+  //     layers: this.normalizeLayers(layers, 1),
+  //     angle: -Math.PI / 2,
+  //   });
+  // }
+
+  // Uprime(layers) {
+  //   this.move({
+  //     axis: 'y',
+  //     layers: this.normalizeLayers(layers, this.size),
+  //     angle: Math.PI / 2,
+  //   });
+  // }
+
+  // Dprime(layers) {
+  //   this.move({
+  //     axis: 'y',
+  //     layers: this.normalizeLayers(layers, 1),
+  //     angle: -Math.PI / 2,
+  //   });
+  // }
+
+  // Fprime(layers) {
+  //   this.move({
+  //     axis: 'z',
+  //     layers: this.normalizeLayers(layers, this.size),
+  //     angle: Math.PI / 2,
+  //   });
+  // }
+
+  // Bprime(layers) {
+  //   this.move({
+  //     axis: 'z',
+  //     layers: this.normalizeLayers(layers, 1),
+  //     angle: -Math.PI / 2,
+  //   });
+  // }
+
+  // normalizeLayers(layers, defaultLayer) {
+  //   if (layers === undefined) {
+  //     return [[defaultLayer]];
+  //   }
+
+  //   if (typeof layers === 'number') {
+  //     return [[layers]];
+  //   }
+
+  //   if (typeof layers === 'string') {
+  //     return [layers.split(',').map(Number)];
+  //   }
+
+  //   if (layers.every(value => typeof value === 'number')) {
+  //     return layers.map(value => [value]);
+  //   }
+
+  //   return layers.map(group => {
+  //     if (!Array.isArray(group)) {
+  //       throw new Error('Каждая группа слоёв должна быть массивом');
+  //     }
+
+  //     if (group.length === 1) {
+  //       return [group[0]];
+  //     }
+
+  //     if (group.length === 2) {
+  //       return [group[0], group[1]];
+  //     }
+
+  //     throw new Error(`Неверная группа слоёв: ${group}`);
+  //   });
+  // }
+
+  normalizeLayers(layers, defaultLayer) {
+    if (layers === undefined) {
+      return [{ value: defaultLayer }];
+    }
+
+    if (typeof layers === 'number') {
+      return [{ value: layers }];
+    }
+
+    if (typeof layers === 'string') {
+      return layers
+        .split(',')
+        .map(Number)
+        .map(value => ({ value }));
+    }
+
+    if (layers.every(value => typeof value === 'number')) {
+      return layers.map(value => ({ value }));
+    }
+
+    throw new Error(`Неверный формат layers: ${layers}`);
+  }
+  // normalizeMove(move) {
+  //   if (move.endsWith("'")) {
+  //     return move.slice(0, -1) + 'prime';
+  //   }
+
+  //   if (move.startsWith('2')) {
+  //     move = move.slice(1);
+
+  //     return [move, move];
+  //   }
+
+  //   if (!'RLUDFB'.includes(move[0])) {
+  //     throw new Error(`Неизвестный ход: ${move}`);
+  //   }
+
+  //   return move;
+  // }
+
+  normalizeMove(move) {
+    if (move.includes("'")) {
+      move = move.replace("'", 'prime');
+    }
+
+    if (move.startsWith('2')) {
+      move = move.slice(1);
+      return [move, move];
+    }
+
+    if (!'RLUDFB'.includes(move[0])) {
+      throw new Error(`Неизвестный ход: ${move}`);
+    }
+
+    return move;
+  }
+
+  execute(sequence) {
+    if (!sequence?.length) return;
+
+    const moves = {
+      R: ['x', this.size, -Math.PI / 2],
+      Rprime: ['x', this.size, Math.PI / 2],
+
+      L: ['x', 1, Math.PI / 2],
+      Lprime: ['x', 1, -Math.PI / 2],
+
+      U: ['y', this.size, -Math.PI / 2],
+      Uprime: ['y', this.size, Math.PI / 2],
+
+      D: ['y', 1, Math.PI / 2],
+      Dprime: ['y', 1, -Math.PI / 2],
+
+      F: ['z', this.size, -Math.PI / 2],
+      Fprime: ['z', this.size, Math.PI / 2],
+
+      B: ['z', 1, Math.PI / 2],
+      Bprime: ['z', 1, -Math.PI / 2],
+    };
+
+    sequence.forEach(move => {
+      const normalized = this.normalizeMove(move);
+
+      if (Array.isArray(normalized)) {
+        normalized.forEach(m => this.execute([m]));
+        return;
+      }
+
+      let method = normalized;
+      let layers;
+
+      if (normalized.includes('(')) {
+        [method, layers] = normalized.split('(');
+        layers = layers.slice(0, -1);
+      } else if (normalized.includes('[')) {
+        [method, layers] = normalized.split('[');
+        layers = layers.slice(0, -1);
+      }
+
+      if (layers !== undefined) {
+        if ('RUF'.includes(method[0])) {
+          layers = layers.split(',').map(n => this.size - Number(n) + 1);
+        } else {
+          layers = layers.split(',').map(Number);
+        }
+      }
+
+      const moveData = moves[method];
+
+      if (!moveData) {
+        throw new Error(`Неизвестный ход: ${move}`);
+      }
+
+      const [axis, defaultLayer, angle] = moveData;
+
+      this.move({
+        axis,
+        layers: this.normalizeLayers(layers, defaultLayer),
+        angle,
+      });
+    });
   }
 }

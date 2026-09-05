@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 import { CubeState } from './CubeState';
+import { onSolve1thSide1 } from './solver/onSolve1thSide.js';
+
+const scrambleBtn = document.querySelector('#scramble-btn');
+const solveFisrtSide = document.querySelector('#solve-first-side');
 
 export class Cube100 {
   constructor(cubePieces, cubeGroup, size) {
@@ -10,7 +14,31 @@ export class Cube100 {
     this.rotationSpeed = 0.1;
     this.rotationQueue = [];
     this.cubeState = new CubeState(this.size);
+    this.isMoving = false;
+    this.solSide1 = false;
   }
+  updateResetButtons() {
+    if (this.cubeState.isSolved()) {
+      // console.log('ON', this.isSolved);
+      scrambleBtn.disabled = false;
+    } else {
+      // console.log('OFF', this.isSolved);
+      scrambleBtn.disabled = true;
+    }
+
+    if (this.cubeState.isSolvedU()) {
+      this.solSide1 = true;
+      solveFisrtSide.disabled = true;
+    } else {
+      this.solSide1 = false;
+      solveFisrtSide.disabled = false;
+    }
+
+    if (this.isMoving) {
+      solveFisrtSide.disabled = true;
+    }
+  }
+
   attachPiece(faceGroup, piece) {
     if (piece.cubie) {
       faceGroup.attach(piece.cubie.mesh);
@@ -230,47 +258,6 @@ export class Cube100 {
     return this.cubePieces.filter(piece => piece.coord[axis] === value);
   }
 
-  // rotateLayer(axis, value, angle) {
-  //   if (this.currentRotation) return;
-
-  //   this.startRotation({
-  //     axis,
-  //     value,
-  //     angle,
-  //   });
-  // }
-
-  // rotateLayers(axis, layerGroups, angle) {
-  //   const rotationGroup = new THREE.Group();
-  //   this.cubeGroup.add(rotationGroup);
-
-  //   const selectedPieces = [];
-
-  //   // 1. Собираем все слои из всех групп
-  //   layerGroups.forEach(group => {
-  //     const [from, to = from] = group;
-
-  //     const start = Math.min(from, to);
-  //     const end = Math.max(from, to);
-
-  //     for (let value = start; value <= end; value++) {
-  //       const face = this.getFace(axis, value);
-
-  //       face.forEach(piece => {
-  //         if (!selectedPieces.includes(piece)) {
-  //           selectedPieces.push(piece);
-  //           this.attachPiece(rotationGroup, piece);
-  //         }
-  //       });
-  //     }
-  //   });
-
-  //   // 2. Пока просто вращаем всю выбранную область
-  //   rotationGroup.rotation[axis] = angle;
-
-  //   console.log('selectedPieces:', selectedPieces);
-  // }
-
   rotateLayers(axis, layers, angle) {
     if (Math.abs(angle) === Math.PI) {
       this.rotationQueue.push({
@@ -296,17 +283,7 @@ export class Cube100 {
       this.startNextRotation();
     }
   }
-  // rotateLayers(axis, layers, angle) {
-  //   this.rotationQueue.push({
-  //     axis,
-  //     layers,
-  //     angle,
-  //   });
 
-  //   if (!this.currentRotation) {
-  //     this.startNextRotation();
-  //   }
-  // }
   rotateLayer(axis, value, angle) {
     this.rotationQueue.push({
       axis,
@@ -373,27 +350,10 @@ export class Cube100 {
       faceGroup,
     };
   }
-  //  startRotation(move) {
-  //     const face = this.getFace(move.axis, move.value);
-
-  //     const faceGroup = new THREE.Group();
-  //     this.cubeGroup.add(faceGroup);
-
-  //     face.forEach(piece => {
-  //       this.attachPiece(faceGroup, piece);
-  //     });
-
-  //     this.currentRotation = {
-  //       ...move,
-  //       currentAngle: 0,
-  //       face,
-  //       faceGroup,
-  //     };
-  //   }
 
   updateRotation() {
     if (!this.currentRotation) return;
-    console.log('updateRotation');
+    // console.log('updateRotation');
     const rotation = this.currentRotation;
 
     const direction = Math.sign(rotation.angle);
@@ -461,15 +421,6 @@ export class Cube100 {
 
           return;
         }
-        // if (piece.cubie) {
-        //   this.cubeGroup.attach(piece.cubie.mesh);
-
-        //   if (piece.cubie.sticker) {
-        //     this.cubeGroup.attach(piece.cubie.sticker);
-        //   }
-
-        //   return;
-        // }
 
         piece.parts.forEach(part => {
           if (part.isObject3D) {
@@ -506,94 +457,18 @@ export class Cube100 {
       angle,
     });
 
+    if (this.cubeState.isSolved()) {
+      console.log('Cube solved');
+    }
+    if (this.rotationQueue.length === 0) {
+      this.isMoving = false;
+    }
+    this.updateResetButtons();
     this.currentRotation = null;
 
     this.startNextRotation();
   }
-  // finishRotation() {
-  //   const rotation = this.currentRotation;
 
-  //   const { face, faceGroup, axis, value, angle } = rotation;
-  //   // (axis, value, angle) {
-  //   // if (Math.abs(angle) === Math.PI) {
-  //   //   this.rotateLayer(axis, value, Math.PI / 2);
-  //   //   this.rotateLayer(axis, value, Math.PI / 2);
-  //   //   return;
-  //   // }
-  //   // const face = this.getFace(axis, value);
-
-  //   // const faceGroup = new THREE.Group();
-  //   // this.cubeGroup.add(faceGroup);
-
-  //   // face.forEach(piece => {
-  //   //   this.attachPiece(faceGroup, piece);
-  //   // });
-
-  //   faceGroup.rotation[axis] = angle;
-
-  //   let rotatedFace;
-
-  //   if (value > 1 && value < this.size) {
-  //     rotatedFace = this.rotateRing(face, this.size, angle);
-  //   } else if (Math.abs(angle) === Math.PI / 2) {
-  //     rotatedFace = face;
-  //     const matrix = this.faceToMatrix(face, this.size, axis);
-
-  //     console.log('BEFORE');
-
-  //     const beforeMatrix = matrix.map(row =>
-  //       row.map(piece => ({
-  //         x: piece.coord.x,
-  //         y: piece.coord.y,
-  //         z: piece.coord.z,
-  //       }))
-  //     );
-
-  //     console.table(
-  //       beforeMatrix.map(row => row.map(({ x, y, z }) => `(${x},${y},${z})`))
-  //     );
-
-  //     const rotatedMatrix = this.rotateMatrix(matrix, axis, angle);
-
-  //     rotatedFace = this.matrixToFace(rotatedMatrix);
-
-  //     console.log('ROTATED FACE:', rotatedFace);
-  //   }
-  //   console.log('rotatedFace', rotatedFace);
-  //   // 3. Вернули обратно
-  //   rotatedFace.forEach(piece => {
-  //     if (piece.cubie) {
-  //       this.cubeGroup.attach(piece.cubie.mesh);
-
-  //       if (piece.cubie.sticker) {
-  //         this.cubeGroup.attach(piece.cubie.sticker);
-  //       }
-
-  //       return;
-  //     }
-
-  //     piece.parts.forEach(part => {
-  //       if (part.isObject3D) {
-  //         this.cubeGroup.attach(part);
-  //         return;
-  //       }
-
-  //       if (part.left) this.cubeGroup.attach(part.left);
-  //       if (part.right) this.cubeGroup.attach(part.right);
-  //       if (part.down) this.cubeGroup.attach(part.down);
-  //       if (part.outSurface) this.cubeGroup.attach(part.outSurface);
-  //     });
-  //   });
-
-  //   const indexes = face.map(piece => this.cubePieces.indexOf(piece));
-
-  //   indexes.forEach((cubeIndex, i) => {
-  //     this.cubePieces[cubeIndex] = rotatedFace[i];
-  //   });
-  //   this.cubeGroup.remove(faceGroup);
-  //   this.currentRotation = null;
-  //   this.startNextRotation();
-  // }
   normalizeLayers(layers, defaultLayer) {
     // R() / L() / U() и т.д.
     if (layers === undefined) {
@@ -606,38 +481,47 @@ export class Cube100 {
     }
 
     // R("5")
+    // if (typeof layers === 'string') {
+    //   return layers.split(';').map(group => {
+    //     const values = group.split(',').map(Number);
+
+    //     if (values.length === 1) {
+    //       return [values[0]];
+    //     }
+
+    //     if (values.length === 2) {
+    //       return [values[0], values[1]];
+    //     }
+
+    //     throw new Error(`Неверная группа слоёв: ${group}`);
+    //   });
+    // }
+
+    // if (!Array.isArray(layers)) {
+    //   throw new Error('Неверно указаны слои');
+    // }
     if (typeof layers === 'string') {
-      return layers.split(';').map(group => {
-        const values = group.split(',').map(Number);
-
-        if (values.length === 1) {
-          return [values[0]];
-        }
-
-        if (values.length === 2) {
-          return [values[0], values[1]];
-        }
-
-        throw new Error(`Неверная группа слоёв: ${group}`);
-      });
-    }
-
-    if (!Array.isArray(layers)) {
-      throw new Error('Неверно указаны слои');
+      return [layers.split(',').map(Number)];
     }
 
     // R([5])
     // R([2, 5])
+    // if (layers.every(value => typeof value === 'number')) {
+    //   if (layers.length === 1) {
+    //     return [[layers[0]]];
+    //   }
+
+    //   if (layers.length === 2) {
+    //     return [[layers[0], layers[1]]];
+    //   }
+
+    //   throw new Error('Массив слоёв должен содержать 1 или 2 числа');
+    // }
+    // if (layers.every(value => typeof value === 'number')) {
+    //   return [layers];
+    // }
     if (layers.every(value => typeof value === 'number')) {
-      if (layers.length === 1) {
-        return [[layers[0]]];
-      }
-
-      if (layers.length === 2) {
-        return [[layers[0], layers[1]]];
-      }
-
-      throw new Error('Массив слоёв должен содержать 1 или 2 числа');
+      return layers.map(value => [value]);
     }
 
     // R([[1, 4], [5], [7, 9]])
@@ -730,14 +614,30 @@ export class Cube100 {
     this.rotateLayers('z', this.normalizeLayers(layers, 1), -Math.PI / 2);
   }
 
+  // normalizeMove(move) {
+  //   if (move.endsWith("'")) {
+  //     return move.slice(0, -1) + 'prime';
+  //   }
+
+  //   if (move.startsWith('2')) {
+  //     move = move.slice(1);
+
+  //     return [move, move];
+  //   }
+
+  //   if (!'RLUDFB'.includes(move[0])) {
+  //     throw new Error(`Неизвестный ход: ${move}`);
+  //   }
+
+  //   return move;
+  // }
   normalizeMove(move) {
-    if (move.endsWith("'")) {
-      return move.slice(0, -1) + 'prime';
+    if (move.includes("'")) {
+      move = move.replace("'", 'prime');
     }
 
     if (move.startsWith('2')) {
       move = move.slice(1);
-
       return [move, move];
     }
 
@@ -747,7 +647,46 @@ export class Cube100 {
 
     return move;
   }
+  // normalizeMove(move) {
+  //   if (move.includes("'")) {
+  //     move = move.replace("'", 'prime');
+  //   }
+
+  //   if (move.startsWith('2')) {
+  //     move = move.slice(1);
+  //     return [move, move];
+  //   }
+
+  //   if (!'RLUDFB'.includes(move[0])) {
+  //     throw new Error(`Неизвестный ход: ${move}`);
+  //   }
+
+  //   return move;
+  // }
+  // normalizeMove(move) {
+  //   const match = move.match(/^([RLUDFB])(prime|')?(?:\(([^)]+)\))?$/);
+
+  //   if (!match) {
+  //     throw new Error(`Неизвестный ход: ${move}`);
+  //   }
+
+  //   const face = match[1];
+  //   const prime = match[2];
+  //   const layers = match[3];
+
+  //   let method = face;
+
+  //   if (prime === "'" || prime === 'prime') {
+  //     method += 'prime';
+  //   }
+
+  //   return {
+  //     method,
+  //     layers,
+  //   };
+  // }
   scramble(count = this.size * 10) {
+    this.isMoving = true;
     const faces = ['R', 'L', 'U', 'D', 'F', 'B'];
 
     const axisMap = {
@@ -822,6 +761,131 @@ export class Cube100 {
       lastAxis = axis;
     }
 
+    this.updateResetButtons();
     return sequence.join(' ');
+  }
+
+  // execute(sequence) {
+  //   if (!sequence?.length) return;
+
+  //   sequence.forEach(move => {
+  //     const normalized = this.normalizeMove(move);
+
+  //     if (Array.isArray(normalized)) {
+  //       normalized.forEach(m => this[m]());
+  //     } else {
+  //       this[normalized]();
+  //     }
+  //   });
+  // }
+  // execute(sequence) {
+  //   if (!sequence?.length) return;
+
+  //   sequence.forEach(move => {
+  //     const normalized = this.normalizeMove(move);
+
+  //     if (Array.isArray(normalized)) {
+  //       normalized.forEach(m => {
+  //         const [method, layers] = m.split('(');
+  //         this[method](layers?.slice(0, -1));
+  //       });
+  //     } else {
+  //       const [method, layers] = normalized.split('(');
+  //       this[method](layers?.slice(0, -1));
+  //     }
+  //   });
+  // }
+  // execute(sequence) {
+  //   if (!sequence?.length) return;
+
+  //   sequence.forEach(move => {
+  //     const normalized = this.normalizeMove(move);
+
+  //     if (Array.isArray(normalized)) {
+  //       normalized.forEach(m => this.execute([m]));
+  //       return;
+  //     }
+
+  //     const [method, layers] = normalized.split('(');
+
+  //     if (!layers) {
+  //       this[method]();
+  //       return;
+  //     }
+
+  //     let layer = layers.slice(0, -1);
+
+  //     // if ('RUF'.includes(method)) {
+  //     //   layer = layer
+  //     //     .split(';')
+  //     //     .map(group =>
+  //     //       group
+  //     //         .split(',')
+  //     //         .map(n => this.size - Number(n) + 1)
+  //     //         .join(',')
+  //     //     )
+  //     //     .join(';');
+  //     // }
+  //     if ('RUF'.includes(method)) {
+  //       layer = layer.split(',').map(n => this.size - Number(n) + 1);
+  //     } else {
+  //       layer = layer.split(',').map(Number);
+  //     }
+
+  //     this[method](layer);
+  //   });
+  // }
+  execute(sequence) {
+    if (!sequence?.length) return;
+
+    sequence.forEach(move => {
+      const normalized = this.normalizeMove(move);
+
+      if (Array.isArray(normalized)) {
+        normalized.forEach(m => this.execute([m]));
+        return;
+      }
+
+      let method;
+      let layers;
+
+      if (normalized.includes('(')) {
+        [method, layers] = normalized.split('(');
+        layers = layers.slice(0, -1);
+      } else if (normalized.includes('[')) {
+        [method, layers] = normalized.split('[');
+        layers = layers.slice(0, -1);
+      } else {
+        this[normalized]();
+        return;
+      }
+
+      if ('RUF'.includes(method[0])) {
+        layers = layers.split(',').map(n => this.size - Number(n) + 1);
+      } else {
+        layers = layers.split(',').map(Number);
+      }
+
+      this[method](layers);
+    });
+  }
+  async onSolve1thSide() {
+    // this.isSolving = true;
+    this.updateResetButtons();
+
+    let solution = onSolve1thSide1(this.cubeState);
+    this.execute(solution);
+    // await this.execute(solutionCross.join(' '));
+    // await this.rotateTo('right');
+
+    this.updateResetButtons();
+  }
+  reset() {
+    console.log('RESET');
+
+    this.rotationQueue = [];
+    this.currentRotation = null;
+
+    this.cubeState = new CubeState(this.size);
   }
 }
