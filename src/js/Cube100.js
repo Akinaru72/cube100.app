@@ -11,7 +11,7 @@ export class Cube100 {
     this.cubeGroup = cubeGroup;
     this.size = size;
     this.currentRotation = null;
-    this.rotationSpeed = 0.1;
+    this.rotationSpeed = 1;
     this.rotationQueue = [];
     this.cubeState = new CubeState(this.size);
     this.isMoving = false;
