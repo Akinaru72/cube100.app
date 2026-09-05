@@ -4,10 +4,197 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/cube100.app/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cube100.app</title>
+    <title>Cube100app</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/modern-normalize/3.0.1/modern-normalize.min.css"
+      integrity="sha512-q6WgHqiHlKyOqslT/lgBgodhd03Wp4BEqKeW6nNtlOY4quzyG3VoQKFrieaCeSnuVseNKRGpGeDU3qPmabCANg=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
+      rel="stylesheet"
+    />
     <script type="module" crossorigin src="/cube100.app/index.js"></script>
-    <link rel="modulepreload" crossorigin href="/cube100.app/assets/vendor-DPJBKuAu.js">
+    <link rel="modulepreload" crossorigin href="/cube100.app/assets/vendor-DeFWNylS.js">
+    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-CcJXCFAl.css">
   </head>
   <body>
+    <header class="header">
+      <a href="https://github.com/Akinaru72/cube100.app" class="logo" id="logo">
+        <img
+          src="/cube100.app/logoCube.png"
+          alt="CubeSolver3D logo"
+          class="logo-img"
+          width="24"
+          height="24"
+        />
+        <span>CubeSolver3D</span>
+      </a>
+
+      <!-- <a href="#" class="logo" id="logo"> 🧊 CubeSolver3D </a> -->
+
+      <nav class="main-nav">
+        <button type="button" class="menu-btn" id="guide-btn">Save</button>
+
+        <button type="button" class="menu-btn" id="help-btn">Load</button>
+
+        <button type="button" class="menu-btn" id="settings-btn">
+          Settings
+        </button>
+      </nav>
+    </header>
+
+    <main class="main-content">
+      <div id="cube-container">
+        <ul class="solve-list-first">
+          <li>
+            <button class="solve-btn" id="solve-first-side" type="button">
+              Step 1 - First Side
+            </button>
+          </li>
+          <li>
+            <button class="solve-btn" id="solve-second-side" type="button">
+              Step 2 - Second Side
+              <!-- Solve First Layer Corners -->
+            </button>
+          </li>
+          <li>
+            <button class="solve-btn" id="solve-third-side" type="button">
+              Step 3 - Third Side
+              <!-- Solve Middle Layer -->
+            </button>
+          </li>
+          <li>
+            <button class="solve-btn" id="solve-fourth-side" type="button">
+              Step 4 - Fourth Side
+              <!-- Solve Last Layer Cross Part 1 -->
+            </button>
+          </li>
+          <li>
+            <button class="solve-btn" id="solve-fifth-sixth-side" type="button">
+              Step 5 - Fifth and sixth Side
+              <!-- Solve Last Layer Cross Part 2 -->
+            </button>
+          </li>
+          <li>
+            <button class="solve-btn" id="solve-edges-part-1" type="button">
+              Step 6 - Edges Part 1
+              <!-- Solve Last Layer Corners Part 1 -->
+            </button>
+          </li>
+          <li>
+            <button class="solve-btn" id="solve-edges-part-2" type="button">
+              Step 7 - Edges Part 2
+              <!-- Solve Last Layer Corners Part 2 -->
+            </button>
+          </li>
+        </ul>
+        <ul class="solve-list-last">
+          <li>
+            <button
+              class="solve-btn"
+              id="solve-first-cross"
+              type="button"
+              data-short="Step 8"
+              data-medium="Step 8 - 1st Cross"
+              data-full="Step 8 - First Layer Cross"
+            >
+              Step 8 - First Layer Cross
+            </button>
+          </li>
+          <li>
+            <button
+              class="solve-btn"
+              id="solve-first-corners"
+              type="button"
+              data-short="Step 9"
+              data-medium="Step 9 - 1st Corner"
+              data-full="Step 9 - First Layer Corners"
+            >
+              Step 9 - First Layer Corners
+              <!-- Solve First Layer Corners -->
+            </button>
+          </li>
+          <li>
+            <button
+              class="solve-btn"
+              id="solve-middle"
+              type="button"
+              data-short="Step 10"
+              data-medium="Step 10 - 2d Layer"
+              data-full="Step 10 - Middle Layer"
+            >
+              Step 10 - Middle Layer
+              <!-- Solve Middle Layer -->
+            </button>
+          </li>
+          <li>
+            <button
+              class="solve-btn"
+              id="solve-third-cross-1"
+              type="button"
+              data-short="Step 11"
+              data-medium="Step 11 - 3d Cross 1"
+              data-full="Step 11 - Last Layer Cross Part 1"
+            >
+              Step 11 - Last Layer Cross Part 1
+              <!-- Solve Last Layer Cross Part 1 -->
+            </button>
+          </li>
+          <li>
+            <button
+              class="solve-btn"
+              id="solve-third-cross-2"
+              type="button"
+              data-short="Step 12"
+              data-medium="Step 12 - 3d Cross 2"
+              data-full="Step 12 - Last Layer Cross Part 2"
+            >
+              Step 12 - Last Layer Cross Part 2
+              <!-- Solve Last Layer Cross Part 2 -->
+            </button>
+          </li>
+          <li>
+            <button
+              class="solve-btn"
+              id="solve-third-corners-1"
+              type="button"
+              data-short="Step 13"
+              data-medium="Step 13 - 3d Corners 1"
+              data-full="Step 13 - Last Layer Corners Part 1"
+            >
+              Step 13 - Last Layer Corners Part 1
+              <!-- Solve Last Layer Corners Part 1 -->
+            </button>
+          </li>
+          <li>
+            <button
+              class="solve-btn"
+              id="solve-third-corners-2"
+              type="button"
+              data-short="Step 14"
+              data-medium="Step 14 - 3d Corners 2"
+              data-full="Step 14 - Last Layer Corners Part 2"
+            >
+              Step 14 - Last Layer Corners Part 2
+              <!-- Solve Last Layer Corners Part 2 -->
+            </button>
+          </li>
+        </ul>
+      </div>
+      <nav class="cube-controls">
+        <button type="button" class="control-btn" id="reset-btn">RESET</button>
+        <button type="button" class="control-btn" id="solve-btn">SOLVE</button>
+        <button type="button" class="control-btn" id="scramble-btn">
+          SCRAMBLE
+        </button>
+      </nav>
+    </main>
+
+    <footer class="footer"></footer>
   </body>
 </html>
