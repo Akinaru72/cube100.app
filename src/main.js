@@ -24,9 +24,10 @@ import { createCubeRenderer } from './js/cubeSimplyRenderer.js';
 // scene.add(cubeGroup);
 
 import { Cube100 } from './js/Cube100.js';
-import { size } from './js/constants';
+import { DEFAULT_SIZE } from './js/constants';
 import { CubeState } from './js/CubeState.js';
-const cubeState = new CubeState(size);
+let size = DEFAULT_SIZE;
+let cubeState = new CubeState(size);
 const scene = new THREE.Scene();
 
 let cubeGroup;
@@ -34,8 +35,8 @@ let cubePieces;
 let cube;
 
 function initRender() {
-  ({ cubeGroup, cubePieces } = createCubeRenderer());
-  cube = new Cube100(cubePieces, cubeGroup, size);
+  ({ cubeGroup, cubePieces } = createCubeRenderer(cubeState, size));
+  cube = new Cube100(cubePieces, cubeGroup, size, cubeState, stopAnimationMode);
   scene.add(cubeGroup);
 }
 
@@ -103,6 +104,9 @@ camera.lookAt(0, 0, 0);
 // ====================
 // CAMERA
 // ====================
+const saveBtn = document.querySelector('#save-btn');
+const loadBtn = document.querySelector('#load-btn');
+
 const resetBtn = document.querySelector('#reset-btn');
 const solveBtn = document.querySelector('#solve-btn');
 const scrambleBtn = document.querySelector('#scramble-btn');
@@ -115,20 +119,29 @@ const solveFifthSixSide = document.querySelector('#solve-fifth-sixth-side');
 const solveEdges1 = document.querySelector('#solve-edges-part-1');
 const solveEdges2 = document.querySelector('#solve-edges-part-2');
 
+const headerEl = document.querySelector('.header');
+const solveListFirstEl = document.querySelector('.solve-list-first');
+const solveListLastEl = document.querySelector('.solve-list-last');
+const cubeControlsEl = document.querySelector('.cube-controls');
+const speedMenuEl = document.querySelector('#speedMenu');
+
+let animationMode = false;
+let speedMenuTimer = null;
+
 resetBtn.addEventListener('click', () => resetCube());
 
 function resetCube() {
   scene.remove(cubeGroup);
 
   cubeGroup.clear();
-
+  cubeState = new CubeState(size);
   // cubeGroup = ;
   // cubePieces = null;
   // cube = null;
   scrambleBtn.disabled = false;
   initRender();
 }
-scrambleBtn.addEventListener('click', () => cube.scramble());
+
 solveBtn.disabled = true;
 scrambleBtn.disabled = false;
 
@@ -195,11 +208,121 @@ function animate() {
 
 animate();
 
+// =============================Scramle========================
+scrambleBtn.addEventListener('click', () => {
+  startAnimationMode();
+
+  cube.scramble();
+});
+
+function startAnimationMode() {
+  animationMode = true;
+
+  console.log('header:', headerEl);
+  console.log('solveListFirst:', solveListFirstEl);
+  console.log('solveListLast:', solveListLastEl);
+  console.log('cubeControls:', cubeControlsEl);
+  console.log('speedMenu:', speedMenuEl);
+
+  headerEl.classList.add('is-hidden');
+  solveListFirstEl.classList.add('is-hidden');
+  // solveListLastEl.classList.add('is-hidden');
+  cubeControlsEl.classList.add('is-hidden');
+
+  // showSpeedMenu();
+}
+
+function showSpeedMenu() {
+  if (!animationMode) return;
+  speedMenuEl.classList.add('visible');
+  clearTimeout(speedMenuTimer);
+  speedMenuTimer = setTimeout(() => {
+    speedMenuEl.classList.remove('visible');
+  }, 2000);
+}
+
+window.addEventListener('mousemove', () => {
+  if (!animationMode) return;
+  showSpeedMenu();
+});
+
+function stopAnimationMode() {
+  animationMode = false;
+  clearTimeout(speedMenuTimer);
+  speedMenuEl.classList.remove('visible');
+  headerEl.classList.remove('is-hidden');
+  solveListFirstEl.classList.remove('is-hidden');
+  // solveListLastEl.classList.remove('is-hidden');
+  cubeControlsEl.classList.remove('is-hidden');
+}
+
+speedMenuEl.addEventListener('click', event => {
+  const button = event.target.closest('button');
+  if (!button) return;
+  const speed = button.dataset.speed;
+  if (speed === 'end') {
+    cube.finishAnimation();
+    return;
+  }
+  cube.rotationSpeed = 0.1 * Number(speed);
+});
+
 // ------------------------simply algoritms--------------------------
 
-solveFisrtSide.addEventListener('click', async () => {
-  await cube.onSolve1thSide();
+solveFisrtSide.addEventListener('click', () => {
+  startAnimationMode();
+  cube.onSolve1thSide();
 });
+
+// -------------------------Local----------------
+function saveCubeState() {
+  console.log('MainClickSavecubeState.U', cubeState.U);
+  const state = {
+    size: cubeState.size,
+    U: cubeState.U,
+    D: cubeState.D,
+    F: cubeState.F,
+    B: cubeState.B,
+    L: cubeState.L,
+    R: cubeState.R,
+  };
+  localStorage.setItem('cubeState', JSON.stringify(state));
+  console.log('Состояние кубика сохранено');
+}
+
+saveBtn.addEventListener('click', saveCubeState);
+
+function loadCubeState() {
+  const saved = localStorage.getItem('cubeState');
+
+  if (!saved) {
+    console.log('Сохранённого состояния нет');
+    return;
+  }
+
+  const data = JSON.parse(saved);
+  size = data.size;
+  cubeState = new CubeState(size);
+  cubeState.U = data.U;
+  cubeState.D = data.D;
+  cubeState.F = data.F;
+  cubeState.B = data.B;
+  cubeState.L = data.L;
+  cubeState.R = data.R;
+
+  console.log('Состояние загружено');
+  console.log(data);
+  scene.remove(cubeGroup);
+  cubeGroup.clear();
+
+  scrambleBtn.disabled = false;
+  initRender();
+
+  camera.position.set(size, size, size);
+  cube.updateResetButtons();
+}
+
+loadBtn.addEventListener('click', loadCubeState);
 
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);
@@ -220,6 +343,7 @@ solveFisrtSide.addEventListener('click', async () => {
 // console.log('R', cubeState.R);
 // console.log('D', cubeState.D);
 // console.log('L', cubeState.L);
+
 // -----------------------------------------------------------------
 let before = cubePieces.map(piece => ({
   piece,

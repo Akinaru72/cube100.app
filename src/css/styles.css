@@ -62,13 +62,18 @@ img {
   opacity: 1;
   transform: translateY(0);
   transition:
-    opacity 400ms ease,
-    transform 400ms ease;
+    opacity 1000ms ease,
+    transform 1000ms ease;
 }
-
+/* 
 .header.is-hidden {
   opacity: 0;
   transform: translateY(-20px);
+  pointer-events: none;
+} */
+.header.is-hidden {
+  opacity: 0;
+  transform: translateY(-120%);
   pointer-events: none;
 }
 
@@ -168,8 +173,14 @@ img {
   gap: 24px;
   width: 100%;
   transition:
-    opacity 400ms ease,
-    transform 400ms ease;
+    opacity 1000ms ease,
+    transform 1000ms ease;
+}
+
+.cube-controls.is-hidden {
+  opacity: 0;
+  transform: translateY(150%);
+  pointer-events: none;
 }
 
 .control-btn {
@@ -204,11 +215,56 @@ img {
   transform: translateY(-50%);
   right: 80px;
   display: none;
+  /* transition:
+    opacity 1000ms ease,
+    transform 1000ms ease; */
 }
 
 .solve-list-first {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
+  /* transform: translateX(0); */
   left: 80px;
+  transition:
+    opacity 1000ms ease,
+    transform 1000ms ease;
+}
+
+.solve-list-first.is-hidden {
+  display: block;
+  opacity: 0;
+  transform: translate(-120%, -50%);
+  pointer-events: none;
+}
+
+.solve-list-last.is-hidden {
+  opacity: 0;
+  transform: translate(120%, -50%);
+  pointer-events: none;
+}
+
+.speed-menu {
+  position: fixed;
+  left: 50%;
+  bottom: 20px;
+
+  display: flex;
+  gap: 8px;
+
+  transform: translate(-50%, 150%);
+  opacity: 0;
+
+  transition:
+    opacity 350ms ease,
+    transform 350ms ease;
+
+  pointer-events: none;
+  z-index: 1000;
+}
+
+.speed-menu.visible {
+  opacity: 1;
+  transform: translate(-50%, 0);
+  pointer-events: auto;
 }

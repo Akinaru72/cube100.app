@@ -6,18 +6,25 @@ const scrambleBtn = document.querySelector('#scramble-btn');
 const solveFisrtSide = document.querySelector('#solve-first-side');
 
 export class Cube100 {
-  constructor(cubePieces, cubeGroup, size) {
+  constructor(cubePieces, cubeGroup, size, cubeState, onAnimationEnd) {
+    // constructor(cubePieces, cubeGroup, size, cubeState) {
     this.cubePieces = cubePieces;
     this.cubeGroup = cubeGroup;
     this.size = size;
     this.currentRotation = null;
-    this.rotationSpeed = 1;
+    this.rotationSpeed = 0.1;
     this.rotationQueue = [];
-    this.cubeState = new CubeState(this.size);
+    // this.cubeState = new CubeState(this.size);
+    // this.cubeState = cubeState ?? new CubeState(this.size);
+    this.cubeState = cubeState;
+    // this.isSolving = false;
     this.isMoving = false;
     this.solSide1 = false;
+    this.onAnimationEnd = onAnimationEnd;
+    this.instantFinish = false;
   }
   updateResetButtons() {
+    // console.log('cubeState.R', this.cubeState.U);
     if (this.cubeState.isSolved()) {
       // console.log('ON', this.isSolved);
       scrambleBtn.disabled = false;
@@ -29,14 +36,23 @@ export class Cube100 {
     if (this.cubeState.isSolvedU()) {
       this.solSide1 = true;
       solveFisrtSide.disabled = true;
+      // console.log('IF___ABLE___OFF');
     } else {
       this.solSide1 = false;
       solveFisrtSide.disabled = false;
+      // console.log('ABLE___ON');
     }
 
     if (this.isMoving) {
+      console.log('Moving');
+      // console.log('MOV___ABLE___OFF');
       solveFisrtSide.disabled = true;
     }
+    // if (this.isSolving) {
+    //   console.log('Solving');
+    //   console.log('Sol___ABLE___OFF');
+    //   solveFisrtSide.disabled = true;
+    // }
   }
 
   attachPiece(faceGroup, piece) {
@@ -284,17 +300,17 @@ export class Cube100 {
     }
   }
 
-  rotateLayer(axis, value, angle) {
-    this.rotationQueue.push({
-      axis,
-      value,
-      angle,
-    });
+  // rotateLayer(axis, value, angle) {
+  //   this.rotationQueue.push({
+  //     axis,
+  //     value,
+  //     angle,
+  //   });
 
-    if (!this.currentRotation) {
-      this.startNextRotation();
-    }
-  }
+  //   if (!this.currentRotation) {
+  //     this.startNextRotation();
+  //   }
+  // }
 
   startNextRotation() {
     if (this.currentRotation) return;
@@ -302,11 +318,42 @@ export class Cube100 {
     const move = this.rotationQueue.shift();
 
     if (!move) return;
-
+    // // -------New
+    // if (!move) {
+    //   if (this.instantFinish) {
+    //     this.instantFinish = false;
+    //   }
+    //   return;
+    // }
+    // // -------
     this.startRotation(move);
+    // -------New
+    if (this.instantFinish) {
+      this.finishRotation();
+    }
+    // -------New
+  }
+
+  finishAnimation() {
+    this.instantFinish = true;
+
+    if (this.currentRotation) {
+      this.finishRotation();
+    } else {
+      this.startNextRotation();
+    }
   }
 
   startRotation(move) {
+    if (move.isCubeRotation) {
+      this.currentRotation = {
+        ...move,
+        currentAngle: 0,
+        faceGroup: this.cubeGroup,
+      };
+
+      return;
+    }
     const layers = [];
 
     // Разворачиваем [[2, 5], [9], [15, 20]]
@@ -353,6 +400,11 @@ export class Cube100 {
 
   updateRotation() {
     if (!this.currentRotation) return;
+
+    if (this.instantFinish) {
+      this.finishRotation();
+      return;
+    }
     // console.log('updateRotation');
     const rotation = this.currentRotation;
 
@@ -376,6 +428,20 @@ export class Cube100 {
 
   finishRotation() {
     const rotation = this.currentRotation;
+    if (rotation.isCubeRotation) {
+      this.currentRotation = null;
+      if (this.rotationQueue.length === 0) {
+        this.isMoving = false;
+
+        this.instantFinish = false;
+        this.rotationSpeed = 0.1;
+
+        this.onAnimationEnd();
+      }
+      this.startNextRotation();
+
+      return;
+    }
 
     const { layers, faceGroup, axis, angle } = rotation;
 
@@ -450,6 +516,11 @@ export class Cube100 {
     // ==========================
 
     this.cubeGroup.remove(faceGroup);
+    console.log('STATE MOVE:', {
+      axis,
+      layers,
+      angle,
+    });
 
     this.cubeState.move({
       axis,
@@ -457,14 +528,22 @@ export class Cube100 {
       angle,
     });
 
+    console.log('STATE AFTER MOVE:', this.cubeState);
+
     if (this.cubeState.isSolved()) {
       console.log('Cube solved');
     }
+    this.currentRotation = null;
+    console.log('QUEUE:', this.rotationQueue.length);
     if (this.rotationQueue.length === 0) {
       this.isMoving = false;
+
+      this.instantFinish = false;
+      this.rotationSpeed = 0.1;
+      this.onAnimationEnd();
     }
     this.updateResetButtons();
-    this.currentRotation = null;
+    // this.currentRotation = null;
 
     this.startNextRotation();
   }
@@ -762,6 +841,7 @@ export class Cube100 {
     }
 
     this.updateResetButtons();
+
     return sequence.join(' ');
   }
 
@@ -869,15 +949,17 @@ export class Cube100 {
       this[method](layers);
     });
   }
-  async onSolve1thSide() {
-    // this.isSolving = true;
+  onSolve1thSide() {
+    this.isMoving = true;
     this.updateResetButtons();
+    this.rotateCube('y', Math.PI / 2);
 
     let solution = onSolve1thSide1(this.cubeState);
     this.execute(solution);
+    this.rotateCube('y', -Math.PI / 2);
     // await this.execute(solutionCross.join(' '));
     // await this.rotateTo('right');
-
+    // this.isSolving = false;
     this.updateResetButtons();
   }
   reset() {
@@ -887,5 +969,16 @@ export class Cube100 {
     this.currentRotation = null;
 
     this.cubeState = new CubeState(this.size);
+  }
+  rotateCube(axis, angle) {
+    this.rotationQueue.push({
+      axis,
+      angle,
+      isCubeRotation: true,
+    });
+
+    if (!this.currentRotation) {
+      this.startNextRotation();
+    }
   }
 }

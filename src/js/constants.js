@@ -1,16 +1,16 @@
 // constants.js
-export const size = 51;
+export const DEFAULT_SIZE = 31;
 export const cubeSize = 0.9;
 export const gap = 0.1;
 export const cellSize = cubeSize + gap;
 export const cornerSize = cellSize * 2;
-export const halfSize = (size * cellSize) / 2;
+export const halfSize = (DEFAULT_SIZE * cellSize) / 2;
 export const cornerExpand = cornerSize - cellSize; //отодвинули грань
 export const faceOffsetFactor = 1.5; // коэффициент смещения грани
 // export const faceOffsetFactor = ; // коэффициент смещения грани
-export const sphereOffset = size * cellSize * 1.4;
+export const sphereOffset = DEFAULT_SIZE * cellSize * 1.4;
 // export const sphereOffset = size * cellSize * 0;
-export const fullsize = (size - 2) * cellSize + cornerSize * 2;
+export const fullsize = (DEFAULT_SIZE - 2) * cellSize + cornerSize * 2;
 export const bulgeRadius = Math.sqrt(
   (halfSize + cornerExpand + sphereOffset) ** 2 +
     (halfSize + cornerExpand) ** 2 +
@@ -39,9 +39,9 @@ export const CORNER = {
 
 export const cd = [];
 
-for (let i = 0; i < size - 2; i++) {
-  const b = (i + 1 - (size - 1) / 2) * cellSize;
-  const c = (size - 1 - (size - 1) / 2) * cellSize;
+for (let i = 0; i < DEFAULT_SIZE - 2; i++) {
+  const b = (i + 1 - (DEFAULT_SIZE - 1) / 2) * cellSize;
+  const c = (DEFAULT_SIZE - 1 - (DEFAULT_SIZE - 1) / 2) * cellSize;
   const T = Math.sqrt(bulgeRadius ** 2 - b ** 2 - c ** 2);
   const R = Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
   const a = c + T - R + cornerExpand * 1.5;
@@ -55,12 +55,12 @@ export const sphereOffsetEdges =
 
 export const diagonal = sphereOffsetEdges / Math.sqrt(2);
 
-export const halfCenters = ((size - 1) / 2) * cellSize;
+export const halfCenters = ((DEFAULT_SIZE - 1) / 2) * cellSize;
 export const pointsA = [];
 export const pointsB = [];
 export const pointsC = [];
 
-function getCDPoints(centers, size) {
+function getCDPoints(centers, DEFAULT_SIZE) {
   // const halfCell = cellSize / 2;
   for (let i = centers.length - 1; i >= 0; i--) {
     const center = centers[i];
@@ -80,10 +80,10 @@ function getCDPoints(centers, size) {
 getCDPoints(cd);
 // export const cornerB_CD = (i + 1 - (size - 1) / 2) * cellSize;
 // export const cornerC_CD = (size - 1 - (size - 1) / 2) * cellSize;
-export const cornerB_CD = ((size - 2) / 2) * cellSize + gap / 2;
-export const cornerC_CD = ((size - 2) / 2) * cellSize + gap / 2;
-const realBforA = (1 - (size - 1) / 2) * cellSize;
-const realCforA = (size - 1 - (size - 1) / 2) * cellSize;
+export const cornerB_CD = ((DEFAULT_SIZE - 2) / 2) * cellSize + gap / 2;
+export const cornerC_CD = ((DEFAULT_SIZE - 2) / 2) * cellSize + gap / 2;
+const realBforA = (1 - (DEFAULT_SIZE - 1) / 2) * cellSize;
+const realCforA = (DEFAULT_SIZE - 1 - (DEFAULT_SIZE - 1) / 2) * cellSize;
 // console.log('rA', realBforA);
 // console.log('rB', realCforA);
 // export const cornerA_CD =
@@ -97,7 +97,7 @@ console.log('cornerA_CD', cornerA_CD);
 console.log('cornerB_CD', cornerB_CD);
 console.log('cornerC_CD', cornerC_CD);
 
-const cornerB_AB = ((size - 2) / 2) * cellSize + gap / 2;
+const cornerB_AB = ((DEFAULT_SIZE - 2) / 2) * cellSize + gap / 2;
 const cornerA_AB =
   Math.sqrt(bulgeRadius ** 2 - cornerB_AB ** 2) / Math.sqrt(2) - diagonal;
 const cornerC_AB =

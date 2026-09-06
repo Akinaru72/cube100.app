@@ -1,7 +1,11 @@
 import * as THREE from 'three';
 
-import { size, cubeSize, cellSize } from '../js/constants';
-export function createCubeRenderer() {
+import { cubeSize, cellSize } from '../js/constants';
+export function createCubeRenderer(cubeState, size) {
+  console.log(cubeState.U[0][0][0]);
+  console.log(cubeState.F[0][0][0]);
+  console.log(cubeState.R[0][0][0]);
+  // getMaterial(cubeState.F[row][col]);
   // ====================
   // GEOMETRY
   // ====================
@@ -84,6 +88,30 @@ export function createCubeRenderer() {
   const leftMaterial = createStickerMaterial(0xffa500);
   const backMaterial = createStickerMaterial(0x0000ff);
   const downMaterial = createStickerMaterial(0xffff00);
+
+  // const materials = {
+  //   W: upMaterial,
+  //   Y: downMaterial,
+  //   G: frontMaterial,
+  //   B: backMaterial,
+  //   R: rightMaterial,
+  //   O: leftMaterial,
+  // };
+
+  const colors = {
+    W: 0xffffff,
+    Y: 0xffff00,
+    G: 0x00ff00,
+    B: 0x0000ff,
+    R: 0xff0000,
+    O: 0xffa500,
+  };
+
+  const getMaterial = value => {
+    return createStickerMaterial(colors[value[0]]);
+  };
+
+  console.log('R[0][0]', getMaterial(cubeState.R[0][0]));
   // const rightMaterial = new THREE.MeshBasicMaterial({
   //   color: 0xff0000,
   // });
@@ -122,7 +150,15 @@ export function createCubeRenderer() {
     // RIGHT
     // ====================
     if (cubie.x === size - 1) {
-      const sticker = new THREE.Mesh(stickerGeometry, rightMaterial);
+      // const value = cubeState.getCell('R', cubie.y, cubie.z);
+      const value = cubeState.getCell(
+        'R',
+        size - 1 - cubie.y,
+        size - 1 - cubie.z
+      );
+
+      // console.log('R', value);
+      const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       sticker.position.set(
         mesh.position.x + cubeSize / 2,
         mesh.position.y,
@@ -136,7 +172,9 @@ export function createCubeRenderer() {
     // UP
     // ====================
     if (cubie.y === size - 1) {
-      const sticker = new THREE.Mesh(stickerGeometry, upMaterial);
+      // console.log(cubeState.getCell('U', cubie.x, cubie.z));
+      const value = cubeState.getCell('U', cubie.z, cubie.x);
+      const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       sticker.position.set(
         mesh.position.x,
         mesh.position.y + cubeSize / 2,
@@ -151,7 +189,9 @@ export function createCubeRenderer() {
     // ====================
 
     if (cubie.z === size - 1) {
-      const sticker = new THREE.Mesh(stickerGeometry, frontMaterial);
+      // console.log(cubeState.getCell('F', cubie.x, cubie.y));
+      const value = cubeState.getCell('F', size - 1 - cubie.y, cubie.x);
+      const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
 
       sticker.position.set(
         mesh.position.x,
@@ -167,7 +207,9 @@ export function createCubeRenderer() {
     // LEFT
     // ====================
     if (cubie.x === 0) {
-      const sticker = new THREE.Mesh(stickerGeometry, leftMaterial);
+      // console.log(cubeState.getCell('L', cubie.y, cubie.z));
+      const value = cubeState.getCell('L', size - 1 - cubie.y, cubie.z);
+      const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       sticker.position.set(
         mesh.position.x - cubeSize / 2,
         mesh.position.y,
@@ -182,7 +224,9 @@ export function createCubeRenderer() {
     // ====================
 
     if (cubie.y === 0) {
-      const sticker = new THREE.Mesh(stickerGeometry, downMaterial);
+      // console.log(cubeState.getCell('D', cubie.x, cubie.z));
+      const value = cubeState.getCell('D', size - 1 - cubie.z, cubie.x);
+      const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
 
       sticker.position.set(
         mesh.position.x,
@@ -201,7 +245,13 @@ export function createCubeRenderer() {
     // ====================
 
     if (cubie.z === 0) {
-      const sticker = new THREE.Mesh(stickerGeometry, backMaterial);
+      // console.log(cubeState.getCell('B', cubie.x, cubie.y));
+      const value = cubeState.getCell(
+        'B',
+        size - 1 - cubie.y,
+        size - 1 - cubie.x
+      );
+      const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       sticker.position.set(
         mesh.position.x,
         mesh.position.y,
