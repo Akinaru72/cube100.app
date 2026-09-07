@@ -238,7 +238,7 @@ function showSpeedMenu() {
   clearTimeout(speedMenuTimer);
   speedMenuTimer = setTimeout(() => {
     speedMenuEl.classList.remove('visible');
-  }, 2000);
+  }, 1000);
 }
 
 window.addEventListener('mousemove', () => {
@@ -265,13 +265,6 @@ speedMenuEl.addEventListener('click', event => {
     return;
   }
   cube.rotationSpeed = 0.1 * Number(speed);
-});
-
-// ------------------------simply algoritms--------------------------
-
-solveFisrtSide.addEventListener('click', () => {
-  startAnimationMode();
-  cube.onSolve1thSide();
 });
 
 // -------------------------Local----------------
@@ -323,6 +316,18 @@ function loadCubeState() {
 }
 
 loadBtn.addEventListener('click', loadCubeState);
+
+// ------------------------simply algoritms--------------------------
+
+solveFisrtSide.addEventListener('click', async () => {
+  startAnimationMode();
+  await cube.onSolve1thSide();
+});
+
+solveSecondSide.addEventListener('click', async () => {
+  startAnimationMode();
+  await cube.onSolve2thSide();
+});
 
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);

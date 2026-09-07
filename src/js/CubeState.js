@@ -403,7 +403,17 @@ export class CubeState {
         }
       }
     }
+    return true;
+  }
 
+  isSolvedD() {
+    for (let row = 1; row < this.size - 1; row++) {
+      for (let col = 1; col < this.size - 1; col++) {
+        if (this.D[row][col][0] !== 'Y') {
+          return false;
+        }
+      }
+    }
     return true;
   }
 

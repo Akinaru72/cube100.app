@@ -1,9 +1,11 @@
 import * as THREE from 'three';
 import { CubeState } from './CubeState';
-import { onSolve1thSide1 } from './solver/onSolve1thSide.js';
+import { onSolve1thSideSol } from './solver/onSolve1thSide.js';
+import { onSolve2thSideSol } from './solver/onSolve2thSide.js';
 
 const scrambleBtn = document.querySelector('#scramble-btn');
 const solveFisrtSide = document.querySelector('#solve-first-side');
+const solveSecondSide = document.querySelector('#solve-second-side');
 
 export class Cube100 {
   constructor(cubePieces, cubeGroup, size, cubeState, onAnimationEnd) {
@@ -19,9 +21,12 @@ export class Cube100 {
     this.cubeState = cubeState;
     // this.isSolving = false;
     this.isMoving = false;
-    this.solSide1 = false;
+
     this.onAnimationEnd = onAnimationEnd;
     this.instantFinish = false;
+
+    this.solSide1 = false;
+    this.solSide2 = false;
   }
   updateResetButtons() {
     // console.log('cubeState.R', this.cubeState.U);
@@ -31,6 +36,13 @@ export class Cube100 {
     } else {
       // console.log('OFF', this.isSolved);
       scrambleBtn.disabled = true;
+    }
+
+    if (this.isMoving) {
+      console.log('Moving');
+      // console.log('MOV___ABLE___OFF');
+      solveFisrtSide.disabled = true;
+      solveSecondSide.disabled = true;
     }
 
     if (this.cubeState.isSolvedU()) {
@@ -43,11 +55,16 @@ export class Cube100 {
       // console.log('ABLE___ON');
     }
 
-    if (this.isMoving) {
-      console.log('Moving');
-      // console.log('MOV___ABLE___OFF');
-      solveFisrtSide.disabled = true;
+    if (this.cubeState.isSolvedD() && this.solSide1) {
+      this.solSide2 = true;
+      solveSecondSide.disabled = true;
+      // console.log('IF___ABLE___OFF');
+    } else {
+      this.solSide2 = false;
+      solveSecondSide.disabled = false;
+      // console.log('ABLE___ON');
     }
+
     // if (this.isSolving) {
     //   console.log('Solving');
     //   console.log('Sol___ABLE___OFF');
@@ -428,20 +445,27 @@ export class Cube100 {
 
   finishRotation() {
     const rotation = this.currentRotation;
-    if (rotation.isCubeRotation) {
-      this.currentRotation = null;
-      if (this.rotationQueue.length === 0) {
-        this.isMoving = false;
+    // console.log(
+    //   'FINISH:',
+    //   rotation.axis,
+    //   rotation.angle,
+    //   'isCubeRotation:',
+    //   rotation.isCubeRotation
+    // );
+    // if (rotation.isCubeRotation) {
+    //   this.currentRotation = null;
+    //   if (this.rotationQueue.length === 0) {
+    //     this.isMoving = false;
 
-        this.instantFinish = false;
-        this.rotationSpeed = 0.1;
+    //     this.instantFinish = false;
+    //     this.rotationSpeed = 0.1;
 
-        this.onAnimationEnd();
-      }
-      this.startNextRotation();
+    //     this.onAnimationEnd();
+    //   }
+    //   this.startNextRotation();
 
-      return;
-    }
+    //   return;
+    // }
 
     const { layers, faceGroup, axis, angle } = rotation;
 
@@ -516,30 +540,37 @@ export class Cube100 {
     // ==========================
 
     this.cubeGroup.remove(faceGroup);
-    console.log('STATE MOVE:', {
-      axis,
-      layers,
-      angle,
-    });
-
+    // console.log('STATE MOVE:', {
+    //   axis,
+    //   layers,
+    //   angle,
+    // });
+    // if (!this.isCubeMoving) {
     this.cubeState.move({
       axis,
       layers,
       angle,
     });
-
-    console.log('STATE AFTER MOVE:', this.cubeState);
+    //   this.isCubeMoving = false;
+    // }
+    // console.log('STATE AFTER MOVE:', this.cubeState);
 
     if (this.cubeState.isSolved()) {
       console.log('Cube solved');
     }
     this.currentRotation = null;
-    console.log('QUEUE:', this.rotationQueue.length);
+    // console.log('QUEUE:', this.rotationQueue.length);
+
     if (this.rotationQueue.length === 0) {
       this.isMoving = false;
 
+      // this.isCubeMoving = false;
       this.instantFinish = false;
       this.rotationSpeed = 0.1;
+      // if (this.resolveExecute) {
+      //   this.resolveExecute();
+      //   this.resolveExecute = null;
+      // }
       this.onAnimationEnd();
     }
     this.updateResetButtons();
@@ -915,6 +946,7 @@ export class Cube100 {
   //     this[method](layer);
   //   });
   // }
+
   execute(sequence) {
     if (!sequence?.length) return;
 
@@ -949,19 +981,46 @@ export class Cube100 {
       this[method](layers);
     });
   }
-  onSolve1thSide() {
-    this.isMoving = true;
-    this.updateResetButtons();
-    this.rotateCube('y', Math.PI / 2);
 
-    let solution = onSolve1thSide1(this.cubeState);
-    this.execute(solution);
-    this.rotateCube('y', -Math.PI / 2);
-    // await this.execute(solutionCross.join(' '));
-    // await this.rotateTo('right');
-    // this.isSolving = false;
-    this.updateResetButtons();
-  }
+  // async execute(sequence) {
+  //   if (!sequence?.length) return;
+
+  //   return new Promise(resolve => {
+  //     this.resolveExecute = resolve;
+
+  //     sequence.forEach(move => {
+  //       const normalized = this.normalizeMove(move);
+
+  //       if (Array.isArray(normalized)) {
+  //         normalized.forEach(m => this.execute([m]));
+  //         return;
+  //       }
+
+  //       let method;
+  //       let layers;
+
+  //       if (normalized.includes('(')) {
+  //         [method, layers] = normalized.split('(');
+  //         layers = layers.slice(0, -1);
+  //       } else if (normalized.includes('[')) {
+  //         [method, layers] = normalized.split('[');
+  //         layers = layers.slice(0, -1);
+  //       } else {
+  //         this[normalized]();
+  //         return;
+  //       }
+
+  //       if ('RUF'.includes(method[0])) {
+  //         layers = layers.split(',').map(n => this.size - Number(n) + 1);
+  //       } else {
+  //         layers = layers.split(',').map(Number);
+  //       }
+
+  //       this[method](layers);
+  //     });
+  //   });
+  // }
+
   reset() {
     console.log('RESET');
 
@@ -976,9 +1035,114 @@ export class Cube100 {
       angle,
       isCubeRotation: true,
     });
+    this.isCubeMoving = true;
 
     if (!this.currentRotation) {
       this.startNextRotation();
     }
+  }
+
+  // rotateCubeSpace(axis, angle) {
+  //   return new Promise(resolve => {
+  //     const start = this.cubeGroup.rotation[axis];
+  //     const target = start + angle;
+
+  //     const timer = setInterval(() => {
+  //       const diff = target - this.cubeGroup.rotation[axis];
+
+  //       const step =
+  //         Math.sign(diff) * Math.min(this.rotationSpeed, Math.abs(diff));
+
+  //       this.cubeGroup.rotation[axis] += step;
+
+  //       if (Math.abs(target - this.cubeGroup.rotation[axis]) < 0.0001) {
+  //         this.cubeGroup.rotation[axis] = target;
+
+  //         clearInterval(timer);
+  //         resolve();
+  //       }
+  //     }, 16);
+  //   });
+  // }
+
+  rotateCubeSpace(axis, angle) {
+    return new Promise(resolve => {
+      const start = this.cubeGroup.rotation[axis];
+      const target = start + angle;
+      const duration = 500;
+      const startTime = performance.now();
+
+      const animate = time => {
+        const progress = Math.min((time - startTime) / duration, 1);
+
+        this.cubeGroup.rotation[axis] = start + angle * progress;
+
+        if (progress < 1) {
+          requestAnimationFrame(animate);
+        } else {
+          this.cubeGroup.rotation[axis] = target;
+          resolve();
+        }
+      };
+
+      requestAnimationFrame(animate);
+    });
+  }
+
+  // rotateCubeSpace(axis, angle) {
+  //   return new Promise(resolve => {
+  //     this.rotationQueue.push({
+  //       axis,
+  //       angle,
+  //       isCubeRotation: true,
+  //       resolve,
+  //     });
+
+  //     if (!this.currentRotation) {
+  //       this.startNextRotation();
+  //     }
+  //   });
+  // }
+
+  waitForSolution(solution) {
+    return new Promise(resolve => {
+      const oldOnAnimationEnd = this.onAnimationEnd;
+
+      this.onAnimationEnd = () => {
+        oldOnAnimationEnd.call(this);
+        this.onAnimationEnd = oldOnAnimationEnd;
+        resolve();
+      };
+
+      this.execute(solution);
+    });
+  }
+
+  async onSolve1thSide() {
+    this.isMoving = true;
+    this.updateResetButtons();
+    await this.rotateCubeSpace('y', Math.PI / 2);
+
+    let solution = onSolve1thSideSol(this.cubeState);
+    // await this.execute(solution);
+    await this.waitForSolution(solution);
+    await this.rotateCubeSpace('y', -Math.PI / 2);
+    this.updateResetButtons();
+  }
+
+  async onSolve2thSide() {
+    if (!this.solSide1) {
+      await this.onSolve1thSide();
+    }
+    this.isMoving = true;
+    this.updateResetButtons();
+    await this.rotateCubeSpace('x', -Math.PI);
+
+    let solution = onSolve2thSideSol(this.cubeState);
+    // let solution = ['R'];
+    await this.waitForSolution(solution);
+    await this.rotateCubeSpace('x', Math.PI);
+
+    this.updateResetButtons();
   }
 }

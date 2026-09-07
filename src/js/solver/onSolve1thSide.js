@@ -1,4 +1,4 @@
-export function onSolve1thSide1(state) {
+export function onSolve1thSideSol(state) {
   function apply(move) {
     // console.log(
     //   'ДО:',
@@ -229,7 +229,7 @@ export function onSolve1thSide1(state) {
   function checkEmptySides() {
     const af = calcState.getCol('F', index).slice(1, -1);
 
-    if (af.every(el => el === 'W')) {
+    if (af.every(el => el !== 'W')) {
       console.log('ReturnSides');
       return;
     }
