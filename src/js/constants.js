@@ -1,5 +1,5 @@
 // constants.js
-export const DEFAULT_SIZE = 15;
+export const DEFAULT_SIZE = 17;
 export const cubeSize = 0.9;
 export const gap = 0.1;
 export const cellSize = cubeSize + gap;
@@ -17,7 +17,15 @@ export const bulgeRadius = Math.sqrt(
     (halfSize + cornerExpand) ** 2
 );
 
-export let expand;
+export function getExpand(size) {
+  const halfSize = (size * cellSize) / 2;
+
+  const expandValue = ((halfSize - cellSize) * (Math.sqrt(2) - 1)) / cellSize;
+
+  return expandValue > 1 ? expandValue : 1;
+}
+
+let expand;
 const expandValue = ((halfSize - cellSize) * (Math.sqrt(2) - 1)) / cellSize;
 expandValue > 1 ? (expand = expandValue) : (expand = 1);
 

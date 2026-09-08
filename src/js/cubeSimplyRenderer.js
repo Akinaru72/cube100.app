@@ -111,7 +111,7 @@ export function createCubeRenderer(cubeState, size) {
     return createStickerMaterial(colors[value[0]]);
   };
 
-  console.log('R[0][0]', getMaterial(cubeState.R[0][0]));
+  // console.log('R[0][0]', getMaterial(cubeState.R[0][0]));
   // const rightMaterial = new THREE.MeshBasicMaterial({
   //   color: 0xff0000,
   // });

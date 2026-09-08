@@ -1,6 +1,10 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { createCubeRenderer } from './js/cubeSimplyRenderer.js';
+// import { createCubeRenderer } from './js/cubeSimplyRenderer.js';
+// import { createCubeRenderer } from './js/cubeMidleRenderer.js';
+
+import { createCubeRenderer as createMidleRenderer } from './js/cubeMidleRenderer.js';
+import { createCubeRenderer as createSimplyRenderer } from './js/cubeSimplyRenderer.js';
 // import { cubeGroup, cubePieces } from './js/cubeRenderer.js';
 // import { cubeGroup, cubePieces } from './js/cubeMidleRenderer.js';
 // import { cubeGroup, cubePieces } from './js/cubeSimplyRenderer.js';
@@ -27,6 +31,8 @@ import { Cube100 } from './js/Cube100.js';
 import { DEFAULT_SIZE } from './js/constants';
 import { CubeState } from './js/CubeState.js';
 let size = DEFAULT_SIZE;
+
+let renderMode = 'classic';
 let cubeState = new CubeState(size);
 const scene = new THREE.Scene();
 
@@ -35,7 +41,11 @@ let cubePieces;
 let cube;
 
 function initRender() {
-  ({ cubeGroup, cubePieces } = createCubeRenderer(cubeState, size));
+  const createRenderer =
+    renderMode === 'expanded' ? createMidleRenderer : createSimplyRenderer;
+
+  ({ cubeGroup, cubePieces } = createRenderer(cubeState, size));
+  // ({ cubeGroup, cubePieces } = createCubeRenderer(cubeState, size));
   cube = new Cube100(cubePieces, cubeGroup, size, cubeState, stopAnimationMode);
   scene.add(cubeGroup);
 }
@@ -113,6 +123,7 @@ const settingsBackdropEl = document.querySelector('.settings-backdrop');
 const settingsCancelBtn = document.querySelector('.cancel-button');
 const settingsApplyBtn = document.querySelector('.apply-button');
 const cubeSizeInput = document.querySelector('#cube-size');
+const renderModeSelect = document.querySelector('#render-mode');
 
 const resetBtn = document.querySelector('#reset-btn');
 const solveBtn = document.querySelector('#solve-btn');
@@ -242,6 +253,7 @@ settingsApplyBtn.addEventListener('click', () => {
     cubeSizeInput.value = size;
     return;
   }
+  renderMode = renderModeSelect.value;
   size = newSize;
 
   settingsBackdropEl.classList.remove('is-open');
