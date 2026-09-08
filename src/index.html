@@ -40,9 +40,7 @@
 
         <button type="button" class="menu-btn" id="load-btn">Load</button>
 
-        <button type="button" class="menu-btn" id="settings-btn">
-          Settings
-        </button>
+        <button type="button" class="menu-btn" id="settings-btn">⚙</button>
       </nav>
     </header>
 
@@ -203,6 +201,41 @@
     </main>
 
     <footer class="footer"></footer>
+
+    <div class="settings-backdrop">
+      <div class="settings-modal">
+        <button class="settings-close" type="button">×</button>
+
+        <h2 class="settings-title">Settings</h2>
+
+        <div class="setting">
+          <label class="setting-label" for="cube-size"> Cube Size </label>
+
+          <input
+            class="cube-size-input"
+            id="cube-size"
+            type="number"
+            min="2"
+            max="100"
+            step="1"
+            value="20"
+          />
+
+          <p class="setting-hint">Choose a size from 2 to 100</p>
+        </div>
+
+        <div class="settings-actions">
+          <button class="settings-button cancel-button" type="button">
+            Cancel
+          </button>
+
+          <button class="settings-button apply-button" type="button">
+            Apply
+          </button>
+        </div>
+      </div>
+    </div>
+
     <script src="./main.js" type="module" defer></script>
   </body>
 </html>

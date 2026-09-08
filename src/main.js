@@ -106,6 +106,13 @@ camera.lookAt(0, 0, 0);
 // ====================
 const saveBtn = document.querySelector('#save-btn');
 const loadBtn = document.querySelector('#load-btn');
+const settingBtn = document.querySelector('#settings-btn');
+const settingCloseBtn = document.querySelector('.settings-close');
+
+const settingsBackdropEl = document.querySelector('.settings-backdrop');
+const settingsCancelBtn = document.querySelector('.cancel-button');
+const settingsApplyBtn = document.querySelector('.apply-button');
+const cubeSizeInput = document.querySelector('#cube-size');
 
 const resetBtn = document.querySelector('#reset-btn');
 const solveBtn = document.querySelector('#solve-btn');
@@ -127,7 +134,7 @@ const speedMenuEl = document.querySelector('#speedMenu');
 
 let animationMode = false;
 let speedMenuTimer = null;
-
+// -------------------------Reset-------------------------------------
 resetBtn.addEventListener('click', () => resetCube());
 
 function resetCube() {
@@ -139,11 +146,12 @@ function resetCube() {
   // cubeGroup = ;
   // cubePieces = null;
   // cube = null;
+  camera.position.set(size, size, size);
+  camera.lookAt(0, 0, 0);
   scrambleBtn.disabled = false;
-
   initRender();
 }
-
+//  ----------------------------------------------------------------
 solveBtn.disabled = true;
 scrambleBtn.disabled = false;
 
@@ -210,6 +218,42 @@ function animate() {
 
 animate();
 
+// =========================Settings===========================
+// function updateCamera() {
+//   camera.position.set(size, size, size);
+//   camera.lookAt(0, 0, 0);
+// }
+settingBtn.addEventListener('click', () => {
+  settingsBackdropEl.classList.add('is-open');
+  console.log('OPEN Settings');
+});
+
+settingCloseBtn.addEventListener('click', () => {
+  settingsBackdropEl.classList.remove('is-open');
+});
+
+settingsCancelBtn.addEventListener('click', () => {
+  settingsBackdropEl.classList.remove('is-open');
+});
+
+settingsApplyBtn.addEventListener('click', () => {
+  const newSize = Number(cubeSizeInput.value);
+  if (newSize > 100) {
+    cubeSizeInput.value = size;
+    return;
+  }
+  size = newSize;
+
+  settingsBackdropEl.classList.remove('is-open');
+
+  resetCube();
+});
+
+cubeSizeInput.addEventListener('keydown', event => {
+  if (event.key === 'Enter') {
+    settingsApplyBtn.click();
+  }
+});
 // =============================Scramle========================
 scrambleBtn.addEventListener('click', () => {
   startAnimationMode();
