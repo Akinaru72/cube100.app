@@ -131,6 +131,7 @@ let speedMenuTimer = null;
 resetBtn.addEventListener('click', () => resetCube());
 
 function resetCube() {
+  currentSolve = undefined;
   scene.remove(cubeGroup);
 
   cubeGroup.clear();
@@ -139,6 +140,7 @@ function resetCube() {
   // cubePieces = null;
   // cube = null;
   scrambleBtn.disabled = false;
+
   initRender();
 }
 
@@ -211,7 +213,6 @@ animate();
 // =============================Scramle========================
 scrambleBtn.addEventListener('click', () => {
   startAnimationMode();
-
   cube.scramble();
 });
 
@@ -261,7 +262,19 @@ speedMenuEl.addEventListener('click', event => {
   if (!button) return;
   const speed = button.dataset.speed;
   if (speed === 'end') {
-    cube.finishAnimation();
+    if (currentSolve !== undefined) {
+      cubeState = cube.finalStates[currentSolve];
+    } else {
+      cubeState = cube.finalScrambleState;
+    }
+
+    cube.isMoving = false;
+    // cubeState = cube.finalState;
+    scene.remove(cubeGroup);
+    cubeGroup.clear();
+    initRender();
+    stopAnimationMode();
+    cube.updateResetButtons();
     return;
   }
   cube.rotationSpeed = 0.1 * Number(speed);
@@ -318,15 +331,17 @@ function loadCubeState() {
 loadBtn.addEventListener('click', loadCubeState);
 
 // ------------------------simply algoritms--------------------------
-
+let currentSolve;
 solveFisrtSide.addEventListener('click', async () => {
+  currentSolve = 0;
   startAnimationMode();
   await cube.onSolve1thSide();
 });
 
 solveSecondSide.addEventListener('click', async () => {
+  currentSolve = 1;
   startAnimationMode();
-  await cube.onSolve2thSide();
+  await cube.onSolve2thSide(startAnimationMode);
 });
 
 // ------------------------------------------------------------------

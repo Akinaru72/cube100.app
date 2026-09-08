@@ -506,6 +506,9 @@ export function onSolve1thSideSol(state) {
     apply(`R(${calcState.size - index})`);
     index = index - 1;
   }
-
-  return solution;
+  return {
+    solution,
+    state: calcState,
+  };
+  // return solution;
 }

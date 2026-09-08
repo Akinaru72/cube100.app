@@ -198,6 +198,9 @@ export function onSolve2thSideSol(state) {
     if (aB.every((el, i) => i === index - 1 || el === 'Y')) {
       console.log('ReturnSides');
       return;
+    } else {
+      console.log('NotSolved');
+      createCentralLine();
     }
   }
 
@@ -549,6 +552,9 @@ export function onSolve2thSideSol(state) {
 
     index = index - 1;
   }
-
-  return solution;
+  return {
+    solution,
+    state: calcState,
+  };
+  // return solution;
 }

@@ -19,11 +19,13 @@ export class Cube100 {
     // this.cubeState = new CubeState(this.size);
     // this.cubeState = cubeState ?? new CubeState(this.size);
     this.cubeState = cubeState;
-    // this.isSolving = false;
+    this.isSolving = false;
     this.isMoving = false;
 
     this.onAnimationEnd = onAnimationEnd;
     this.instantFinish = false;
+    this.finalStates = [];
+    this.finalScrambleState = null;
 
     this.solSide1 = false;
     this.solSide2 = false;
@@ -38,11 +40,12 @@ export class Cube100 {
       scrambleBtn.disabled = true;
     }
 
-    if (this.isMoving) {
-      console.log('Moving');
+    if (this.isSolving) {
+      // console.log('Solving');
       // console.log('MOV___ABLE___OFF');
       solveFisrtSide.disabled = true;
       solveSecondSide.disabled = true;
+      return;
     }
 
     if (this.cubeState.isSolvedU()) {
@@ -64,6 +67,13 @@ export class Cube100 {
       solveSecondSide.disabled = false;
       // console.log('ABLE___ON');
     }
+
+    // if (this.isMoving) {
+    //   console.log('Moving');
+    //   console.log('MOV___ABLE___OFF');
+    //   solveFisrtSide.disabled = true;
+    //   solveSecondSide.disabled = true;
+    // }
 
     // if (this.isSolving) {
     //   console.log('Solving');
@@ -871,6 +881,11 @@ export class Cube100 {
       lastAxis = axis;
     }
 
+    const finalState = this.cubeState.clone();
+    finalState.execute(sequence);
+
+    this.finalScrambleState = finalState;
+
     this.updateResetButtons();
 
     return sequence.join(' ');
@@ -1119,30 +1134,43 @@ export class Cube100 {
   }
 
   async onSolve1thSide() {
-    this.isMoving = true;
+    this.isSolving = true;
     this.updateResetButtons();
     await this.rotateCubeSpace('y', Math.PI / 2);
 
-    let solution = onSolve1thSideSol(this.cubeState);
+    let result = onSolve1thSideSol(this.cubeState);
+    const solution = result.solution;
+    this.finalStates[0] = result.state;
     // await this.execute(solution);
     await this.waitForSolution(solution);
     await this.rotateCubeSpace('y', -Math.PI / 2);
+    this.isSolving = false;
     this.updateResetButtons();
   }
 
-  async onSolve2thSide() {
+  async onSolve2thSide(startAnimationMode) {
     if (!this.solSide1) {
+      const firstResult = onSolve1thSideSol(this.cubeState);
+      const secondResult = onSolve2thSideSol(firstResult.state);
+
+      this.finalStates[1] = secondResult.state;
       await this.onSolve1thSide();
+      startAnimationMode();
     }
-    this.isMoving = true;
+
+    this.isSolving = true;
+
     this.updateResetButtons();
     await this.rotateCubeSpace('x', -Math.PI);
 
-    let solution = onSolve2thSideSol(this.cubeState);
-    // let solution = ['R'];
+    let result = onSolve2thSideSol(this.cubeState);
+    this.finalStates[1] = result.state;
+    const solution = result.solution;
+    // this.finalState = result.state;
+
     await this.waitForSolution(solution);
     await this.rotateCubeSpace('x', Math.PI);
-
+    this.isSolving = false;
     this.updateResetButtons();
   }
 }
