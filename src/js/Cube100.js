@@ -2,10 +2,12 @@ import * as THREE from 'three';
 import { CubeState } from './CubeState';
 import { onSolve1thSideSol } from './solver/onSolve1thSide.js';
 import { onSolve2thSideSol } from './solver/onSolve2thSide.js';
+import { onSolve3thSideSol } from './solver/onSolve3thSide.js';
 
 const scrambleBtn = document.querySelector('#scramble-btn');
 const solveFisrtSide = document.querySelector('#solve-first-side');
 const solveSecondSide = document.querySelector('#solve-second-side');
+const solveThirdSide = document.querySelector('#solve-third-side');
 
 export class Cube100 {
   constructor(cubePieces, cubeGroup, size, cubeState, onAnimationEnd) {
@@ -29,6 +31,7 @@ export class Cube100 {
 
     this.solSide1 = false;
     this.solSide2 = false;
+    this.solSide3 = false;
   }
   updateResetButtons() {
     // console.log('cubeState.R', this.cubeState.U);
@@ -42,9 +45,10 @@ export class Cube100 {
 
     if (this.isSolving) {
       // console.log('Solving');
-      // console.log('MOV___ABLE___OFF');
+      console.log('MOV___ABLE___OFF');
       solveFisrtSide.disabled = true;
       solveSecondSide.disabled = true;
+      solveThirdSide.disabled = true;
       return;
     }
 
@@ -66,6 +70,16 @@ export class Cube100 {
       this.solSide2 = false;
       solveSecondSide.disabled = false;
       // console.log('ABLE___ON');
+    }
+
+    if (this.cubeState.isSolvedF() && this.solSide2) {
+      this.solSide3 = true;
+      solveThirdSide.disabled = true;
+      console.log('IF___ABLE___OFF');
+    } else {
+      this.solSide3 = false;
+      solveThirdSide.disabled = false;
+      console.log('ABLE___ON');
     }
 
     // if (this.isMoving) {
@@ -1166,10 +1180,35 @@ export class Cube100 {
     let result = onSolve2thSideSol(this.cubeState);
     this.finalStates[1] = result.state;
     const solution = result.solution;
-    // this.finalState = result.state;
 
     await this.waitForSolution(solution);
     await this.rotateCubeSpace('x', Math.PI);
+    this.isSolving = false;
+    this.updateResetButtons();
+  }
+
+  async onSolve3thSide(startAnimationMode) {
+    if (!this.solSide2) {
+      const firstResult = onSolve1thSideSol(this.cubeState);
+      const secondResult = onSolve2thSideSol(firstResult.state);
+      const thirdResult = onSolve3thSideSol(secondResult.state);
+
+      this.finalStates[2] = thirdResult.state;
+      await this.onSolve2thSide(startAnimationMode);
+
+      startAnimationMode();
+    }
+
+    this.isSolving = true;
+
+    this.updateResetButtons();
+
+    let result = onSolve3thSideSol(this.cubeState);
+    this.finalStates[2] = result.state;
+    const solution = result.solution;
+
+    await this.waitForSolution(solution);
+
     this.isSolving = false;
     this.updateResetButtons();
   }

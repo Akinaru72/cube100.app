@@ -400,6 +400,12 @@ solveSecondSide.addEventListener('click', async () => {
   await cube.onSolve2thSide(startAnimationMode);
 });
 
+solveThirdSide.addEventListener('click', async () => {
+  currentSolve = 2;
+  startAnimationMode();
+  await cube.onSolve3thSide(startAnimationMode);
+});
+
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);
 // console.log('Right', cubeState.R);

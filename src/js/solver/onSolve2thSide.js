@@ -184,24 +184,34 @@ export function onSolve2thSideSol(state) {
       console.log('ReturnSide');
       return;
     }
-    apply(`D'(${index})`);
+
+    apply(`D'(${index + 1})`);
     apply('R');
     checkCentralSide('R', 'D', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'Y')) {
-      console.log('ReturnSides');
+      console.log('ReturnSide');
       return;
     }
     apply('2R');
     checkCentralSide('R', 'D', index);
+
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'Y')) {
       console.log('ReturnSides');
       return;
-    } else {
-      console.log('NotSolved');
-      createCentralLine();
     }
+    // apply('2R');
+
+    // checkCentralSide('R', 'D', index);
+    // aB = calcState.getCol('B', index).slice(1, -1);
+    // if (aB.every((el, i) => i === index - 1 || el === 'Y')) {
+    //   console.log('ReturnSides');
+    //   return;
+    // } else {
+    //   console.log('NotSolved');
+    //   createCentralLine();
+    // }
   }
 
   function checkSides() {
@@ -295,7 +305,8 @@ export function onSolve2thSideSol(state) {
         console.log('aB', aB[idx + 1]);
         if (
           aB[calcState.size - idx - 3] !== 'Y' &&
-          idx !== calcState.size - index - 2
+          calcState.size - idx - 3 !== calcState.size - index - 2
+          // idx !== calcState.size - index - 2
         ) {
           console.log('I am here');
           arrayN.push(idx + 2);
@@ -330,7 +341,11 @@ export function onSolve2thSideSol(state) {
       if (el === 'Y') {
         console.log(el);
         console.log('aB', aB[idx]);
-        if (aB[idx] !== 'Y' && idx !== calcState.size - index - 2) {
+        if (
+          aB[idx] !== 'Y' &&
+          calcState.size - idx - 3 !== calcState.size - index - 2
+          // && idx + 1 !== calcState.size - index - 2
+        ) {
           console.log('I am here');
           arrayD.push(calcState.size - idx - 1);
         }
@@ -349,38 +364,38 @@ export function onSolve2thSideSol(state) {
   }
 
   function createLine() {
-    // let a = calcState.getCol('B', index).slice(1, -1);
-    // const countWa = a.filter(cell => cell === 'Y').length;
-    // let b = calcState.getRow('B', index).slice(1, -1);
-    // const countWb = b.filter(cell => cell === 'Y').length;
-    // let c = calcState.getCol('B', calcState.size - index - 1).slice(1, -1);
-    // const countWc = c.filter(cell => cell === 'Y').length;
-    // let d = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
-    // const countWd = d.filter(cell => cell === 'Y').length;
+    let a = calcState.getCol('B', index).slice(1, -1);
+    const countWa = a.filter(cell => cell === 'Y').length;
+    let b = calcState.getRow('B', index).slice(1, -1);
+    const countWb = b.filter(cell => cell === 'Y').length;
+    let c = calcState.getCol('B', calcState.size - index - 1).slice(1, -1);
+    const countWc = c.filter(cell => cell === 'Y').length;
+    let d = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
+    const countWd = d.filter(cell => cell === 'Y').length;
 
-    // console.log(calcState.getCol('B', index).slice(1, -1));
-    // console.log(calcState.getRow('B', index).slice(1, -1));
-    // console.log(calcState.getCol('B', calcState.size - index - 1).slice(1, -1));
-    // console.log(calcState.getRow('B', calcState.size - index - 1).slice(1, -1));
+    console.log(calcState.getCol('B', index).slice(1, -1));
+    console.log(calcState.getRow('B', index).slice(1, -1));
+    console.log(calcState.getCol('B', calcState.size - index - 1).slice(1, -1));
+    console.log(calcState.getRow('B', calcState.size - index - 1).slice(1, -1));
 
-    // console.log(countWa, countWb, countWc, countWd);
+    console.log(countWa, countWb, countWc, countWd);
 
-    // if (countWb > countWa && countWb >= countWc && countWb >= countWd) {
-    //   apply("B'");
-    //   console.log('Bmax');
-    //   // console.log('ПОСЛЕ ХОДА:');
-    //   // console.log(calcState.getRow('F', index).slice(1, -1));
-    // } else if (countWc > countWa && countWc >= countWb && countWc >= countWd) {
-    //   console.log('Cmax');
-    //   apply('2B');
-    //   // console.log('ПОСЛЕ ХОДА:');
-    //   // console.log(calcState.getRow('F', index).slice(1, -1));
-    // } else if (countWd > countWa && countWd >= countWb && countWd >= countWc) {
-    //   console.log('Dmax');
-    //   apply('B');
-    //   console.log('ПОСЛЕ ХОДА:');
-    //   console.log(calcState.getRow('F', index).slice(1, -1));
-    // }
+    if (countWb > countWa && countWb >= countWc && countWb >= countWd) {
+      apply("B'");
+      console.log('Bmax');
+      // console.log('ПОСЛЕ ХОДА:');
+      // console.log(calcState.getRow('F', index).slice(1, -1));
+    } else if (countWc > countWa && countWc >= countWb && countWc >= countWd) {
+      console.log('Cmax');
+      apply('2B');
+      // console.log('ПОСЛЕ ХОДА:');
+      // console.log(calcState.getRow('F', index).slice(1, -1));
+    } else if (countWd > countWa && countWd >= countWb && countWd >= countWc) {
+      console.log('Dmax');
+      apply('B');
+      console.log('ПОСЛЕ ХОДА:');
+      console.log(calcState.getRow('F', index).slice(1, -1));
+    }
     // // ------------------------Right A-------------------------
 
     checkSideBd();
@@ -420,79 +435,43 @@ export function onSolve2thSideSol(state) {
     apply('2L');
     checkSides();
 
-    checkSideBb();
-    checkSideBd();
-    checkSideBc();
+    // checkSideBb();
+    // checkSideBd();
+    // checkSideBc();
 
-    checkSides();
-    aB = calcState.getCol('B', index).slice(1, -1);
+    // checkSides();
+    // aB = calcState.getCol('B', index).slice(1, -1);
 
-    if (aB.every(el => el === 'Y')) {
-      console.log('ReturnSide');
-      return;
-    }
-    apply('2R');
-    apply('2F');
-    apply('2L');
+    // if (aB.every(el => el === 'Y')) {
+    //   console.log('ReturnSide');
+    //   return;
+    // }
+    // apply('2R');
+    // apply('2F');
+    // apply('2L');
 
-    checkSides();
-    aB = calcState.getCol('B', index).slice(1, -1);
-    if (aB.every(el => el === 'Y')) {
-      console.log('ReturnSide');
-      return;
-    }
-    apply('R');
-    apply('F');
-    apply('L');
+    // checkSides();
+    // aB = calcState.getCol('B', index).slice(1, -1);
+    // if (aB.every(el => el === 'Y')) {
+    //   console.log('ReturnSide');
+    //   return;
+    // }
+    // apply('R');
+    // apply('F');
+    // apply('L');
 
-    checkSides();
-    aB = calcState.getCol('B', index).slice(1, -1);
+    // checkSides();
+    // aB = calcState.getCol('B', index).slice(1, -1);
 
-    if (aB.every(el => el === 'Y')) {
-      console.log('ReturnSide');
-      return;
-    }
-    apply('2R');
-    apply('2F');
-    apply('2L');
-    checkSides();
+    // if (aB.every(el => el === 'Y')) {
+    //   console.log('ReturnSide');
+    //   return;
+    // }
+    // apply('2R');
+    // apply('2F');
+    // apply('2L');
+    // checkSides();
 
-    checkSideBb();
-    checkSideBd();
-    checkSideBc();
-
-    checkSides();
-    aB = calcState.getCol('B', index).slice(1, -1);
-
-    if (aB.every(el => el === 'Y')) {
-      console.log('ReturnSide');
-      return;
-    }
-    apply('2R');
-    apply('2F');
-    apply('2L');
-
-    checkSides();
-    aB = calcState.getCol('B', index).slice(1, -1);
-    if (aB.every(el => el === 'Y')) {
-      console.log('ReturnSide');
-      return;
-    }
-    apply('R');
-    apply('F');
-    apply('L');
-
-    checkSides();
-    aB = calcState.getCol('B', index).slice(1, -1);
-
-    if (aB.every(el => el === 'Y')) {
-      console.log('ReturnSide');
-      return;
-    }
-    apply('2R');
-    apply('2F');
-    apply('2L');
-    checkSides();
     aB = calcState.getCol('B', index).slice(1, -1);
     console.log('aB', aB);
     if (aB.every(el => el === 'Y')) {
@@ -532,7 +511,7 @@ export function onSolve2thSideSol(state) {
   index = count - 1;
 
   console.log('count', count);
-  // index = 2;
+  // index = 1;
   for (let i = 1; i < count; i++) {
     console.log('index', index);
     createEmpty();
