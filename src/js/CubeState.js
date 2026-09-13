@@ -428,6 +428,17 @@ export class CubeState {
     return true;
   }
 
+  isSolvedR() {
+    for (let row = 1; row < this.size - 1; row++) {
+      for (let col = 1; col < this.size - 1; col++) {
+        if (this.R[row][col][0] !== 'R') {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   clone() {
     const cube = new CubeState(this.size);
 

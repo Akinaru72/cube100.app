@@ -1,5 +1,5 @@
 // constants.js
-export const DEFAULT_SIZE = 17;
+export const DEFAULT_SIZE = 25;
 export const cubeSize = 0.9;
 export const gap = 0.1;
 export const cellSize = cubeSize + gap;
@@ -9,7 +9,7 @@ export const cornerExpand = cornerSize - cellSize; //отодвинули гра
 export const faceOffsetFactor = 1.5; // коэффициент смещения грани
 // export const faceOffsetFactor = ; // коэффициент смещения грани
 export const sphereOffset = DEFAULT_SIZE * cellSize * 1.4;
-// export const sphereOffset = size * cellSize * 0;
+// export const sphereOffset = DEFAULT_SIZE * cellSize * 0;
 export const fullsize = (DEFAULT_SIZE - 2) * cellSize + cornerSize * 2;
 export const bulgeRadius = Math.sqrt(
   (halfSize + cornerExpand + sphereOffset) ** 2 +
@@ -34,16 +34,16 @@ console.log('expand', expand);
 const halfCell = cellSize / 2;
 // console.log('bulgeRadius', bulgeRadius);
 
-export const CORNER = {
-  FUR: 0,
-  UBR: 1,
-  LUF: 2,
-  LUB: 3,
-  RDF: 4,
-  RDB: 5,
-  LDF: 6,
-  LDB: 7,
-};
+// export const CORNER = {
+//   FUR: 0,
+//   UBR: 1,
+//   LUF: 2,
+//   LUB: 3,
+//   RDF: 4,
+//   RDB: 5,
+//   LDF: 6,
+//   LDB: 7,
+// };
 
 export const cd = [];
 
@@ -67,7 +67,7 @@ export const halfCenters = ((DEFAULT_SIZE - 1) / 2) * cellSize;
 export const pointsA = [];
 export const pointsB = [];
 export const pointsC = [];
-
+// ======================================Old==========================
 function getCDPoints(centers, DEFAULT_SIZE) {
   // const halfCell = cellSize / 2;
   for (let i = centers.length - 1; i >= 0; i--) {
@@ -81,11 +81,35 @@ function getCDPoints(centers, DEFAULT_SIZE) {
   }
 }
 
-// console.log('pointsA', pointsA);
-// console.log('pointsB', pointsB);
-// console.log('pointsC', pointsC);
+console.log('pointsA', pointsA);
+console.log('pointsB', pointsB);
+console.log('pointsC', pointsC);
 
 getCDPoints(cd);
+// ===================================Old=====================
+// function getCDPoints(centers) {
+//   const pointsA = [];
+//   const pointsB = [];
+//   const pointsC = [];
+
+//   for (let i = centers.length - 1; i >= 0; i--) {
+//     const center = centers[i];
+
+//     pointsA.push(center.a + halfCell);
+//     pointsB.push(center.b + halfCell - gap / 2);
+//     pointsC.push(center.c - halfCell + gap / 2);
+
+//     pointsA.push(center.a + halfCell);
+//     pointsB.push(center.b - halfCell + gap / 2);
+//     pointsC.push(center.c - halfCell + gap / 2);
+//   }
+
+//   return {
+//     pointsA,
+//     pointsB,
+//     pointsC,
+//   };
+// }
 // export const cornerB_CD = (i + 1 - (size - 1) / 2) * cellSize;
 // export const cornerC_CD = (size - 1 - (size - 1) / 2) * cellSize;
 export const cornerB_CD = ((DEFAULT_SIZE - 2) / 2) * cellSize + gap / 2;
@@ -112,7 +136,173 @@ const cornerC_AB =
   Math.sqrt(bulgeRadius ** 2 - cornerB_AB ** 2) / Math.sqrt(2) - diagonal;
 export const cornerAB = cornerC_AB;
 
-// console.log('cornerA_AB', cornerA_AB);
-// console.log('cornerB_AB', cornerB_AB);
-// console.log('cornerC_AB', cornerC_AB);
-// console.log('cornerAB', cornerAB);
+export function getCubeParams(size) {
+  const cellSize = cubeSize + gap;
+  const sphereOffset = size * cellSize * 1.4;
+  const cornerSize = cellSize * 2;
+  const cornerExpand = cornerSize - cellSize;
+  const faceOffsetFactor = 1.5;
+  const halfSize = (size * cellSize) / 2;
+  const fullsize = (size - 2) * cellSize + cornerSize * 2;
+
+  const bulgeRadius = Math.sqrt(
+    (halfSize + cornerExpand + sphereOffset) ** 2 +
+      (halfSize + cornerExpand) ** 2 +
+      (halfSize + cornerExpand) ** 2
+  );
+
+  const sphereOffsetEdges =
+    Math.sqrt((sphereOffset + fullsize / 2) ** 2 + (fullsize / 2) ** 2) -
+    (fullsize / 2) * Math.sqrt(2);
+
+  const diagonal = sphereOffsetEdges / Math.sqrt(2);
+  const halfCenters = ((size - 1) / 2) * cellSize;
+
+  // =========================
+  // CORNERS
+  // =========================
+
+  const cornerB_CD = ((size - 2) / 2) * cellSize + gap / 2;
+  const cornerC_CD = ((size - 2) / 2) * cellSize + gap / 2;
+  const realBforA = (1 - (size - 1) / 2) * cellSize;
+  const realCforA = (size - 1 - (size - 1) / 2) * cellSize;
+  const P = Math.sqrt(bulgeRadius ** 2 - realBforA ** 2 - realCforA ** 2);
+  const O = Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+  const cornerA_CD = realCforA + P - O + cornerExpand * 1.5 + cellSize / 2;
+  const cornerB_AB = ((size - 2) / 2) * cellSize + gap / 2;
+  const cornerAB =
+    Math.sqrt(bulgeRadius ** 2 - cornerB_AB ** 2) / Math.sqrt(2) - diagonal;
+  const cd = [];
+
+  for (let i = 0; i < size - 2; i++) {
+    const b = (i + 1 - (size - 1) / 2) * cellSize;
+    const c = (size - 1 - (size - 1) / 2) * cellSize;
+    const T = Math.sqrt(bulgeRadius ** 2 - b ** 2 - c ** 2);
+    const R = Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+    const a = c + T - R + cornerExpand * 1.5;
+    cd.push({ a, b, c });
+  }
+
+  const pointsA = [];
+  const pointsB = [];
+  const pointsC = [];
+
+  for (let i = cd.length - 1; i >= 0; i--) {
+    const center = cd[i];
+    pointsA.push(center.a + halfCell);
+    pointsB.push(center.b + halfCell - gap / 2);
+    pointsC.push(center.c - halfCell + gap / 2);
+    pointsA.push(center.a + halfCell);
+    pointsB.push(center.b - halfCell + gap / 2);
+    pointsC.push(center.c - halfCell + gap / 2);
+  }
+  // getCDPoints(cd);
+  // const { pointsA, pointsB, pointsC } = getCDPoints(cd);
+  return {
+    halfSize,
+    cornerExpand,
+    sphereOffset,
+    fullsize,
+    bulgeRadius,
+    sphereOffsetEdges,
+    diagonal,
+    halfCenters,
+    cornerSize,
+    faceOffsetFactor,
+
+    cornerA_CD,
+    cornerB_CD,
+    cornerC_CD,
+    cornerAB,
+
+    pointsA,
+    pointsB,
+    pointsC,
+  };
+}
+
+export function getCubeSphereParams(size) {
+  const cellSize = cubeSize + gap;
+  // const sphereOffset = size * cellSize * 1.4;
+  const sphereOffset = 0;
+  const cornerSize = cellSize * 2;
+  const cornerExpand = cornerSize - cellSize;
+  const faceOffsetFactor = 1.5;
+  const halfSize = (size * cellSize) / 2;
+  const fullsize = (size - 2) * cellSize + cornerSize * 2;
+
+  const bulgeRadius = Math.sqrt(
+    (halfSize + cornerExpand + sphereOffset) ** 2 +
+      (halfSize + cornerExpand) ** 2 +
+      (halfSize + cornerExpand) ** 2
+  );
+
+  const sphereOffsetEdges =
+    Math.sqrt((sphereOffset + fullsize / 2) ** 2 + (fullsize / 2) ** 2) -
+    (fullsize / 2) * Math.sqrt(2);
+
+  const diagonal = sphereOffsetEdges / Math.sqrt(2);
+  const halfCenters = ((size - 1) / 2) * cellSize;
+
+  // =========================
+  // CORNERS
+  // =========================
+
+  const cornerB_CD = ((size - 2) / 2) * cellSize + gap / 2;
+  const cornerC_CD = ((size - 2) / 2) * cellSize + gap / 2;
+  const realBforA = (1 - (size - 1) / 2) * cellSize;
+  const realCforA = (size - 1 - (size - 1) / 2) * cellSize;
+  const P = Math.sqrt(bulgeRadius ** 2 - realBforA ** 2 - realCforA ** 2);
+  const O = Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+  const cornerA_CD = realCforA + P - O + cornerExpand * 1.5 + cellSize / 2;
+  const cornerB_AB = ((size - 2) / 2) * cellSize + gap / 2;
+  const cornerAB =
+    Math.sqrt(bulgeRadius ** 2 - cornerB_AB ** 2) / Math.sqrt(2) - diagonal;
+  const cd = [];
+
+  for (let i = 0; i < size - 2; i++) {
+    const b = (i + 1 - (size - 1) / 2) * cellSize;
+    const c = (size - 1 - (size - 1) / 2) * cellSize;
+    const T = Math.sqrt(bulgeRadius ** 2 - b ** 2 - c ** 2);
+    const R = Math.sqrt(bulgeRadius ** 2 - halfSize ** 2 - halfSize ** 2);
+    const a = c + T - R + cornerExpand * 1.5;
+    cd.push({ a, b, c });
+  }
+
+  const pointsA = [];
+  const pointsB = [];
+  const pointsC = [];
+
+  for (let i = cd.length - 1; i >= 0; i--) {
+    const center = cd[i];
+    pointsA.push(center.a + halfCell);
+    pointsB.push(center.b + halfCell - gap / 2);
+    pointsC.push(center.c - halfCell + gap / 2);
+    pointsA.push(center.a + halfCell);
+    pointsB.push(center.b - halfCell + gap / 2);
+    pointsC.push(center.c - halfCell + gap / 2);
+  }
+  // getCDPoints(cd);
+  // const { pointsA, pointsB, pointsC } = getCDPoints(cd);
+  return {
+    halfSize,
+    cornerExpand,
+    sphereOffset,
+    fullsize,
+    bulgeRadius,
+    sphereOffsetEdges,
+    diagonal,
+    halfCenters,
+    cornerSize,
+    faceOffsetFactor,
+
+    cornerA_CD,
+    cornerB_CD,
+    cornerC_CD,
+    cornerAB,
+
+    pointsA,
+    pointsB,
+    pointsC,
+  };
+}

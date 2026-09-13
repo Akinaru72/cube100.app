@@ -5,6 +5,8 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
 import { createCubeRenderer as createMidleRenderer } from './js/cubeMidleRenderer.js';
 import { createCubeRenderer as createSimplyRenderer } from './js/cubeSimplyRenderer.js';
+import { createCubeRenderer as createHardRenderer } from './js/cubeRenderer.js';
+import { createCubeRenderer as createSphereRenderer } from './js/cubeSphereRenderer.js';
 // import { cubeGroup, cubePieces } from './js/cubeRenderer.js';
 // import { cubeGroup, cubePieces } from './js/cubeMidleRenderer.js';
 // import { cubeGroup, cubePieces } from './js/cubeSimplyRenderer.js';
@@ -41,8 +43,18 @@ let cubePieces;
 let cube;
 
 function initRender() {
-  const createRenderer =
-    renderMode === 'expanded' ? createMidleRenderer : createSimplyRenderer;
+  let createRenderer;
+  if (renderMode === 'expanded') {
+    createRenderer = createMidleRenderer;
+  } else if (renderMode === 'bulged') {
+    createRenderer = createHardRenderer;
+  } else if (renderMode === 'spherical') {
+    createRenderer = createSphereRenderer;
+  } else {
+    createRenderer = createSimplyRenderer;
+  }
+  // const createRenderer =
+  //   renderMode === 'expanded' ? createMidleRenderer : createSimplyRenderer;
 
   ({ cubeGroup, cubePieces } = createRenderer(cubeState, size));
   // ({ cubeGroup, cubePieces } = createCubeRenderer(cubeState, size));
@@ -157,7 +169,14 @@ function resetCube() {
   // cubeGroup = ;
   // cubePieces = null;
   // cube = null;
-  camera.position.set(size, size, size);
+  if (renderMode === 'bulged' || renderMode === 'spherical') {
+    const cameraDistance = size * 1.4;
+
+    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+  } else {
+    camera.position.set(size, size, size);
+  }
+
   camera.lookAt(0, 0, 0);
   scrambleBtn.disabled = false;
   initRender();
@@ -404,6 +423,12 @@ solveThirdSide.addEventListener('click', async () => {
   currentSolve = 2;
   startAnimationMode();
   await cube.onSolve3thSide(startAnimationMode);
+});
+
+solveFourthSide.addEventListener('click', async () => {
+  currentSolve = 3;
+  startAnimationMode();
+  await cube.onSolve4thSide(startAnimationMode);
 });
 
 // ------------------------------------------------------------------

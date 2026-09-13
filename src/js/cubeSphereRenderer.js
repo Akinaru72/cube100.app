@@ -1,139 +1,23 @@
 import * as THREE from 'three';
 
-import {
-  // pointsCD_RF,
-  // pointsCD_RB,
-  // pointsCD_RU,
-  // pointsCD_RD,
-  // pointsCornersAB_RU,
-  // pointsCornersCD_RU,
-  // pointsCornersEF_RU,
-  // pointsCornersAB_RD,
-  // pointsCornersCD_RD,
-  // pointsCornersEF_RD,
-  // pointsEF_RU,
-  // pointsEF_RD,
-  // pointsEF_RF,
-  // pointsEF_RB,
-  createRightPoints,
-} from '../js/right.js';
+import { createRightPoints } from '../js/right.js';
 
-import {
-  // pointsCD_UB,
-  // pointsCornersAB_UB,
-  // pointsCornersCD_UB,
-  // pointsCornersEF_UB,
-  // pointsCD_UF,
-  // pointsCornersAB_UF,
-  // pointsCornersCD_UF,
-  // pointsCornersEF_UF,
-  // pointsCD_UR,
-  // pointsCD_UL,
-  // pointsEF_UB,
-  // pointsEF_UF,
-  // pointsEF_UR,
-  // pointsEF_UL,
-  createUpPoints,
-} from '../js/up.js';
+import { createUpPoints } from '../js/up.js';
 
-import {
-  // pointsCD_FU,
-  // pointsCornersAB_FU,
-  // pointsCornersCD_FU,
-  // pointsCornersEF_FU,
-  // pointsCD_FD,
-  // pointsCornersAB_FD,
-  // pointsCornersCD_FD,
-  // pointsCornersEF_FD,
-  // pointsCD_FR,
-  // pointsCD_FL,
-  // pointsEF_FU,
-  // pointsEF_FD,
-  // pointsEF_FR,
-  // pointsEF_FL,
-  createFrontPoints,
-} from '../js/front.js';
+import { createFrontPoints } from '../js/front.js';
 
-import {
-  // pointsCD_LU,
-  // pointsCornersAB_LU,
-  // pointsCornersCD_LU,
-  // pointsCornersEF_LU,
-  // pointsCD_LD,
-  // pointsCornersAB_LD,
-  // pointsCornersCD_LD,
-  // pointsCornersEF_LD,
-  // pointsCD_LF,
-  // pointsCD_LB,
-  // pointsEF_LB,
-  // pointsEF_LU,
-  // pointsEF_LD,
-  // pointsEF_LF,
-  createLeftPoints,
-} from '../js/left.js';
+import { createLeftPoints } from '../js/left.js';
 
-import {
-  // pointsCD_BD,
-  // pointsCornersAB_BD,
-  // pointsCornersCD_BD,
-  // pointsCornersEF_BD,
-  // pointsCD_BU,
-  // pointsCornersAB_BU,
-  // pointsCornersCD_BU,
-  // pointsCornersEF_BU,
-  // pointsCD_BR,
-  // pointsCD_BL,
-  // pointsEF_BL,
-  // pointsEF_BD,
-  // pointsEF_BU,
-  // pointsEF_BR,
-  createBackPoints,
-} from '../js/back.js';
+import { createBackPoints } from '../js/back.js';
 
-import {
-  // pointsCD_DF,
-  // pointsCornersAB_DF,
-  // pointsCornersCD_DF,
-  // pointsCornersEF_DF,
-  // pointsCD_DB,
-  // pointsCornersAB_DB,
-  // pointsCornersCD_DB,
-  // pointsCornersEF_DB,
-  // pointsCD_DR,
-  // pointsCD_DL,
-  // pointsEF_DR,
-  // pointsEF_DL,
-  // pointsEF_DB,
-  // pointsEF_DF,
-  createDownPoints,
-} from '../js/down.js';
-
-// import { getArcPointForX, getArcPointsX } from '../js/planeYZ.js';
-// import { getArcPointForY, getArcPointsY } from '../js/planeXZ.js';
-// import { getArcPointForZ, getArcPointsZ } from '../js/planeXY.js';
+import { createDownPoints } from '../js/down.js';
 
 import {
   cubeSize,
   cellSize,
   faceOffsetFactor,
-  halfSize,
-  cornerExpand,
-  sphereOffset,
-  fullsize,
-  bulgeRadius,
-  cornerSize,
   gap,
-  sphereOffsetEdges,
-  diagonal,
-  halfCenters,
-  cornerA_CD,
-  cornerB_CD,
-  cornerC_CD,
-  cornerAB,
-  pointsA,
-  pointsB,
-  pointsC,
-  getCubeParams,
+  getCubeSphereParams,
 } from '../js/constants';
 export function createCubeRenderer(cubeState, size) {
   const {
@@ -155,9 +39,9 @@ export function createCubeRenderer(cubeState, size) {
     pointsA,
     pointsB,
     pointsC,
-  } = getCubeParams(size);
+  } = getCubeSphereParams(size);
 
-  const params = getCubeParams(size);
+  const params = getCubeSphereParams(size);
 
   const rightPoints = createRightPoints(params);
   // console.log(pointsA);
@@ -487,11 +371,11 @@ export function createCubeRenderer(cubeState, size) {
       const E = pointsEF[i];
       const E2 = pointsEF[i + 1];
       // 1. Левая внутренняя стенка
-      let left = createSurface([A, C], [E, E]);
+      let left = createSurface([A, C], [E, E], color[j]);
       // 2. Правая внутренняя стенка
-      let right = createSurface([A2, C2], [E2, E2]);
+      let right = createSurface([A2, C2], [E2, E2], color[j]);
       // 3. Нижняя внутренняя стенка
-      let down = createSurface([C, C2], [E, E2]);
+      let down = createSurface([C, C2], [E, E2], color[j]);
       // 4. Внешняя стенка
       let outSurface = createSurface([A, A2], [C, C2], color[j]);
 
@@ -507,12 +391,14 @@ export function createCubeRenderer(cubeState, size) {
     // 1. Левая внутренняя стенка
     const left = createSurface(
       [pointsEF[0], pointsEF[0]],
-      pointsCD.slice(0, 2)
+      pointsCD.slice(0, 2),
+      color
     );
     // 2. Правая внутренняя стенка
     const right = createSurface(
       [pointsEF[0], pointsEF[0]],
-      [pointsAB[1], pointsCD[1]]
+      [pointsAB[1], pointsCD[1]],
+      color
     );
     // 3. Внешняя стенка
     const outSurface = createSurface(
@@ -527,12 +413,14 @@ export function createCubeRenderer(cubeState, size) {
     // 1. Левая внутренняя стенка
     const left = createSurface(
       [pointsEF[1], pointsEF[1]],
-      pointsCD.slice(2, 4)
+      pointsCD.slice(2, 4),
+      color
     );
     // 2. Правая внутренняя стенка
     const right = createSurface(
       [pointsEF[1], pointsEF[1]],
-      [pointsAB[2], pointsCD[2]]
+      [pointsAB[2], pointsCD[2]],
+      color
     );
     // 3. Внешняя стенка
     const outSurface = createSurface(
@@ -1464,8 +1352,8 @@ export function createCubeRenderer(cubeState, size) {
 
   // const stickerGeometry = new THREE.PlaneGeometry(cubeSize, cubeSize);
   const stickerGeometry = new THREE.BoxGeometry(
-    cubeSize * 0.82,
-    cubeSize * 0.82,
+    cubeSize * 0.9,
+    cubeSize * 0.9,
     0.02
   );
 
@@ -1681,12 +1569,33 @@ export function createCubeRenderer(cubeState, size) {
     cubeGroup.add(edge.left, edge.right, edge.down, edge.outSurface);
   });
 
+  const bodyMaterials = {
+    U: new THREE.MeshStandardMaterial({ color: 0xffffff }),
+    D: new THREE.MeshStandardMaterial({ color: 0xffff00 }),
+    R: new THREE.MeshStandardMaterial({ color: 0xff0000 }),
+    L: new THREE.MeshStandardMaterial({ color: 0xff8800 }),
+    F: new THREE.MeshStandardMaterial({ color: 0x00ff00 }),
+    B: new THREE.MeshStandardMaterial({ color: 0x0000ff }),
+  };
+
+  // function getBodyMaterial(cubie) {
+  //   if (cubie.x === size - 1) return bodyMaterials.R;
+  //   if (cubie.x === 0) return bodyMaterials.L;
+  //   if (cubie.y === size - 1) return bodyMaterials.U;
+  //   if (cubie.y === 0) return bodyMaterials.D;
+  //   if (cubie.z === size - 1) return bodyMaterials.F;
+  //   if (cubie.z === 0) return bodyMaterials.B;
+
+  //   return bodyMaterial;
+  // }
+
   cubies.forEach(cubie => {
     const px = (cubie.x - (size - 1) / 2) * cellSize;
     const py = (cubie.y - (size - 1) / 2) * cellSize;
     const pz = (cubie.z - (size - 1) / 2) * cellSize;
 
     const mesh = new THREE.Mesh(geometry, bodyMaterial);
+    // const mesh = new THREE.Mesh(geometry, getBodyMaterial(cubie));
     mesh.position.set(px, py, pz);
     cubie.mesh = mesh;
 
@@ -1695,6 +1604,7 @@ export function createCubeRenderer(cubeState, size) {
     // ====================
 
     if (cubie.x === size - 1) {
+      // console.log(mesh);
       const sphereX =
         sphereCenterX + Math.sqrt(bulgeRadius ** 2 - py ** 2 - pz ** 2);
       const bulgeOffset = sphereX - cornerSphereX;
@@ -1716,7 +1626,10 @@ export function createCubeRenderer(cubeState, size) {
         size - 1 - cubie.y,
         size - 1 - cubie.z
       );
-
+      // const material = getMaterial(value[0][0]).clone();
+      // material.color.multiplyScalar(0.4);
+      // mesh.material = material;
+      mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, rightMaterial);
       sticker.position.set(
@@ -1750,6 +1663,7 @@ export function createCubeRenderer(cubeState, size) {
     }
     if (cubie.y === size - 1 && !edgesAndCornersCubies.includes(cubie)) {
       const value = cubeState.getCell('U', cubie.z, cubie.x);
+      mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, upMaterial);
       sticker.position.set(
@@ -1790,6 +1704,7 @@ export function createCubeRenderer(cubeState, size) {
 
     if (cubie.z === size - 1 && !edgesAndCornersCubies.includes(cubie)) {
       const value = cubeState.getCell('F', size - 1 - cubie.y, cubie.x);
+      mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, frontMaterial);
 
@@ -1831,6 +1746,7 @@ export function createCubeRenderer(cubeState, size) {
 
     if (cubie.x === 0 && !edgesAndCornersCubies.includes(cubie)) {
       const value = cubeState.getCell('L', size - 1 - cubie.y, cubie.z);
+      mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, leftMaterial);
 
@@ -1871,6 +1787,7 @@ export function createCubeRenderer(cubeState, size) {
 
     if (cubie.y === 0 && !edgesAndCornersCubies.includes(cubie)) {
       const value = cubeState.getCell('D', size - 1 - cubie.z, cubie.x);
+      mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, downMaterial);
       sticker.position.set(
@@ -1911,6 +1828,7 @@ export function createCubeRenderer(cubeState, size) {
         size - 1 - cubie.y,
         size - 1 - cubie.x
       );
+      mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, backMaterial);
 
