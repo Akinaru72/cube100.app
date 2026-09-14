@@ -1626,10 +1626,10 @@ export function createCubeRenderer(cubeState, size) {
         size - 1 - cubie.y,
         size - 1 - cubie.z
       );
-      // const material = getMaterial(value[0][0]).clone();
-      // material.color.multiplyScalar(0.4);
-      // mesh.material = material;
-      mesh.material = getMaterial(value[0][0]);
+      const material = getMaterial(value[0][0]).clone();
+      material.color.multiplyScalar(0.4);
+      mesh.material = material;
+      // mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, rightMaterial);
       sticker.position.set(
@@ -1663,7 +1663,10 @@ export function createCubeRenderer(cubeState, size) {
     }
     if (cubie.y === size - 1 && !edgesAndCornersCubies.includes(cubie)) {
       const value = cubeState.getCell('U', cubie.z, cubie.x);
-      mesh.material = getMaterial(value[0][0]);
+      const material = getMaterial(value[0][0]).clone();
+      material.color.multiplyScalar(0.4);
+      mesh.material = material;
+      // mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, upMaterial);
       sticker.position.set(
@@ -1704,7 +1707,10 @@ export function createCubeRenderer(cubeState, size) {
 
     if (cubie.z === size - 1 && !edgesAndCornersCubies.includes(cubie)) {
       const value = cubeState.getCell('F', size - 1 - cubie.y, cubie.x);
-      mesh.material = getMaterial(value[0][0]);
+      const material = getMaterial(value[0][0]).clone();
+      material.color.multiplyScalar(0.4);
+      mesh.material = material;
+      // mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, frontMaterial);
 
@@ -1746,7 +1752,10 @@ export function createCubeRenderer(cubeState, size) {
 
     if (cubie.x === 0 && !edgesAndCornersCubies.includes(cubie)) {
       const value = cubeState.getCell('L', size - 1 - cubie.y, cubie.z);
-      mesh.material = getMaterial(value[0][0]);
+      const material = getMaterial(value[0][0]).clone();
+      material.color.multiplyScalar(0.4);
+      mesh.material = material;
+      // mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, leftMaterial);
 
@@ -1787,7 +1796,10 @@ export function createCubeRenderer(cubeState, size) {
 
     if (cubie.y === 0 && !edgesAndCornersCubies.includes(cubie)) {
       const value = cubeState.getCell('D', size - 1 - cubie.z, cubie.x);
-      mesh.material = getMaterial(value[0][0]);
+      const material = getMaterial(value[0][0]).clone();
+      material.color.multiplyScalar(0.4);
+      mesh.material = material;
+      // mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, downMaterial);
       sticker.position.set(
@@ -1828,7 +1840,10 @@ export function createCubeRenderer(cubeState, size) {
         size - 1 - cubie.y,
         size - 1 - cubie.x
       );
-      mesh.material = getMaterial(value[0][0]);
+      const material = getMaterial(value[0][0]).clone();
+      material.color.multiplyScalar(0.4);
+      mesh.material = material;
+      // mesh.material = getMaterial(value[0][0]);
       const sticker = new THREE.Mesh(stickerGeometry, getMaterial(value[0][0]));
       // const sticker = new THREE.Mesh(stickerGeometry, backMaterial);
 

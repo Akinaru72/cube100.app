@@ -353,8 +353,12 @@ export function onSolve3thSideSol(state) {
     if (aR.every(el => el === 'G')) {
       console.log('ReturnCreateLine');
       return;
+    } else {
+      console.log('Not solved');
+      createLine();
     }
   }
+
   function reverseMove(move) {
     return move.endsWith("'") ? move.slice(0, -1) : `${move}'`;
   }
