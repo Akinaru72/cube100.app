@@ -439,6 +439,17 @@ export class CubeState {
     return true;
   }
 
+  isSolvedB() {
+    for (let row = 1; row < this.size - 1; row++) {
+      for (let col = 1; col < this.size - 1; col++) {
+        if (this.B[row][col][0] !== 'B') {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   clone() {
     const cube = new CubeState(this.size);
 

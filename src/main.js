@@ -431,6 +431,12 @@ solveFourthSide.addEventListener('click', async () => {
   await cube.onSolve4thSide(startAnimationMode);
 });
 
+solveFifthSixSide.addEventListener('click', async () => {
+  currentSolve = 4;
+  startAnimationMode();
+  await cube.onSolve5thSide(startAnimationMode);
+});
+
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);
 // console.log('Right', cubeState.R);

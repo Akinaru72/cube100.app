@@ -454,6 +454,147 @@ export function onSolve1thSideSol(state) {
 
   // let array = [1, 6];
   // apply(`U'[${array.join(',')}]`);
+
+  function checkSideDd(D, move, index) {
+    const df = calcState.getRow('F', index).slice(1, -1);
+    if (df.every(el => el === 'W')) {
+      console.log('checkSideDd');
+      return;
+    }
+
+    const d = calcState.getRow(D, index).slice(1, -1);
+    console.log('df', df);
+    console.log('d', d);
+    const array = [];
+    d.forEach((el, idx) => {
+      // console.log(calcState.size - idx - 1);
+      // console.log(calcState.size - idx - 3);
+      if (el === 'W' && df[idx] !== 'W') {
+        console.log('idx', idx);
+        console.log(el);
+        console.log('df', df[idx]);
+        array.push(idx + 2);
+      }
+    });
+    // console.log(face, array);
+    if (array.length > 0) {
+      apply(`${move}[${array.join(',')}]`);
+    }
+  }
+
+  function checkSidesDd() {
+    apply('F');
+    checkSideDd('D', "L'", index);
+    let df = calcState.getRow('F', index).slice(1, -1);
+    if (df.every(el => el === 'W')) {
+      apply('F');
+      console.log('createCentralLine');
+      return;
+    }
+
+    apply('2D');
+    checkSideDd('D', "L'", index);
+    df = calcState.getRow('F', index).slice(1, -1);
+    if (df.every(el => el === 'W')) {
+      apply('F');
+      console.log('createCentralLine');
+      return;
+    }
+
+    apply('D');
+    checkSideDd('D', "L'", index);
+    df = calcState.getRow('F', index).slice(1, -1);
+    if (df.every(el => el === 'W')) {
+      apply('F');
+      console.log('createCentralLine');
+      return;
+    }
+
+    apply('2D');
+    checkSideDd('D', "L'", index);
+    df = calcState.getRow('F', index).slice(1, -1);
+    if (df.every(el => el === 'W')) {
+      apply('F');
+      console.log('createCentralLine');
+      return;
+    }
+  }
+
+  function createCentralLine() {
+    let a = calcState.getCol('F', index).slice(1, -1);
+    const countWa = a.filter(cell => cell === 'Y').length;
+    let b = calcState.getRow('F', index).slice(1, -1);
+    const countWb = b.filter(cell => cell === 'Y').length;
+
+    console.log(calcState.getCol('F', index).slice(1, -1));
+    console.log(calcState.getRow('F', index).slice(1, -1));
+
+    console.log(countWa, countWb);
+
+    if (countWb > countWa) {
+      apply("F'");
+      console.log('Bmax');
+      // console.log('ПОСЛЕ ХОДА:');
+      // console.log(calcState.getRow('F', index).slice(1, -1));
+    }
+
+    checkSides();
+    let af = calcState.getCol('F', index).slice(1, -1);
+    if (af.every(el => el === 'W')) {
+      console.log('createCentralLine');
+      return;
+    }
+
+    apply('2R');
+    apply('2B');
+    apply('2L');
+    checkSides();
+    af = calcState.getCol('F', index).slice(1, -1);
+    if (af.every(el => el === 'W')) {
+      console.log('createCentralLine');
+      return;
+    }
+
+    apply('R');
+    apply('B');
+    apply('L');
+    checkSides();
+    af = calcState.getCol('F', index).slice(1, -1);
+    if (af.every(el => el === 'W')) {
+      console.log('createCentralLine');
+      return;
+    }
+
+    apply('2R');
+    apply('2B');
+    apply('2L');
+    checkSides();
+    af = calcState.getCol('F', index).slice(1, -1);
+    if (af.every(el => el === 'W')) {
+      console.log('createCentralLine');
+      return;
+    }
+
+    apply('F');
+    apply(`U'(${calcState.size - index})`);
+    apply('R');
+    checkSide('R', 'U', index);
+    af = calcState.getCol('F', index).slice(1, -1);
+    if (af.every(el => el === 'W')) {
+      console.log('createCentralLine');
+      return;
+    }
+
+    apply('2R');
+    checkSide('R', 'U', index);
+    af = calcState.getCol('F', index).slice(1, -1);
+    if (af.every(el => el === 'W')) {
+      console.log('createCentralLine');
+      return;
+    }
+
+    checkSidesDd();
+  }
   let index = 1;
   if (calcState.size % 2 !== 0) {
     const centralLevel = Math.floor(calcState.size / 2) + 1;
@@ -475,19 +616,21 @@ export function onSolve1thSideSol(state) {
     console.log('B =', centalB);
     const centalD = calcState.getCell('D', centralLevel - 1, centralLevel - 1);
     console.log('D =', centalD);
-    if (centalU === 'W') {
-      apply(`R'(${centralLevel})`);
-    } else if (centalB === 'W') {
-      apply(`2R(${centralLevel})`);
-    } else if (centalD === 'W') {
-      apply(`R(${centralLevel})`);
-    } else if (centalL === 'W') {
-      apply(`U'(${centralLevel})`);
-    } else if (centalR === 'W') {
-      apply(`U(${centralLevel})`);
+    // if (centalU === 'W') {
+    //   apply(`R'(${centralLevel})`);
+    // } else if (centalB === 'W') {
+    //   apply(`2R(${centralLevel})`);
+    // } else
+    if (centalD === 'W') {
+      apply(`F(${centralLevel})`);
     }
+    //   else if (centalL === 'W') {
+    //   apply(`U'(${centralLevel})`);
+    // } else if (centalR === 'W') {
+    //   apply(`U(${centralLevel})`);
+    // }
 
-    createLine();
+    createCentralLine();
     apply(`R(${calcState.size - index})`);
   }
   const count = Math.floor(calcState.size / 2);

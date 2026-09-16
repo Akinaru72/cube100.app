@@ -4,12 +4,14 @@ import { onSolve1thSideSol } from './solver/onSolve1thSide.js';
 import { onSolve2thSideSol } from './solver/onSolve2thSide.js';
 import { onSolve3thSideSol } from './solver/onSolve3thSide.js';
 import { onSolve4thSideSol } from './solver/onSolve4thSide.js';
+import { onSolve5thSideSol } from './solver/onSolve5thSide.js';
 
 const scrambleBtn = document.querySelector('#scramble-btn');
 const solveFisrtSide = document.querySelector('#solve-first-side');
 const solveSecondSide = document.querySelector('#solve-second-side');
 const solveThirdSide = document.querySelector('#solve-third-side');
 const solveFourthSide = document.querySelector('#solve-fourth-side');
+const solveFifthSixSide = document.querySelector('#solve-fifth-sixth-side');
 
 export class Cube100 {
   constructor(cubePieces, cubeGroup, size, cubeState, onAnimationEnd) {
@@ -35,6 +37,7 @@ export class Cube100 {
     this.solSide2 = false;
     this.solSide3 = false;
     this.solSide4 = false;
+    this.solSide5 = false;
   }
   updateResetButtons() {
     // console.log('cubeState.R', this.cubeState.U);
@@ -53,6 +56,7 @@ export class Cube100 {
       solveSecondSide.disabled = true;
       solveThirdSide.disabled = true;
       solveFourthSide.disabled = true;
+      solveFifthSixSide.disabled = true;
       return;
     }
 
@@ -93,6 +97,16 @@ export class Cube100 {
     } else {
       this.solSide4 = false;
       solveFourthSide.disabled = false;
+      //  console.log('ABLE___ON');
+    }
+
+    if (this.cubeState.isSolvedB() && this.solSide4) {
+      this.solSide5 = true;
+      solveFifthSixSide.disabled = true;
+      //    console.log('IF___ABLE___OFF');
+    } else {
+      this.solSide5 = false;
+      solveFifthSixSide.disabled = false;
       //  console.log('ABLE___ON');
     }
 
@@ -1243,6 +1257,37 @@ export class Cube100 {
     this.finalStates[3] = result.state;
     const solution = result.solution;
     await this.waitForSolution(solution);
+
+    await this.rotateCubeSpace('y', Math.PI / 2);
+
+    this.isSolving = false;
+    this.updateResetButtons();
+  }
+
+  async onSolve5thSide(startAnimationMode) {
+    if (!this.solSide4) {
+      const firstResult = onSolve1thSideSol(this.cubeState);
+      const secondResult = onSolve2thSideSol(firstResult.state);
+      const thirdResult = onSolve3thSideSol(secondResult.state);
+      const fouthResult = onSolve4thSideSol(thirdResult.state);
+      const fifthResult = onSolve5thSideSol(fouthResult.state);
+
+      this.finalStates[4] = fifthResult.state;
+      await this.onSolve4thSide(startAnimationMode);
+
+      startAnimationMode();
+    }
+    this.isSolving = true;
+    this.updateResetButtons();
+
+    await this.rotateCubeSpace('y', -Math.PI);
+
+    let result = onSolve5thSideSol(this.cubeState);
+    this.finalStates[4] = result.state;
+    const solution = result.solution;
+    await this.waitForSolution(solution);
+
+    // await this.rotateCubeSpace('y', Math.PI);
 
     this.isSolving = false;
     this.updateResetButtons();
