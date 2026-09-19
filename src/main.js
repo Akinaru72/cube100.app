@@ -63,6 +63,7 @@ function initRender() {
 }
 
 initRender();
+cube.updateResetButtons();
 
 // const cube = new Cube100(cubePieces, cubeGroup, size);
 // console.log('cubePieces', cubePieces);
@@ -179,6 +180,7 @@ function resetCube() {
 
   camera.lookAt(0, 0, 0);
   scrambleBtn.disabled = false;
+  // cube.updateResetButtons();
   initRender();
 }
 //  ----------------------------------------------------------------
@@ -337,6 +339,8 @@ speedMenuEl.addEventListener('click', event => {
   if (!button) return;
   const speed = button.dataset.speed;
   if (speed === 'end') {
+    console.log('currentSolve', currentSolve);
+    console.log(cube.finalStates[currentSolve]);
     if (currentSolve !== undefined) {
       cubeState = cube.finalStates[currentSolve];
     } else {
@@ -347,7 +351,13 @@ speedMenuEl.addEventListener('click', event => {
     // cubeState = cube.finalState;
     scene.remove(cubeGroup);
     cubeGroup.clear();
+
+    const savedFinalStates = cube.finalStates;
+    const savedSolutions = cube.solutions;
     initRender();
+
+    cube.finalStates = savedFinalStates;
+    cube.solutions = savedSolutions;
     stopAnimationMode();
     cube.updateResetButtons();
     return;
@@ -356,8 +366,58 @@ speedMenuEl.addEventListener('click', event => {
 });
 
 // -------------------------Local----------------
+// function saveCubeState() {
+//   console.log('MainClickSavecubeState.U', cubeState.U);
+//   const state = {
+//     size: cubeState.size,
+//     U: cubeState.U,
+//     D: cubeState.D,
+//     F: cubeState.F,
+//     B: cubeState.B,
+//     L: cubeState.L,
+//     R: cubeState.R,
+//   };
+//   localStorage.setItem('cubeState', JSON.stringify(state));
+//   console.log('Состояние кубика сохранено');
+// }
+
+// saveBtn.addEventListener('click', saveCubeState);
+
+// function loadCubeState() {
+//   const saved = localStorage.getItem('cubeState');
+
+//   if (!saved) {
+//     console.log('Сохранённого состояния нет');
+//     return;
+//   }
+
+//   const data = JSON.parse(saved);
+//   size = data.size;
+//   cubeState = new CubeState(size);
+//   cubeState.U = data.U;
+//   cubeState.D = data.D;
+//   cubeState.F = data.F;
+//   cubeState.B = data.B;
+//   cubeState.L = data.L;
+//   cubeState.R = data.R;
+
+//   console.log('Состояние загружено');
+//   console.log(data);
+//   scene.remove(cubeGroup);
+//   cubeGroup.clear();
+
+//   scrambleBtn.disabled = false;
+//   initRender();
+
+//   camera.position.set(size, size, size);
+//   cube.updateResetButtons();
+// }
+
+// loadBtn.addEventListener('click', loadCubeState);
+
 function saveCubeState() {
   console.log('MainClickSavecubeState.U', cubeState.U);
+
   const state = {
     size: cubeState.size,
     U: cubeState.U,
@@ -366,8 +426,13 @@ function saveCubeState() {
     B: cubeState.B,
     L: cubeState.L,
     R: cubeState.R,
+
+    solutions: cube.solutions,
+    finalStates: cube.finalStates,
   };
+
   localStorage.setItem('cubeState', JSON.stringify(state));
+
   console.log('Состояние кубика сохранено');
 }
 
@@ -378,32 +443,112 @@ function loadCubeState() {
 
   if (!saved) {
     console.log('Сохранённого состояния нет');
+
     return;
   }
 
   const data = JSON.parse(saved);
+
   size = data.size;
+
   cubeState = new CubeState(size);
+
   cubeState.U = data.U;
+
   cubeState.D = data.D;
+
   cubeState.F = data.F;
+
   cubeState.B = data.B;
+
   cubeState.L = data.L;
+
   cubeState.R = data.R;
 
   console.log('Состояние загружено');
+
   console.log(data);
+
   scene.remove(cubeGroup);
+
   cubeGroup.clear();
 
   scrambleBtn.disabled = false;
+
   initRender();
 
+  cube.solutions = data.solutions || [];
+
+  cube.finalStates = (data.finalStates || []).map(state =>
+    restoreCubeState(state)
+  );
+
   camera.position.set(size, size, size);
+
   cube.updateResetButtons();
 }
 
+function restoreCubeState(data) {
+  const state = new CubeState(data.size);
+  state.U = data.U;
+  state.D = data.D;
+  state.F = data.F;
+  state.B = data.B;
+  state.L = data.L;
+  state.R = data.R;
+  return state;
+}
+
 loadBtn.addEventListener('click', loadCubeState);
+
+// function saveCubeState() {
+//   console.log('MainClickSavecubeState.U', cubeState.U);
+//   const state = {
+//     size: cubeState.size,
+//     U: cubeState.U,
+//     D: cubeState.D,
+//     F: cubeState.F,
+//     B: cubeState.B,
+//     L: cubeState.L,
+//     R: cubeState.R,
+//   };
+//   localStorage.setItem('cubeState', JSON.stringify(state));
+//   console.log('Состояние кубика сохранено');
+// }
+
+// saveBtn.addEventListener('click', saveCubeState);
+
+// function loadCubeState() {
+//   const saved = localStorage.getItem('cubeState');
+
+//   if (!saved) {
+//     console.log('Сохранённого состояния нет');
+//     return;
+//   }
+
+//   const data = JSON.parse(saved);
+//   size = data.size;
+//   cubeState = new CubeState(size);
+//   cubeState.U = data.U;
+//   cubeState.D = data.D;
+//   cubeState.F = data.F;
+//   cubeState.B = data.B;
+//   cubeState.L = data.L;
+//   cubeState.R = data.R;
+
+//   console.log('Состояние загружено');
+//   console.log(data);
+//   scene.remove(cubeGroup);
+//   cubeGroup.clear();
+
+//   scrambleBtn.disabled = false;
+//   initRender();
+
+//   camera.position.set(size, size, size);
+//   cube.updateResetButtons();
+// }
+
+// loadBtn.addEventListener('click', loadCubeState);
 
 // ------------------------simply algoritms--------------------------
 let currentSolve;
@@ -437,6 +582,17 @@ solveFifthSixSide.addEventListener('click', async () => {
   await cube.onSolve5thSide(startAnimationMode);
 });
 
+solveEdges1.addEventListener('click', async () => {
+  currentSolve = 5;
+  startAnimationMode();
+  await cube.onSolve6thEdges(startAnimationMode);
+});
+
+solveEdges2.addEventListener('click', async () => {
+  currentSolve = 6;
+  startAnimationMode();
+  await cube.onSolve7thEdges(startAnimationMode);
+});
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);
 // console.log('Right', cubeState.R);
@@ -471,6 +627,9 @@ let before = cubePieces.map(piece => ({
 // cube.R(); // [[size]]
 // cube.R(); // [[size]]
 // cube.R(5); // [[5]]
+// cube.U('5'); // [[5]]
+// cube.R('5'); // [[5]]
+// cube.R('5'); // [[5]]
 // cube.R('5'); // [[5]]
 // cube.R([5]); // [[5]]
 // cube.R([2, 5]); // [[2,5]]

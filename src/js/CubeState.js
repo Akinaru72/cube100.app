@@ -450,6 +450,94 @@ export class CubeState {
     return true;
   }
 
+  isSolvedEgdesU() {
+    // console.log('I am here');
+    let a = this.getCol('U', 0).slice(1, -1);
+    // console.log(a);
+    let b = this.getRow('U', 0).slice(1, -1);
+    // console.log(b);
+    let c = this.getCol('U', this.size - 1).slice(1, -1);
+    // console.log(c);
+    let d = this.getRow('U', this.size - 1).slice(1, -1);
+    // console.log(d);
+    const arrays = [a, b, c, d];
+    // console.log(arrays);
+    for (const arr of arrays) {
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] !== arr[0]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  isSolvedEgdesD() {
+    // console.log('I am here');
+    let a = this.getCol('D', 0).slice(1, -1);
+    // console.log(a);
+    let b = this.getRow('D', 0).slice(1, -1);
+    // console.log(b);
+    let c = this.getCol('D', this.size - 1).slice(1, -1);
+    // console.log(c);
+    let d = this.getRow('D', this.size - 1).slice(1, -1);
+    // console.log(d);
+    const arrays = [a, b, c, d];
+    console.log(arrays);
+    for (const arr of arrays) {
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] !== arr[0]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  isSolvedEgdesF() {
+    // console.log('I am here');
+    let a = this.getCol('F', 0).slice(1, -1);
+    // console.log(a);
+    let b = this.getRow('F', 0).slice(1, -1);
+    // console.log(b);
+    let c = this.getCol('F', this.size - 1).slice(1, -1);
+    // console.log(c);
+    let d = this.getRow('F', this.size - 1).slice(1, -1);
+    // console.log(d);
+    const arrays = [a, b, c, d];
+    console.log(arrays);
+    for (const arr of arrays) {
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] !== arr[0]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  isSolvedEgdesB() {
+    // console.log('I am here');
+    let a = this.getCol('B', 0).slice(1, -1);
+    // console.log(a);
+    let b = this.getRow('B', 0).slice(1, -1);
+    // console.log(b);
+    let c = this.getCol('B', this.size - 1).slice(1, -1);
+    // console.log(c);
+    let d = this.getRow('B', this.size - 1).slice(1, -1);
+    // console.log(d);
+    const arrays = [a, b, c, d];
+    console.log(arrays);
+    for (const arr of arrays) {
+      for (let i = 1; i < arr.length; i++) {
+        if (arr[i] !== arr[0]) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
   clone() {
     const cube = new CubeState(this.size);
 
