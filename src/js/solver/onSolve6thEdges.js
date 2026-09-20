@@ -198,6 +198,10 @@ export function onSolve6thEdgeSol(state) {
   }
 
   function createEdgeForDown() {
+    if (calcState.isSolvedEgdesD()) {
+      console.log('Solved');
+      return;
+    }
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
     checkRevEdges();
 
@@ -242,11 +246,11 @@ export function onSolve6thEdgeSol(state) {
       d = calcState.getRow('U', calcState.size - 1).slice(1, -1);
     }
 
-    let solveEgde = calcState.getCol('F', calcState.size - 1).slice(1, -1);
-    if (solveEgde.every(el => el === solveEgde[0])) {
-      console.log('Solved');
-      return;
-    }
+    // let solveEgde = calcState.getCol('F', calcState.size - 1).slice(1, -1);
+    // if (solveEgde.every(el => el === solveEgde[0])) {
+    //   console.log('Solved');
+    //   return;
+    // }
     // ----------------------------
     let e = calcState.getCol('D', 0).slice(1, -1);
     let f = calcState.getRow('D', 0).slice(1, -1);
@@ -283,36 +287,31 @@ export function onSolve6thEdgeSol(state) {
       checkClearEdge();
     }
     checkEdges();
-    // let cB = calcState.getCol('B', calcState.size - 1).slice(1, -1);
-    // if (cB.includes(reverseElCf)) {
-    //   apply('L');
-    //   apply("U'");
-    //   apply("L'");
-    //   apply("R'");
-    //   apply("U'");
-    //   apply('R');
-    //   checkClearEdge();
-    // }
 
-    // let cL = calcState.getCol('L', calcState.size - 1).slice(1, -1);
-    // if (cL.includes(reverseElCf)) {
-    //   apply('F');
-    //   apply('U');
-    //   apply("F'");
-    //   apply("R'");
-    //   apply('2U');
-    //   apply('R');
-    //   checkClearEdge();
-    // }
-
-    solveEgde = calcState.getCol('F', calcState.size - 1).slice(1, -1);
-    if (solveEgde.every(el => el === solveEgde[0])) {
-      console.log('Solved');
-      return;
+    let edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+    while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
+      apply('D');
+      edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
     }
+    apply("R'");
+    apply('D');
+    apply('R');
+
+    // solveEgde = calcState.getCol('F', calcState.size - 1).slice(1, -1);
+    // if (solveEgde.every(el => el === solveEgde[0])) {
+    //   console.log('Solved');
+    //   return;
+    // }
   }
 
   function createEdgeForUp() {
+    // let fC = calcState.getCol('F', calcState.size - 1).slice(1, -1);
+    // console.log('fC', fC);
+
+    if (calcState.isSolvedEgdesU() && calcState.isSolvedEgdesD()) {
+      console.log('Solved');
+      return;
+    }
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
     checkRevEdges();
 
@@ -378,87 +377,73 @@ export function onSolve6thEdgeSol(state) {
     }
 
     checkEdges();
-    // let cB = calcState.getCol('B', calcState.size - 1).slice(1, -1);
-    // if (cB.includes(reverseElCf)) {
-    //   apply('L');
-    //   apply("U'");
-    //   apply("L'");
-    //   apply("R'");
-    //   apply("U'");
-    //   apply('R');
-    //   checkClearEdge();
-    // }
+    //  ===========================================
+    let edgeForChahgeUp = calcState
+      .getRow('U', calcState.size - 1)
+      .slice(1, -1);
+    console.log(edgeForChahgeUp);
+    while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
+      apply('U');
+      edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+    }
 
-    // let cL = calcState.getCol('L', calcState.size - 1).slice(1, -1);
-    // if (cL.includes(reverseElCf)) {
-    //   apply('F');
-    //   apply('U');
-    //   apply("F'");
-    //   apply("R'");
-    //   apply('2U');
-    //   apply('R');
-    //   checkClearEdge();
-    // }
-
-    // solveEgde = calcState.getCol('F', calcState.size - 1).slice(1, -1);
-    // if (solveEgde.every(el => el === solveEgde[0])) {
-    //   console.log('Solved');
-    //   return;
-    // }
+    apply('R');
+    apply("U'");
+    apply("R'");
   }
 
   // ============================Down====================================
   // -------------------------Edge1----------------------------------------
   let firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   createEdgeForDown();
-  let edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
-  while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
-    apply('D');
-    edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
-  }
-  apply("R'");
-  apply('D');
-  apply('R');
+  // let edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+  // while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
+  //   apply('D');
+  //   edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+  // }
+  // apply("R'");
+  // apply('D');
+  // apply('R');
   // -------------------------Edge2----------------------------------------
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   createEdgeForDown();
-  edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
-  console.log(edgeForChahgeDown);
-  while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
-    console.log('I am HERE EDGE2');
-    console.log(edgeForChahgeDown);
-    apply('D');
-    edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
-    console.log(edgeForChahgeDown);
-  }
-  apply("R'");
-  apply('D');
-  apply('R');
+  // edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+  // console.log(edgeForChahgeDown);
+  // while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
+  //   console.log('I am HERE EDGE2');
+  //   console.log(edgeForChahgeDown);
+  //   apply('D');
+  //   edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+  //   console.log(edgeForChahgeDown);
+  // }
+  // apply("R'");
+  // apply('D');
+  // apply('R');
 
   // -------------------------Edge3----------------------------------------
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   createEdgeForDown();
-  edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
-  while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
-    console.log('#########3333333333333333');
-    apply('D');
-    edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
-  }
-  apply("R'");
-  apply('D');
-  apply('R');
+  // edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+  // while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
+  //   console.log('#########3333333333333333');
+  //   apply('D');
+  //   edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+  // }
+  // apply("R'");
+  // apply('D');
+  // apply('R');
 
   // // // -------------------------Edge4----------------------------------------
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   createEdgeForDown();
-  edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
-  while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
-    apply('D');
-    edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
-  }
-  apply("R'");
-  apply('D');
-  apply('R');
+  // edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+  // while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
+  //   apply('D');
+  //   edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
+  // }
+  // apply("R'");
+  // apply('D');
+  // apply('R');
   // ===========================CheckLines===========================
 
   // ============================Up======================
@@ -467,64 +452,64 @@ export function onSolve6thEdgeSol(state) {
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   console.log('Global firstElementCF', firstElementCF);
   createEdgeForUp();
-  let edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-  console.log(edgeForChahgeUp);
-  while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
-    apply('U');
-    edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-  }
+  // let edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+  // console.log(edgeForChahgeUp);
+  // while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
+  //   apply('U');
+  //   edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+  // }
 
-  apply('R');
-  apply("U'");
-  apply("R'");
+  // apply('R');
+  // apply("U'");
+  // apply("R'");
 
   // -----------------------------Edge2------------------------------------
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   console.log('Global firstElementCF', firstElementCF);
   createEdgeForUp();
-  edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-  console.log(edgeForChahgeUp);
-  while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
-    apply('U');
-    edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-  }
+  // edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+  // console.log(edgeForChahgeUp);
+  // while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
+  //   apply('U');
+  //   edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+  // }
 
-  apply('R');
-  apply("U'");
-  apply("R'");
+  // apply('R');
+  // apply("U'");
+  // apply("R'");
 
   // // -----------------------------Edge3------------------------------------
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   console.log('Global firstElementCF', firstElementCF);
   createEdgeForUp();
-  edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-  console.log(edgeForChahgeUp);
-  while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
-    apply('U');
-    edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-  }
+  // edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+  // console.log(edgeForChahgeUp);
+  // while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
+  //   apply('U');
+  //   edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+  // }
 
-  apply('R');
-  apply("U'");
-  apply("R'");
+  // apply('R');
+  // apply("U'");
+  // apply("R'");
 
   // // // -----------------------------Edge4------------------------------------
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   console.log('Global firstElementCF', firstElementCF);
   createEdgeForUp();
-  edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-  console.log(edgeForChahgeUp);
-  while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
-    apply('U');
-    edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-  }
+  // edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+  // console.log(edgeForChahgeUp);
+  // while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
+  //   apply('U');
+  //   edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
+  // }
 
-  apply('R');
-  apply("U'");
-  apply("R'");
+  // apply('R');
+  // apply("U'");
+  // apply("R'");
   // ==============================================================
   checkSides();
   return {

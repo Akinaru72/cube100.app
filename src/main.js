@@ -150,6 +150,16 @@ const solveFifthSixSide = document.querySelector('#solve-fifth-sixth-side');
 const solveEdges1 = document.querySelector('#solve-edges-part-1');
 const solveEdges2 = document.querySelector('#solve-edges-part-2');
 
+const solveEdges3 = document.querySelector('#solve-edges-part-3');
+const solveUpLayer = document.querySelector('#solve-first-cross-corners');
+const solveMiddleLayer = document.querySelector('#solve-middle');
+const solveDownLayerCross = document.querySelector('#solve-third-cross-1');
+const solveDownLayerCrossConers = document.querySelector(
+  '#solve-third-cross-2'
+);
+const solveDownLayerConers = document.querySelector('#solve-third-corners-1');
+const solveDownLayerEdges = document.querySelector('#solve-third-corners-2');
+
 const headerEl = document.querySelector('.header');
 const solveListFirstEl = document.querySelector('.solve-list-first');
 const solveListLastEl = document.querySelector('.solve-list-last');
@@ -182,6 +192,7 @@ function resetCube() {
   scrambleBtn.disabled = false;
   // cube.updateResetButtons();
   initRender();
+  cube.updateResetButtons();
 }
 //  ----------------------------------------------------------------
 solveBtn.disabled = true;
@@ -194,6 +205,14 @@ solveFourthSide.disabled = true;
 solveFifthSixSide.disabled = true;
 solveEdges1.disabled = true;
 solveEdges2.disabled = true;
+
+solveEdges3.disabled = true;
+solveUpLayer.disabled = true;
+solveMiddleLayer.disabled = true;
+solveDownLayerCross.disabled = true;
+solveDownLayerCrossConers.disabled = true;
+solveDownLayerConers.disabled = true;
+solveDownLayerEdges.disabled = true;
 
 // const camera = new THREE.PerspectiveCamera(
 //   75,
@@ -304,7 +323,7 @@ function startAnimationMode() {
 
   headerEl.classList.add('is-hidden');
   solveListFirstEl.classList.add('is-hidden');
-  // solveListLastEl.classList.add('is-hidden');
+  solveListLastEl.classList.add('is-hidden');
   cubeControlsEl.classList.add('is-hidden');
 
   // showSpeedMenu();
@@ -330,7 +349,7 @@ function stopAnimationMode() {
   speedMenuEl.classList.remove('visible');
   headerEl.classList.remove('is-hidden');
   solveListFirstEl.classList.remove('is-hidden');
-  // solveListLastEl.classList.remove('is-hidden');
+  solveListLastEl.classList.remove('is-hidden');
   cubeControlsEl.classList.remove('is-hidden');
 }
 
@@ -592,6 +611,12 @@ solveEdges2.addEventListener('click', async () => {
   currentSolve = 6;
   startAnimationMode();
   await cube.onSolve7thEdges(startAnimationMode);
+});
+
+solveEdges3.addEventListener('click', async () => {
+  currentSolve = 7;
+  startAnimationMode();
+  await cube.onSolve8thEdges(startAnimationMode);
 });
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);

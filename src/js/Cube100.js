@@ -7,6 +7,9 @@ import { onSolve4thSideSol } from './solver/onSolve4thSide.js';
 import { onSolve5thSideSol } from './solver/onSolve5thSide.js';
 import { onSolve6thEdgeSol } from './solver/onSolve6thEdges.js';
 import { onSolve7thEdgeSol } from './solver/onSolve7thEdges.js';
+import { onSolve8thEdgeSol } from './solver/onSolve8thEdges.js';
+
+import { createRubikLoader } from './solver/loader.js';
 
 const scrambleBtn = document.querySelector('#scramble-btn');
 const solveFisrtSide = document.querySelector('#solve-first-side');
@@ -16,6 +19,23 @@ const solveFourthSide = document.querySelector('#solve-fourth-side');
 const solveFifthSixSide = document.querySelector('#solve-fifth-sixth-side');
 const solveEdges1 = document.querySelector('#solve-edges-part-1');
 const solveEdges2 = document.querySelector('#solve-edges-part-2');
+const solveEdges3 = document.querySelector('#solve-edges-part-3');
+
+const settingsBackdropEl = document.querySelector('.settings-backdrop');
+const loaderEl = document.querySelector('#cube-loader-vis');
+
+function restoreCubeState(data) {
+  const state = new CubeState(data.size);
+
+  state.U = data.U;
+  state.D = data.D;
+  state.F = data.F;
+  state.B = data.B;
+  state.L = data.L;
+  state.R = data.R;
+
+  return state;
+}
 
 export class Cube100 {
   constructor(cubePieces, cubeGroup, size, cubeState, onAnimationEnd) {
@@ -45,7 +65,21 @@ export class Cube100 {
     this.solSide5 = false;
     this.solEdge1 = false;
     this.solEdge2 = false;
+    this.solEdge3 = false;
+
+    this.worker = new Worker(
+      new URL('./solver/solver.wolker.js', import.meta.url),
+      {
+        type: 'module',
+      }
+    );
+    this.worker.onmessage = this.onSolveFinished.bind(this);
   }
+
+  onSolveFinished(e) {
+    console.log('Worker result:', e.data);
+  }
+
   updateResetButtons() {
     // console.log('cubeState.R', this.cubeState.U);
     if (this.cubeState.isSolved()) {
@@ -66,6 +100,7 @@ export class Cube100 {
       solveFifthSixSide.disabled = true;
       solveEdges1.disabled = true;
       solveEdges2.disabled = true;
+      solveEdges3.disabled = true;
       return;
     }
 
@@ -133,17 +168,23 @@ export class Cube100 {
       //  console.log('ABLE___ON');
     }
 
-    if (
-      this.cubeState.isSolvedEgdesF() &&
-      this.cubeState.isSolvedEgdesB() &&
-      this.solEdge1
-    ) {
+    if (this.cubeState.isSolvedEgdesL() && this.solEdge1) {
       this.solEdge2 = true;
       solveEdges2.disabled = true;
       //    console.log('IF___ABLE___OFF');
     } else {
       this.solEdge2 = false;
       solveEdges2.disabled = false;
+      //  console.log('ABLE___ON');
+    }
+
+    if (this.cubeState.isSolvedEgdesR() && this.solEdge2) {
+      this.solEdge3 = true;
+      solveEdges3.disabled = true;
+      //    console.log('IF___ABLE___OFF');
+    } else {
+      this.solEdge3 = false;
+      solveEdges3.disabled = false;
       //  console.log('ABLE___ON');
     }
 
@@ -1234,6 +1275,15 @@ export class Cube100 {
   async onSolve1thSide() {
     this.isSolving = true;
     this.updateResetButtons();
+
+    // settingsBackdropEl.classList.add('is-open', 'is-loading');
+    // loaderEl.classList.remove('is-hidden');
+    // this.destroyLoader = createRubikLoader(loaderEl);
+
+    // this.worker.postMessage({
+    //   type: 'solve1',
+    //   state: this.cubeState,
+    // });
     await this.rotateCubeSpace('y', Math.PI / 2);
 
     let result = onSolve1thSideSol(this.cubeState);
@@ -1246,48 +1296,68 @@ export class Cube100 {
     this.updateResetButtons();
   }
 
-  // async onSolve2thSide(startAnimationMode) {
-  //   let result;
-  //   if (!this.solSide1) {
-  //     const firstResult = onSolve1thSideSol(this.cubeState);
-  //     // const secondResult = onSolve2thSideSol(firstResult.state);
-  //     result = onSolve2thSideSol(firstResult.state);
-  //     this.solutions[0] = firstResult.solution;
-  //     // this.solutions[1] = secondResult.solution;
+  async onSolveFinished(e) {
+    const result = e.data;
 
-  //     this.finalStates[0] = firstResult.state;
-  //     // this.finalStates[1] = secondResult.state;
+    if (result.type === 'solve2Finished') {
+      this.solutions[0] = result.solution1;
+      this.finalStates[0] = restoreCubeState(result.state1);
 
-  //     // await this.onSolve1thSide();
-  //     // startAnimationMode();
-  //   } else {
-  //     result = onSolve2thSideSol(this.cubeState);
-  //   }
-  //   this.finalStates[1] = result.state;
-  //   this.solutions[1] = result.solution;
+      this.solutions[1] = result.solution2;
+      this.finalStates[1] = restoreCubeState(result.state2);
 
-  //   this.isSolving = true;
-  //   this.updateResetButtons();
-  //   if (!this.solSide1) {
-  //     await this.rotateCubeSpace('y', Math.PI / 2);
-  //     await this.waitForSolution(this.solutions[0]);
-  //     await this.rotateCubeSpace('y', -Math.PI / 2);
+      // this.destroyLoader?.();
+      // settingsBackdropEl.classList.remove('is-open', 'is-loading');
+      // loaderEl.classList.add('is-hidden');
 
-  //     startAnimationMode();
-  //   }
-  //   await this.rotateCubeSpace('x', -Math.PI);
+      if (!this.solSide1) {
+        await this.rotateCubeSpace('y', Math.PI / 2);
+        await this.waitForSolution(this.solutions[0]);
+        await this.rotateCubeSpace('y', -Math.PI / 2);
 
-  //   // let result = onSolve2thSideSol(this.cubeState);
-  //   // this.finalStates[1] = result.state;
-  //   // this.solutions[1] = result.solution;
+        startAnimationMode();
+      }
 
-  //   await this.waitForSolution(this.solutions[1]);
-  //   await this.rotateCubeSpace('x', Math.PI);
-  //   this.isSolving = false;
-  //   this.updateResetButtons();
-  // }
+      await this.rotateCubeSpace('x', -Math.PI);
+      await this.waitForSolution(this.solutions[1]);
+      await this.rotateCubeSpace('x', Math.PI);
+
+      this.isSolving = false;
+      this.updateResetButtons();
+
+      return;
+    }
+
+    this.solutions[0] = result.solution;
+    this.finalStates[0] = restoreCubeState(result.state);
+
+    // this.destroyLoader?.();
+    // settingsBackdropEl.classList.remove('is-open', 'is-loading');
+    // loaderEl.classList.add('is-hidden');
+
+    await this.rotateCubeSpace('y', Math.PI / 2);
+    await this.waitForSolution(this.solutions[0]);
+    await this.rotateCubeSpace('y', -Math.PI / 2);
+
+    this.isSolving = false;
+    this.updateResetButtons();
+  }
 
   async onSolve2thSide(startAnimationMode) {
+    this.isSolving = true;
+    this.updateResetButtons();
+
+    // settingsBackdropEl.classList.add('is-open', 'is-loading');
+    // loaderEl.classList.remove('is-hidden');
+    // this.destroyLoader = createRubikLoader(loaderEl);
+
+    // this.worker.postMessage({
+    //   type: 'solve2',
+    //   state: this.cubeState,
+    //   solution1: this.solutions[0],
+    //   finalState1: this.finalStates[0],
+    // });
+
     let result;
     if (!this.solSide1) {
       const firstResult = onSolve1thSideSol(this.cubeState);
@@ -1612,6 +1682,7 @@ export class Cube100 {
     }
 
     const seventhResult = onSolve7thEdgeSol(this.finalStates[5]);
+    // const seventhResult = onSolve7thEdgeSol(this.cubeState);
     this.solutions[6] = seventhResult.solution;
     this.finalStates[6] = seventhResult.state;
 
@@ -1654,6 +1725,104 @@ export class Cube100 {
     }
 
     await this.waitForSolution(this.solutions[6]);
+
+    this.isSolving = false;
+    this.updateResetButtons();
+  }
+
+  async onSolve8thEdges(startAnimationMode) {
+    let result;
+
+    if (!this.solSide1) {
+      const firstResult = onSolve1thSideSol(this.cubeState);
+      this.solutions[0] = firstResult.solution;
+      this.finalStates[0] = firstResult.state;
+    }
+
+    if (!this.solSide2) {
+      const secondResult = onSolve2thSideSol(this.finalStates[0]);
+      this.solutions[1] = secondResult.solution;
+      this.finalStates[1] = secondResult.state;
+    }
+
+    if (!this.solSide3) {
+      const thirdResult = onSolve3thSideSol(this.finalStates[1]);
+      this.solutions[2] = thirdResult.solution;
+      this.finalStates[2] = thirdResult.state;
+    }
+
+    if (!this.solSide4) {
+      const fourthResult = onSolve4thSideSol(this.finalStates[2]);
+      this.solutions[3] = fourthResult.solution;
+      this.finalStates[3] = fourthResult.state;
+    }
+
+    if (!this.solSide5) {
+      const fifthResult = onSolve5thSideSol(this.finalStates[3]);
+      this.solutions[4] = fifthResult.solution;
+      this.finalStates[4] = fifthResult.state;
+    }
+
+    if (!this.solEdge1) {
+      const sixthResult = onSolve6thEdgeSol(this.finalStates[4]);
+      this.solutions[5] = sixthResult.solution;
+      this.finalStates[5] = sixthResult.state;
+    }
+
+    if (!this.solEdge2) {
+      const seventhResult = onSolve7thEdgeSol(this.finalStates[5]);
+      this.solutions[6] = sixthResult.solution;
+      this.finalStates[6] = sixthResult.state;
+    }
+
+    const eighthResult = onSolve8thEdgeSol(this.finalStates[6]);
+    // const seventhResult = onSolve7thEdgeSol(this.cubeState);
+    this.solutions[7] = eighthResult.solution;
+    this.finalStates[7] = eighthResult.state;
+
+    this.isSolving = true;
+    this.updateResetButtons();
+
+    if (!this.solSide1) {
+      await this.rotateCubeSpace('y', Math.PI / 2);
+      await this.waitForSolution(this.solutions[0], false);
+      await this.rotateCubeSpace('y', -Math.PI / 2);
+    }
+
+    if (!this.solSide2) {
+      await this.rotateCubeSpace('x', -Math.PI);
+      await this.waitForSolution(this.solutions[1], false);
+      await this.rotateCubeSpace('x', Math.PI);
+    }
+
+    if (!this.solSide3) {
+      await this.waitForSolution(this.solutions[2], false);
+    }
+
+    if (!this.solSide4) {
+      await this.rotateCubeSpace('y', -Math.PI / 2);
+      await this.waitForSolution(this.solutions[3], false);
+      await this.rotateCubeSpace('y', Math.PI / 2);
+    }
+
+    if (!this.solSide5) {
+      await this.rotateCubeSpace('y', -Math.PI / 2);
+      await this.rotateCubeSpace('y', -Math.PI / 2);
+      await this.waitForSolution(this.solutions[4], false);
+      await this.rotateCubeSpace('y', Math.PI / 2);
+      await this.rotateCubeSpace('y', Math.PI / 2);
+    }
+
+    if (!this.solEdge1) {
+      await this.waitForSolution(this.solutions[5], false);
+    }
+
+    if (!this.solEdge2) {
+      await this.waitForSolution(this.solutions[6], false);
+      startAnimationMode();
+    }
+
+    await this.waitForSolution(this.solutions[7]);
 
     this.isSolving = false;
     this.updateResetButtons();
