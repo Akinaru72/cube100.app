@@ -20,7 +20,7 @@
     />
     <script type="module" crossorigin src="/cube100.app/index.js"></script>
     <link rel="modulepreload" crossorigin href="/cube100.app/assets/vendor-BxFfvzHg.js">
-    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-BUcCXlRm.css">
+    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-DYCnEfvs.css">
   </head>
   <body>
     <header class="header">
@@ -80,13 +80,13 @@
           </li>
           <li>
             <button class="solve-btn" id="solve-edges-part-1" type="button">
-              Step 6 - Edges Part 1
+              Step 6 - Edges Part One
               <!-- Solve Last Layer Corners Part 1 -->
             </button>
           </li>
           <li>
             <button class="solve-btn" id="solve-edges-part-2" type="button">
-              Step 7 - Edges Part 2
+              Step 7 - Edges Part Two
               <!-- Solve Last Layer Corners Part 2 -->
             </button>
           </li>
@@ -95,25 +95,25 @@
           <li>
             <button
               class="solve-btn"
-              id="solve-first-cross"
+              id="solve-edges-part-3"
               type="button"
               data-short="Step 8"
               data-medium="Step 8 - 1st Cross"
               data-full="Step 8 - First Layer Cross"
             >
-              Step 8 - First Layer Cross
+              Step 8 - Edges Part Three
             </button>
           </li>
           <li>
             <button
               class="solve-btn"
-              id="solve-first-corners"
+              id="solve-first-cross-corners"
               type="button"
               data-short="Step 9"
               data-medium="Step 9 - 1st Corner"
               data-full="Step 9 - First Layer Corners"
             >
-              Step 9 - First Layer Corners
+              Step 9 - First Layer Cross & Corners
               <!-- Solve First Layer Corners -->
             </button>
           </li>
@@ -205,6 +205,12 @@
     <footer class="footer"></footer>
 
     <div class="settings-backdrop">
+      <div
+        class="loader-cube is-hidden"
+        id="cube-loader-vis"
+        role="img"
+        aria-label="Animated 2×2 Rubik's cube loader"
+      ></div>
       <div class="settings-modal">
         <button class="settings-close" type="button">×</button>
 
