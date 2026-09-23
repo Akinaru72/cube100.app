@@ -38,11 +38,17 @@ export function onSolve2thSideSol(state) {
       // console.log(calcState.getRow('F', index).slice(1, -1));
     }
     checkEmptySides();
+    apply('2R');
+    apply('2L');
+    apply('2D');
+    checkEmptySides();
+    const aB = calcState.getCol('B', index).slice(1, -1);
+    console.log('aB--Last', aB);
   }
 
   function checkEmptySides() {
     const aB = calcState.getCol('B', index).slice(1, -1);
-
+    console.log('aB-I am HERE', aB);
     if (aB.every(el => el !== 'Y')) {
       console.log('ReturnEmptySides');
       return;
@@ -511,7 +517,7 @@ export function onSolve2thSideSol(state) {
   index = count - 1;
 
   console.log('count', count);
-  // index = 1;
+  // index = 7;
   for (let i = 1; i < count; i++) {
     console.log('index', index);
     createEmpty();

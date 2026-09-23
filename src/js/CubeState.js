@@ -164,8 +164,8 @@ export class CubeState {
   }
 
   getCol(face, col) {
-    console.log('getCol:', face, col);
-    console.log('this:', this);
+    // console.log('getCol:', face, col);
+    // console.log('this:', this);
 
     return this[face].map(row => row[col]);
   }
@@ -486,7 +486,7 @@ export class CubeState {
     let d = this.getRow('D', this.size - 1).slice(1, -1);
     // console.log(d);
     const arrays = [a, b, c, d];
-    console.log(arrays);
+    // console.log(arrays);
     for (const arr of arrays) {
       for (let i = 1; i < arr.length; i++) {
         if (arr[i] !== arr[0]) {
@@ -530,7 +530,7 @@ export class CubeState {
     let d = this.getRow('L', this.size - 1).slice(1, -1);
     // console.log(d);
     const arrays = [a, b, c, d];
-    console.log(arrays);
+    // console.log(arrays);
     for (const arr of arrays) {
       for (let i = 1; i < arr.length; i++) {
         if (arr[i] !== arr[0]) {
@@ -544,13 +544,13 @@ export class CubeState {
   isSolvedEgdesR() {
     // console.log('I am here');
     let a = this.getCol('R', 0).slice(1, -1);
-    // console.log(a);
+    console.log(a);
     let b = this.getRow('R', 0).slice(1, -1);
-    // console.log(b);
+    console.log(b);
     let c = this.getCol('R', this.size - 1).slice(1, -1);
-    // console.log(c);
+    console.log(c);
     let d = this.getRow('R', this.size - 1).slice(1, -1);
-    // console.log(d);
+    console.log(d);
     const arrays = [a, b, c, d];
     console.log(arrays);
     for (const arr of arrays) {

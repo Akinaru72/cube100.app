@@ -7,7 +7,8 @@ import { onSolve4thSideSol } from './solver/onSolve4thSide.js';
 import { onSolve5thSideSol } from './solver/onSolve5thSide.js';
 import { onSolve6thEdgeSol } from './solver/onSolve6thEdges.js';
 import { onSolve7thEdgeSol } from './solver/onSolve7thEdges.js';
-import { onSolve8thEdgeSol } from './solver/onSolve8thEdges.js';
+import { onSolve8thCrossSol } from './solver/onSolve8thCross.js';
+import { onSolve9thCornersSol } from './solver/onSolve9thCorners.js';
 
 import { createRubikLoader } from './solver/loader.js';
 
@@ -19,7 +20,8 @@ const solveFourthSide = document.querySelector('#solve-fourth-side');
 const solveFifthSixSide = document.querySelector('#solve-fifth-sixth-side');
 const solveEdges1 = document.querySelector('#solve-edges-part-1');
 const solveEdges2 = document.querySelector('#solve-edges-part-2');
-const solveEdges3 = document.querySelector('#solve-edges-part-3');
+const solveUpCross = document.querySelector('#solve-first-cross');
+const solveUpCorners = document.querySelector('#solve-first-corners');
 
 const settingsBackdropEl = document.querySelector('.settings-backdrop');
 const loaderEl = document.querySelector('#cube-loader-vis');
@@ -65,20 +67,21 @@ export class Cube100 {
     this.solSide5 = false;
     this.solEdge1 = false;
     this.solEdge2 = false;
-    this.solEdge3 = false;
+    this.solUpCross = false;
+    this.solUpCorners = false;
 
-    this.worker = new Worker(
-      new URL('./solver/solver.wolker.js', import.meta.url),
-      {
-        type: 'module',
-      }
-    );
-    this.worker.onmessage = this.onSolveFinished.bind(this);
+    // this.worker = new Worker(
+    //   new URL('./solver/solver.wolker.js', import.meta.url),
+    //   {
+    //     type: 'module',
+    //   }
+    // );
+    // this.worker.onmessage = this.onSolveFinished.bind(this);
   }
 
-  onSolveFinished(e) {
-    console.log('Worker result:', e.data);
-  }
+  // onSolveFinished(e) {
+  //   console.log('Worker result:', e.data);
+  // }
 
   updateResetButtons() {
     // console.log('cubeState.R', this.cubeState.U);
@@ -100,7 +103,8 @@ export class Cube100 {
       solveFifthSixSide.disabled = true;
       solveEdges1.disabled = true;
       solveEdges2.disabled = true;
-      solveEdges3.disabled = true;
+      solveUpCross.disabled = true;
+      solveUpCorners.disabled = true;
       return;
     }
 
@@ -111,6 +115,7 @@ export class Cube100 {
     } else {
       this.solSide1 = false;
       solveFisrtSide.disabled = false;
+      solveFisrtSide.disabled = this.cubeState.size < 4;
       // console.log('ABLE___ON');
     }
 
@@ -121,6 +126,7 @@ export class Cube100 {
     } else {
       this.solSide2 = false;
       solveSecondSide.disabled = false;
+      solveSecondSide.disabled = this.cubeState.size < 4;
       // console.log('ABLE___ON');
     }
 
@@ -131,6 +137,7 @@ export class Cube100 {
     } else {
       this.solSide3 = false;
       solveThirdSide.disabled = false;
+      solveThirdSide.disabled = this.cubeState.size < 4;
       // console.log('ABLE___ON');
     }
 
@@ -141,6 +148,7 @@ export class Cube100 {
     } else {
       this.solSide4 = false;
       solveFourthSide.disabled = false;
+      solveFourthSide.disabled = this.cubeState.size < 4;
       //  console.log('ABLE___ON');
     }
 
@@ -151,12 +159,14 @@ export class Cube100 {
     } else {
       this.solSide5 = false;
       solveFifthSixSide.disabled = false;
+      solveFifthSixSide.disabled = this.cubeState.size < 4;
       //  console.log('ABLE___ON');
     }
 
     if (
       this.cubeState.isSolvedEgdesU() &&
       this.cubeState.isSolvedEgdesD() &&
+      this.cubeState.isSolvedEgdesL() &&
       this.solSide5
     ) {
       this.solEdge1 = true;
@@ -165,27 +175,67 @@ export class Cube100 {
     } else {
       this.solEdge1 = false;
       solveEdges1.disabled = false;
+      solveEdges1.disabled = this.cubeState.size < 4;
       //  console.log('ABLE___ON');
     }
 
-    if (this.cubeState.isSolvedEgdesL() && this.solEdge1) {
+    if (this.cubeState.isSolvedEgdesR() && this.solEdge1) {
       this.solEdge2 = true;
       solveEdges2.disabled = true;
       //    console.log('IF___ABLE___OFF');
     } else {
       this.solEdge2 = false;
       solveEdges2.disabled = false;
+      solveEdges2.disabled = this.cubeState.size < 4;
       //  console.log('ABLE___ON');
     }
 
-    if (this.cubeState.isSolvedEgdesR() && this.solEdge2) {
-      this.solEdge3 = true;
-      solveEdges3.disabled = true;
+    if (
+      this.cubeState
+        .getCol('U', 0)
+        .slice(1, -1)
+        .every(el => el === 'WO') &&
+      this.cubeState
+        .getRow('U', 0)
+        .slice(1, -1)
+        .every(el => el === 'WB') &&
+      this.cubeState
+        .getCol('U', this.cubeState.size - 1)
+        .slice(1, -1)
+        .every(el => el === 'WR') &&
+      this.cubeState
+        .getRow('U', this.cubeState.size - 1)
+        .slice(1, -1)
+        .every(el => el === 'WG') &&
+      this.solEdge2
+    ) {
+      this.solUpCross = true;
+      solveUpCross.disabled = true;
       //    console.log('IF___ABLE___OFF');
     } else {
-      this.solEdge3 = false;
-      solveEdges3.disabled = false;
+      this.solUpCross = false;
+      solveUpCross.disabled = false;
+      solveUpCross.disabled = this.cubeState.size < 3;
+
       //  console.log('ABLE___ON');
+    }
+
+    if (
+      this.cubeState.getCell('U', 0, 0) === 'WOB' &&
+      this.cubeState.getCell('U', 0, this.cubeState.size - 1) === 'WBR' &&
+      this.cubeState.getCell('U', this.cubeState.size - 1, 0) === 'WGO' &&
+      this.cubeState.getCell(
+        'U',
+        this.cubeState.size - 1,
+        this.cubeState.size - 1
+      ) === 'WRG' &&
+      this.solUpCross
+    ) {
+      this.solUpCorners = true;
+      solveUpCorners.disabled = true;
+    } else {
+      this.solUpCorners = false;
+      solveUpCorners.disabled = false;
     }
 
     // this.cubeState.isSolvedEgdesU();
@@ -1296,52 +1346,52 @@ export class Cube100 {
     this.updateResetButtons();
   }
 
-  async onSolveFinished(e) {
-    const result = e.data;
+  // async onSolveFinished(e) {
+  //   const result = e.data;
 
-    if (result.type === 'solve2Finished') {
-      this.solutions[0] = result.solution1;
-      this.finalStates[0] = restoreCubeState(result.state1);
+  //   if (result.type === 'solve2Finished') {
+  //     this.solutions[0] = result.solution1;
+  //     this.finalStates[0] = restoreCubeState(result.state1);
 
-      this.solutions[1] = result.solution2;
-      this.finalStates[1] = restoreCubeState(result.state2);
+  //     this.solutions[1] = result.solution2;
+  //     this.finalStates[1] = restoreCubeState(result.state2);
 
-      // this.destroyLoader?.();
-      // settingsBackdropEl.classList.remove('is-open', 'is-loading');
-      // loaderEl.classList.add('is-hidden');
+  //     // this.destroyLoader?.();
+  //     // settingsBackdropEl.classList.remove('is-open', 'is-loading');
+  //     // loaderEl.classList.add('is-hidden');
 
-      if (!this.solSide1) {
-        await this.rotateCubeSpace('y', Math.PI / 2);
-        await this.waitForSolution(this.solutions[0]);
-        await this.rotateCubeSpace('y', -Math.PI / 2);
+  //     if (!this.solSide1) {
+  //       await this.rotateCubeSpace('y', Math.PI / 2);
+  //       await this.waitForSolution(this.solutions[0]);
+  //       await this.rotateCubeSpace('y', -Math.PI / 2);
 
-        startAnimationMode();
-      }
+  //       startAnimationMode();
+  //     }
 
-      await this.rotateCubeSpace('x', -Math.PI);
-      await this.waitForSolution(this.solutions[1]);
-      await this.rotateCubeSpace('x', Math.PI);
+  //     await this.rotateCubeSpace('x', -Math.PI);
+  //     await this.waitForSolution(this.solutions[1]);
+  //     await this.rotateCubeSpace('x', Math.PI);
 
-      this.isSolving = false;
-      this.updateResetButtons();
+  //     this.isSolving = false;
+  //     this.updateResetButtons();
 
-      return;
-    }
+  //     return;
+  //   }
 
-    this.solutions[0] = result.solution;
-    this.finalStates[0] = restoreCubeState(result.state);
+  //   this.solutions[0] = result.solution;
+  //   this.finalStates[0] = restoreCubeState(result.state);
 
-    // this.destroyLoader?.();
-    // settingsBackdropEl.classList.remove('is-open', 'is-loading');
-    // loaderEl.classList.add('is-hidden');
+  //   // this.destroyLoader?.();
+  //   // settingsBackdropEl.classList.remove('is-open', 'is-loading');
+  //   // loaderEl.classList.add('is-hidden');
 
-    await this.rotateCubeSpace('y', Math.PI / 2);
-    await this.waitForSolution(this.solutions[0]);
-    await this.rotateCubeSpace('y', -Math.PI / 2);
+  //   await this.rotateCubeSpace('y', Math.PI / 2);
+  //   await this.waitForSolution(this.solutions[0]);
+  //   await this.rotateCubeSpace('y', -Math.PI / 2);
 
-    this.isSolving = false;
-    this.updateResetButtons();
-  }
+  //   this.isSolving = false;
+  //   this.updateResetButtons();
+  // }
 
   async onSolve2thSide(startAnimationMode) {
     this.isSolving = true;
@@ -1588,19 +1638,24 @@ export class Cube100 {
       this.solutions[4] = fifthResult.solution;
       this.finalStates[4] = fifthResult.state;
     }
-    console.log(
-      'cubeState',
-      this.cubeState.getCell('F', 1, this.cubeState.size - 1)
-    );
-    console.log(
-      'finalStates[4]',
-      this.finalStates[4].getCell('F', 1, this.finalStates[4].size - 1)
-    );
+    // console.log(
+    //   'cubeState',
+    //   this.cubeState.getCell('F', 1, this.cubeState.size - 1)
+    // );
+    // console.log(
+    //   'finalStates[4]',
+    //   this.finalStates[4].getCell('F', 1, this.finalStates[4].size - 1)
+    // );
 
     const sixthResult = onSolve6thEdgeSol(this.finalStates[4]);
     // const sixthResult = onSolve6thEdgeSol(this.cubeState);
     this.solutions[5] = sixthResult.solution;
     this.finalStates[5] = sixthResult.state;
+
+    // if (this.finalStates[5].isSolvedEgdesR() && this.solEdge2) {
+    //   this.solutions[6] = [];
+    //   this.finalStates[6] = this.finalStates[5].clone();
+    // }
 
     this.isSolving = true;
     this.updateResetButtons();
@@ -1730,8 +1785,41 @@ export class Cube100 {
     this.updateResetButtons();
   }
 
-  async onSolve8thEdges(startAnimationMode) {
+  async onSolve8thCrossSol(startAnimationMode) {
     let result;
+    const solved = [
+      this.solSide1,
+      this.solSide2,
+      this.solSide3,
+      this.solSide4,
+      this.solSide5,
+      this.solEdge1,
+      this.solEdge2,
+    ];
+
+    solved.forEach((isSolved, i) => {
+      if (isSolved && !this.solutions[i]) {
+        this.solutions[i] = [];
+        this.finalStates[i] = this.cubeState.clone();
+      }
+    });
+
+    if (this.cubeState.size === 3) {
+      const eighthResult = onSolve8thCrossSol(this.cubeState);
+
+      this.solutions[7] = eighthResult.solution;
+      this.finalStates[7] = eighthResult.state;
+
+      this.isSolving = true;
+      this.updateResetButtons();
+
+      await this.waitForSolution(this.solutions[7]);
+
+      this.isSolving = false;
+      this.updateResetButtons();
+
+      return;
+    }
 
     if (!this.solSide1) {
       const firstResult = onSolve1thSideSol(this.cubeState);
@@ -1771,11 +1859,11 @@ export class Cube100 {
 
     if (!this.solEdge2) {
       const seventhResult = onSolve7thEdgeSol(this.finalStates[5]);
-      this.solutions[6] = sixthResult.solution;
-      this.finalStates[6] = sixthResult.state;
+      this.solutions[6] = seventhResult.solution;
+      this.finalStates[6] = seventhResult.state;
     }
 
-    const eighthResult = onSolve8thEdgeSol(this.finalStates[6]);
+    const eighthResult = onSolve8thCrossSol(this.finalStates[6]);
     // const seventhResult = onSolve7thEdgeSol(this.cubeState);
     this.solutions[7] = eighthResult.solution;
     this.finalStates[7] = eighthResult.state;
@@ -1823,6 +1911,146 @@ export class Cube100 {
     }
 
     await this.waitForSolution(this.solutions[7]);
+
+    this.isSolving = false;
+    this.updateResetButtons();
+  }
+
+  async onSolve9thCornersSol(startAnimationMode) {
+    let result;
+    const solved = [
+      this.solSide1,
+      this.solSide2,
+      this.solSide3,
+      this.solSide4,
+      this.solSide5,
+      this.solEdge1,
+      this.solEdge2,
+      this.solUpCross,
+    ];
+
+    solved.forEach((isSolved, i) => {
+      if (isSolved && !this.solutions[i]) {
+        this.solutions[i] = [];
+        this.finalStates[i] = this.cubeState.clone();
+      }
+    });
+    if (this.cubeState.size === 2) {
+      const ninthResult = onSolve9thCornersSol(this.cubeState);
+
+      this.solutions[8] = ninthResult.solution;
+      this.finalStates[8] = ninthResult.state;
+
+      this.isSolving = true;
+      this.updateResetButtons();
+
+      await this.waitForSolution(this.solutions[8]);
+
+      this.isSolving = false;
+      this.updateResetButtons();
+
+      return;
+    }
+
+    if (!this.solSide1) {
+      const firstResult = onSolve1thSideSol(this.cubeState);
+      this.solutions[0] = firstResult.solution;
+      this.finalStates[0] = firstResult.state;
+    }
+
+    if (!this.solSide2) {
+      const secondResult = onSolve2thSideSol(this.finalStates[0]);
+      this.solutions[1] = secondResult.solution;
+      this.finalStates[1] = secondResult.state;
+    }
+
+    if (!this.solSide3) {
+      const thirdResult = onSolve3thSideSol(this.finalStates[1]);
+      this.solutions[2] = thirdResult.solution;
+      this.finalStates[2] = thirdResult.state;
+    }
+
+    if (!this.solSide4) {
+      const fourthResult = onSolve4thSideSol(this.finalStates[2]);
+      this.solutions[3] = fourthResult.solution;
+      this.finalStates[3] = fourthResult.state;
+    }
+
+    if (!this.solSide5) {
+      const fifthResult = onSolve5thSideSol(this.finalStates[3]);
+      this.solutions[4] = fifthResult.solution;
+      this.finalStates[4] = fifthResult.state;
+    }
+
+    if (!this.solEdge1) {
+      const sixthResult = onSolve6thEdgeSol(this.finalStates[4]);
+      this.solutions[5] = sixthResult.solution;
+      this.finalStates[5] = sixthResult.state;
+    }
+
+    if (!this.solEdge2) {
+      const seventhResult = onSolve7thEdgeSol(this.finalStates[5]);
+      this.solutions[6] = seventhResult.solution;
+      this.finalStates[6] = seventhResult.state;
+    }
+
+    if (!this.solUpCross) {
+      const eighthResult = onSolve8thCrossSol(this.finalStates[6]);
+      this.solutions[7] = eighthResult.solution;
+      this.finalStates[7] = eighthResult.state;
+    }
+
+    const ninthResult = onSolve9thCornersSol(this.finalStates[7]);
+    this.solutions[8] = ninthResult.solution;
+    this.finalStates[8] = ninthResult.state;
+
+    this.isSolving = true;
+    this.updateResetButtons();
+
+    if (!this.solSide1) {
+      await this.rotateCubeSpace('y', Math.PI / 2);
+      await this.waitForSolution(this.solutions[0], false);
+      await this.rotateCubeSpace('y', -Math.PI / 2);
+    }
+
+    if (!this.solSide2) {
+      await this.rotateCubeSpace('x', -Math.PI);
+      await this.waitForSolution(this.solutions[1], false);
+      await this.rotateCubeSpace('x', Math.PI);
+    }
+
+    if (!this.solSide3) {
+      await this.waitForSolution(this.solutions[2], false);
+    }
+
+    if (!this.solSide4) {
+      await this.rotateCubeSpace('y', -Math.PI / 2);
+      await this.waitForSolution(this.solutions[3], false);
+      await this.rotateCubeSpace('y', Math.PI / 2);
+    }
+
+    if (!this.solSide5) {
+      await this.rotateCubeSpace('y', -Math.PI / 2);
+      await this.rotateCubeSpace('y', -Math.PI / 2);
+      await this.waitForSolution(this.solutions[4], false);
+      await this.rotateCubeSpace('y', Math.PI / 2);
+      await this.rotateCubeSpace('y', Math.PI / 2);
+    }
+
+    if (!this.solEdge1) {
+      await this.waitForSolution(this.solutions[5], false);
+    }
+
+    if (!this.solEdge2) {
+      await this.waitForSolution(this.solutions[6], false);
+    }
+
+    if (!this.solUpCross) {
+      await this.waitForSolution(this.solutions[7], false);
+      startAnimationMode();
+    }
+
+    await this.waitForSolution(this.solutions[8]);
 
     this.isSolving = false;
     this.updateResetButtons();

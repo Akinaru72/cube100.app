@@ -150,8 +150,8 @@ const solveFifthSixSide = document.querySelector('#solve-fifth-sixth-side');
 const solveEdges1 = document.querySelector('#solve-edges-part-1');
 const solveEdges2 = document.querySelector('#solve-edges-part-2');
 
-const solveEdges3 = document.querySelector('#solve-edges-part-3');
-const solveUpLayer = document.querySelector('#solve-first-cross-corners');
+const solveUpCross = document.querySelector('#solve-first-cross');
+const solveUpCorners = document.querySelector('#solve-first-corners');
 const solveMiddleLayer = document.querySelector('#solve-middle');
 const solveDownLayerCross = document.querySelector('#solve-third-cross-1');
 const solveDownLayerCrossConers = document.querySelector(
@@ -206,8 +206,8 @@ solveFifthSixSide.disabled = true;
 solveEdges1.disabled = true;
 solveEdges2.disabled = true;
 
-solveEdges3.disabled = true;
-solveUpLayer.disabled = true;
+solveUpCross.disabled = true;
+solveUpCorners.disabled = true;
 solveMiddleLayer.disabled = true;
 solveDownLayerCross.disabled = true;
 solveDownLayerCrossConers.disabled = true;
@@ -332,13 +332,20 @@ function startAnimationMode() {
 function showSpeedMenu() {
   if (!animationMode) return;
   speedMenuEl.classList.add('visible');
+  // console.log(
+  //   'SHOW:',
+  //   speedMenuEl.className,
+  //   speedMenuEl.getBoundingClientRect()
+  // );
   clearTimeout(speedMenuTimer);
   speedMenuTimer = setTimeout(() => {
+    // console.log('HIDE SPEED MENU BY TIMER');
     speedMenuEl.classList.remove('visible');
   }, 1000);
 }
 
 window.addEventListener('mousemove', () => {
+  // console.log('MOUSE MOVE', animationMode);
   if (!animationMode) return;
   showSpeedMenu();
 });
@@ -613,10 +620,16 @@ solveEdges2.addEventListener('click', async () => {
   await cube.onSolve7thEdges(startAnimationMode);
 });
 
-solveEdges3.addEventListener('click', async () => {
+solveUpCross.addEventListener('click', async () => {
   currentSolve = 7;
   startAnimationMode();
-  await cube.onSolve8thEdges(startAnimationMode);
+  await cube.onSolve8thCrossSol(startAnimationMode);
+});
+
+solveUpCorners.addEventListener('click', async () => {
+  currentSolve = 8;
+  startAnimationMode();
+  await cube.onSolve9thCornersSol(startAnimationMode);
 });
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);
@@ -650,6 +663,7 @@ let before = cubePieces.map(piece => ({
 // cube.Uprime(3);
 // cube.Fprime('2,4;7');
 // cube.R(); // [[size]]
+// cube.U(); // [[size]]
 // cube.R(); // [[size]]
 // cube.R(5); // [[5]]
 // cube.U('5'); // [[5]]
