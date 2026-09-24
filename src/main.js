@@ -153,12 +153,12 @@ const solveEdges2 = document.querySelector('#solve-edges-part-2');
 const solveUpCross = document.querySelector('#solve-first-cross');
 const solveUpCorners = document.querySelector('#solve-first-corners');
 const solveMiddleLayer = document.querySelector('#solve-middle');
-const solveDownLayerCross = document.querySelector('#solve-third-cross-1');
-const solveDownLayerCrossConers = document.querySelector(
+const solveLastCollectCross = document.querySelector('#solve-third-cross-1');
+const solveLastLayerCrossConers = document.querySelector(
   '#solve-third-cross-2'
 );
-const solveDownLayerConers = document.querySelector('#solve-third-corners-1');
-const solveDownLayerEdges = document.querySelector('#solve-third-corners-2');
+const solveLastLayerConers = document.querySelector('#solve-third-corners-1');
+const solveLastLayerEdges = document.querySelector('#solve-third-corners-2');
 
 const headerEl = document.querySelector('.header');
 const solveListFirstEl = document.querySelector('.solve-list-first');
@@ -209,10 +209,10 @@ solveEdges2.disabled = true;
 solveUpCross.disabled = true;
 solveUpCorners.disabled = true;
 solveMiddleLayer.disabled = true;
-solveDownLayerCross.disabled = true;
-solveDownLayerCrossConers.disabled = true;
-solveDownLayerConers.disabled = true;
-solveDownLayerEdges.disabled = true;
+solveLastCollectCross.disabled = true;
+solveLastLayerCrossConers.disabled = true;
+solveLastLayerConers.disabled = true;
+solveLastLayerEdges.disabled = true;
 
 // const camera = new THREE.PerspectiveCamera(
 //   75,
@@ -630,6 +630,18 @@ solveUpCorners.addEventListener('click', async () => {
   currentSolve = 8;
   startAnimationMode();
   await cube.onSolve9thCornersSol(startAnimationMode);
+});
+
+solveMiddleLayer.addEventListener('click', async () => {
+  currentSolve = 9;
+  startAnimationMode();
+  await cube.onSolve10thMiddleSol(startAnimationMode);
+});
+
+solveLastCollectCross.addEventListener('click', async () => {
+  currentSolve = 10;
+  startAnimationMode();
+  await cube.onSolve11thCrossSol(startAnimationMode);
 });
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);

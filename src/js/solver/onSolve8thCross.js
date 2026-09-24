@@ -5,7 +5,7 @@ export function onSolve8thCrossSol(state) {
   }
 
   const calcState = state.clone();
-  let solution = ['R'];
+  let solution = [];
   let index;
 
   function checkFLBRSides() {
@@ -158,7 +158,7 @@ export function onSolve8thCrossSol(state) {
   }
 
   checkFLBRSides();
-
+  console.log('Iam here');
   createCross();
 
   return {

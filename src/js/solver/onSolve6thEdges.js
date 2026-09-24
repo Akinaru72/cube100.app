@@ -255,7 +255,9 @@ export function onSolve6thEdgeSol(state) {
       console.log('I AM HERE');
       checkClearEdge();
       checkUpEdge();
+      checkRevEdges();
       checkClearEdge();
+
       a = calcState.getCol('U', 0).slice(1, -1);
       b = calcState.getRow('U', 0).slice(1, -1);
       c = calcState.getCol('U', calcState.size - 1).slice(1, -1);
@@ -275,6 +277,7 @@ export function onSolve6thEdgeSol(state) {
       apply('R');
       return;
     }
+
     // // // ----------------------------
     let e = calcState.getCol('D', 0).slice(1, -1);
     let f = calcState.getRow('D', 0).slice(1, -1);
@@ -295,6 +298,7 @@ export function onSolve6thEdgeSol(state) {
       checkClearEdge();
       checkDownEdge();
       checkClearEdge();
+
       e = calcState.getCol('D', 0).slice(1, -1);
       f = calcState.getRow('D', 0).slice(1, -1);
       g = calcState.getCol('D', calcState.size - 1).slice(1, -1);
@@ -990,11 +994,11 @@ export function onSolve6thEdgeSol(state) {
     }
     apply('F');
   }
-
+  // ======Important
   apply('L');
   apply("U'");
   apply("L'");
-
+  // ======Important
   //
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);

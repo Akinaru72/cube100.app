@@ -267,6 +267,7 @@ export function onSolve7thEdgeSol(state) {
       elementRa = Ra[indexMiddleEl];
     }
   }
+
   function solveEdge() {
     if (
       calcState.isSolvedEgdesD() &&
