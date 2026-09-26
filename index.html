@@ -20,7 +20,7 @@
     />
     <script type="module" crossorigin src="/cube100.app/index.js"></script>
     <link rel="modulepreload" crossorigin href="/cube100.app/assets/vendor-BxFfvzHg.js">
-    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-v5vziPXW.css">
+    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-CblsbzM1.css">
   </head>
   <body>
     <header class="header">
@@ -146,27 +146,14 @@
           <li>
             <button
               class="solve-btn"
-              id="solve-third-cross-2"
+              id="solve-third-corners-1"
               type="button"
               data-short="Step 12"
               data-medium="Step 12 - 3d Cross 2"
-              data-full="Step 12 - Last Layer Cross Part 2"
+              data-full="Step 12 - Last Layer Collect Corners"
             >
-              Step 12 - Last Layer Cross Part 2
+              Step 12 - Last Layer Collect Corners
               <!-- Solve Last Layer Cross Part 2 -->
-            </button>
-          </li>
-          <li>
-            <button
-              class="solve-btn"
-              id="solve-third-corners-1"
-              type="button"
-              data-short="Step 13"
-              data-medium="Step 13 - 3d Corners 1"
-              data-full="Step 13 - Last Layer Corners Part 1"
-            >
-              Step 13 - Last Layer Corners Part 1
-              <!-- Solve Last Layer Corners Part 1 -->
             </button>
           </li>
           <li>
@@ -174,11 +161,24 @@
               class="solve-btn"
               id="solve-third-corners-2"
               type="button"
+              data-short="Step 13"
+              data-medium="Step 13 - 3d Corners 1"
+              data-full="Step 13 - Last Layer Solver Corners"
+            >
+              Step 13 - Last Layer Solver Corners
+              <!-- Solve Last Layer Corners Part 1 -->
+            </button>
+          </li>
+          <li>
+            <button
+              class="solve-btn"
+              id="solve-third-cross-2"
+              type="button"
               data-short="Step 14"
               data-medium="Step 14 - 3d Corners 2"
-              data-full="Step 14 - Last Layer Corners Part 2"
+              data-full="Step 14 - Last Layer Solver Cross"
             >
-              Step 14 - Last Layer Corners Part 2
+              Step 14 - Last Layer Solver Cross
               <!-- Solve Last Layer Corners Part 2 -->
             </button>
           </li>
@@ -192,6 +192,7 @@
         </button>
       </nav>
       <div class="speed-menu" id="speedMenu">
+        <!-- <button class="sound-btn" id="soundButton">🔊</button> -->
         <button class="control-btn" data-speed="1">▶&nbsp;× 1</button>
         <button class="control-btn" data-speed="2">▶▶&nbsp;× 2</button>
         <button class="control-btn" data-speed="4">▶▶&nbsp;× 4</button>
@@ -199,6 +200,9 @@
         <button class="control-btn" data-speed="16">▶▶&nbsp;× 16</button>
         <button class="control-btn" data-speed="32">▶▶&nbsp;× 32</button>
         <button class="control-btn" data-speed="end">End</button>
+      </div>
+      <div class="sound-menu" id="soundMenu">
+        <button class="sound-btn" id="soundButton">♫</button>
       </div>
     </main>
 
