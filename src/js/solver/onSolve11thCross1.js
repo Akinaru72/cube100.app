@@ -23,6 +23,27 @@ export function onSolve11thCrossSol(state) {
   console.log(calcState.getCell('U', calcState.size - 1, 1));
 
   function createCross() {
+    if (
+      calcState
+        .getCol('U', 0)
+        .slice(1, -1)
+        .every(el => el[0] === 'Y') &&
+      calcState
+        .getRow('U', 0)
+        .slice(1, -1)
+        .every(el => el[0] === 'Y') &&
+      calcState
+        .getCol('U', calcState.size - 1)
+        .slice(1, -1)
+        .every(el => el[0] === 'Y') &&
+      calcState
+        .getRow('U', calcState.size - 1)
+        .slice(1, -1)
+        .every(el => el[0] === 'Y')
+    ) {
+      console.log('Solve');
+      return;
+    }
     let arrayUColors = [];
     let a = calcState.getCell('U', 1, 0)[0];
     arrayUColors.push(a);

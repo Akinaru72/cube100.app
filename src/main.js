@@ -59,6 +59,7 @@ function initRender() {
   ({ cubeGroup, cubePieces } = createRenderer(cubeState, size));
   // ({ cubeGroup, cubePieces } = createCubeRenderer(cubeState, size));
   cube = new Cube100(cubePieces, cubeGroup, size, cubeState, stopAnimationMode);
+
   scene.add(cubeGroup);
 }
 
@@ -154,20 +155,27 @@ const solveUpCross = document.querySelector('#solve-first-cross');
 const solveUpCorners = document.querySelector('#solve-first-corners');
 const solveMiddleLayer = document.querySelector('#solve-middle');
 const solveLastCollectCross = document.querySelector('#solve-third-cross-1');
-const solveLastLayerCrossConers = document.querySelector(
-  '#solve-third-cross-2'
+const solveLastCollectCorners = document.querySelector(
+  '#solve-third-corners-1'
 );
-const solveLastLayerConers = document.querySelector('#solve-third-corners-1');
-const solveLastLayerEdges = document.querySelector('#solve-third-corners-2');
+const solveLastSolveCorners = document.querySelector('#solve-third-corners-2');
+const solveLastSolveCross = document.querySelector('#solve-third-cross-2');
 
 const headerEl = document.querySelector('.header');
 const solveListFirstEl = document.querySelector('.solve-list-first');
 const solveListLastEl = document.querySelector('.solve-list-last');
 const cubeControlsEl = document.querySelector('.cube-controls');
 const speedMenuEl = document.querySelector('#speedMenu');
+const soundMenuEl = document.querySelector('#soundMenu');
+const soundButton = document.querySelector('#soundButton');
+soundButton.textContent = '♫';
+soundButton.classList.remove('off');
 
 let animationMode = false;
 let speedMenuTimer = null;
+
+// const chopin = new Audio('./public/shopen-nocturnes-op.-9.mp3');
+// chopin.loop = true;
 // -------------------------Reset-------------------------------------
 resetBtn.addEventListener('click', () => resetCube());
 
@@ -210,9 +218,9 @@ solveUpCross.disabled = true;
 solveUpCorners.disabled = true;
 solveMiddleLayer.disabled = true;
 solveLastCollectCross.disabled = true;
-solveLastLayerCrossConers.disabled = true;
-solveLastLayerConers.disabled = true;
-solveLastLayerEdges.disabled = true;
+solveLastCollectCorners.disabled = true;
+solveLastSolveCorners.disabled = true;
+solveLastSolveCross.disabled = true;
 
 // const camera = new THREE.PerspectiveCamera(
 //   75,
@@ -309,6 +317,15 @@ cubeSizeInput.addEventListener('keydown', event => {
 // =============================Scramle========================
 scrambleBtn.addEventListener('click', () => {
   startAnimationMode();
+  resetCube();
+  // if (cube.soundEnabled) {
+  //   cube.currentTrack = 0;
+  //   cube.tracks[0].currentTime = 0;
+  //   cube.tracks[0].play();
+  // }
+  // cube.currentTrack = 0;
+  // cube.tracks[0].currentTime = 0;
+  // cube.tracks[0].play();
   cube.scramble();
 });
 
@@ -329,9 +346,22 @@ function startAnimationMode() {
   // showSpeedMenu();
 }
 
+soundButton.addEventListener('click', () => {
+  cube.soundEnabled = !cube.soundEnabled;
+
+  // soundButton.textContent = '♫';
+  soundButton.classList.toggle('off', !cube.soundEnabled);
+  // soundButton.textContent = cube.soundEnabled ? '🔊' : '🔇';
+
+  cube.tracks.forEach(track => {
+    track.muted = !cube.soundEnabled;
+  });
+});
+
 function showSpeedMenu() {
   if (!animationMode) return;
   speedMenuEl.classList.add('visible');
+  soundMenuEl.classList.add('visible');
   // console.log(
   //   'SHOW:',
   //   speedMenuEl.className,
@@ -341,6 +371,7 @@ function showSpeedMenu() {
   speedMenuTimer = setTimeout(() => {
     // console.log('HIDE SPEED MENU BY TIMER');
     speedMenuEl.classList.remove('visible');
+    soundMenuEl.classList.remove('visible');
   }, 1000);
 }
 
@@ -354,6 +385,7 @@ function stopAnimationMode() {
   animationMode = false;
   clearTimeout(speedMenuTimer);
   speedMenuEl.classList.remove('visible');
+  soundMenuEl.classList.remove('visible');
   headerEl.classList.remove('is-hidden');
   solveListFirstEl.classList.remove('is-hidden');
   solveListLastEl.classList.remove('is-hidden');
@@ -375,15 +407,21 @@ speedMenuEl.addEventListener('click', event => {
 
     cube.isMoving = false;
     // cubeState = cube.finalState;
+    cube.tracks.forEach(track => {
+      track.pause();
+      track.currentTime = 0;
+    });
     scene.remove(cubeGroup);
     cubeGroup.clear();
 
     const savedFinalStates = cube.finalStates;
     const savedSolutions = cube.solutions;
+    const savedSoundEnabled = cube.soundEnabled;
     initRender();
 
     cube.finalStates = savedFinalStates;
     cube.solutions = savedSolutions;
+    cube.soundEnabled = savedSoundEnabled;
     stopAnimationMode();
     cube.updateResetButtons();
     return;
@@ -642,6 +680,40 @@ solveLastCollectCross.addEventListener('click', async () => {
   currentSolve = 10;
   startAnimationMode();
   await cube.onSolve11thCrossSol(startAnimationMode);
+});
+
+solveLastCollectCorners.addEventListener('click', async () => {
+  currentSolve = 11;
+  startAnimationMode();
+  await cube.onSolve12thCornersSol(startAnimationMode);
+});
+
+solveLastSolveCorners.addEventListener('click', async () => {
+  currentSolve = 12;
+  startAnimationMode();
+  await cube.onSolve13thCornersSol(startAnimationMode);
+});
+
+solveLastSolveCross.addEventListener('click', async () => {
+  currentSolve = 13;
+  startAnimationMode();
+  await cube.onSolve14thCrossSol(startAnimationMode);
+});
+
+solveBtn.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = 0;
+    cube.tracks[0].currentTime = 0;
+    cube.tracks[0].play();
+  }
+  // cube.currentTrack = 0;
+  // cube.tracks[0].currentTime = 0;
+  // cube.tracks[0].play();
+  // cube.chopin.currentTime = 0;
+  // cube.chopin.play();
+  currentSolve = 13;
+  startAnimationMode();
+  await cube.onSolve14thCrossSol(startAnimationMode);
 });
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);
