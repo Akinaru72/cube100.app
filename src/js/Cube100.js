@@ -92,14 +92,16 @@ export class Cube100 {
     // this.chopin = new Audio('./public/shopen-nocturnes-op.-9.mp3');
     // this.chopin.loop = true;
     this.tracks = [
+      new Audio(`${import.meta.env.BASE_URL}
+        /shopen-waltzes-op.-64-no.-2-in-c-sharp-minor-waltz-no.-7.mp3
+      `),
       new Audio(
-        '/shopen-waltzes-op.-64-no.-2-in-c-sharp-minor-waltz-no.-7.mp3'
+        `${import.meta.env.BASE_URL}/shopen-nocturne-in-d-flat-major-op.-27-no.2.mp3`
       ),
-      new Audio('/shopen-nocturne-in-d-flat-major-op.-27-no.2.mp3'),
-      new Audio('/shopen-chopin-nocturne-no.-20-in-c-sharp-minor-kk-iva16.mp3'),
-      new Audio('/shopen-nocturnes-op.-9.mp3'),
-
-      // new Audio('/audio/chopin3.mp3'),
+      new Audio(
+        `${import.meta.env.BASE_URL}/shopen-chopin-nocturne-no.-20-in-c-sharp-minor-kk-iva16.mp3`
+      ),
+      new Audio(`${import.meta.env.BASE_URL}/shopen-nocturnes-op.-9.mp3`),
     ];
 
     this.soundEnabled = true;

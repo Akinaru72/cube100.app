@@ -6,6 +6,9 @@ import SortCss from 'postcss-sort-media-queries';
 
 export default defineConfig(({ command }) => {
   return {
+    root: 'src',
+    base: '/cube100.app/',
+
     define: {
       [command === 'serve' ? 'global' : '_global']: {},
     },
