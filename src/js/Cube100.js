@@ -178,7 +178,14 @@ export class Cube100 {
       solveBtn.disabled = true;
       return;
     }
+    if (this.isMoving === false) {
+      this.tracks.forEach(track => {
+        track.pause();
+        track.currentTime = 0;
+      });
 
+      this.currentTrack = 0;
+    }
     if (this.cubeState.isSolvedU()) {
       this.solSide1 = true;
       solveFisrtSide.disabled = true;
