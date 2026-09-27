@@ -93,13 +93,11 @@ export class Cube100 {
     // this.chopin.loop = true;
     this.tracks = [
       new Audio(
-        '../public/shopen-waltzes-op.-64-no.-2-in-c-sharp-minor-waltz-no.-7.mp3'
+        '/shopen-waltzes-op.-64-no.-2-in-c-sharp-minor-waltz-no.-7.mp3'
       ),
-      new Audio('../public/shopen-nocturne-in-d-flat-major-op.-27-no.2.mp3'),
-      new Audio(
-        '../public/shopen-chopin-nocturne-no.-20-in-c-sharp-minor-kk-iva16.mp3'
-      ),
-      new Audio('../public/shopen-nocturnes-op.-9.mp3'),
+      new Audio('/shopen-nocturne-in-d-flat-major-op.-27-no.2.mp3'),
+      new Audio('/shopen-chopin-nocturne-no.-20-in-c-sharp-minor-kk-iva16.mp3'),
+      new Audio('/shopen-nocturnes-op.-9.mp3'),
 
       // new Audio('/audio/chopin3.mp3'),
     ];
@@ -107,13 +105,8 @@ export class Cube100 {
     this.soundEnabled = true;
     this.currentTrack = 0;
 
-    this.tracks.forEach((track, index) => {
-      track.addEventListener('ended', () => {
-        this.currentTrack = (index + 1) % this.tracks.length;
-        this.tracks[this.currentTrack].currentTime = 0;
-        this.tracks[this.currentTrack].play();
-      });
-    });
+    //
+
     // this.worker = new Worker(
     //   new URL('./solver/solver.wolker.js', import.meta.url),
     //   {
@@ -121,6 +114,20 @@ export class Cube100 {
     //   }
     // );
     // this.worker.onmessage = this.onSolveFinished.bind(this);
+    this.tracks.forEach((track, index) => {
+      track.addEventListener('ended', () => {
+        let nextTrack;
+
+        do {
+          nextTrack = Math.floor(Math.random() * this.tracks.length);
+        } while (nextTrack === index);
+
+        this.currentTrack = nextTrack;
+
+        this.tracks[this.currentTrack].currentTime = 0;
+        this.tracks[this.currentTrack].play();
+      });
+    });
   }
 
   // onSolveFinished(e) {

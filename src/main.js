@@ -181,13 +181,12 @@ resetBtn.addEventListener('click', () => resetCube());
 
 function resetCube() {
   currentSolve = undefined;
+  const savedSoundEnabled = cube.soundEnabled;
   scene.remove(cubeGroup);
 
   cubeGroup.clear();
   cubeState = new CubeState(size);
-  // cubeGroup = ;
-  // cubePieces = null;
-  // cube = null;
+
   if (renderMode === 'bulged' || renderMode === 'spherical') {
     const cameraDistance = size * 1.4;
 
@@ -198,8 +197,16 @@ function resetCube() {
 
   camera.lookAt(0, 0, 0);
   scrambleBtn.disabled = false;
+  // const savedSoundEnabled = cube.soundEnabled;
   // cube.updateResetButtons();
   initRender();
+  cube.soundEnabled = savedSoundEnabled;
+
+  cube.tracks.forEach(track => {
+    track.muted = !cube.soundEnabled;
+  });
+
+  // cube.soundEnabled = savedSoundEnabled;
   cube.updateResetButtons();
 }
 //  ----------------------------------------------------------------
@@ -317,16 +324,21 @@ cubeSizeInput.addEventListener('keydown', event => {
 // =============================Scramle========================
 scrambleBtn.addEventListener('click', () => {
   startAnimationMode();
+  // const savedSoundEnabled = cube.soundEnabled;
+  console.log('Before_Reset', cube.soundEnabled);
   resetCube();
-  // if (cube.soundEnabled) {
-  //   cube.currentTrack = 0;
-  //   cube.tracks[0].currentTime = 0;
-  //   cube.tracks[0].play();
-  // }
-  // cube.currentTrack = 0;
-  // cube.tracks[0].currentTime = 0;
-  // cube.tracks[0].play();
+  // cube.soundEnabled = savedSoundEnabled;
+
+  console.log('After_reset', cube.soundEnabled);
   cube.scramble();
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
+
+  // cube.soundEnabled = savedSoundEnabled;
+  console.log('After_scramble', cube.soundEnabled);
 });
 
 function startAnimationMode() {
@@ -356,6 +368,13 @@ soundButton.addEventListener('click', () => {
   cube.tracks.forEach(track => {
     track.muted = !cube.soundEnabled;
   });
+
+  if (
+    (cube.soundEnabled && cube.isMoving) ||
+    (cube.soundEnabled && cube.isSolving)
+  ) {
+    cube.tracks[cube.currentTrack].play();
+  }
 });
 
 function showSpeedMenu() {
@@ -422,6 +441,11 @@ speedMenuEl.addEventListener('click', event => {
     cube.finalStates = savedFinalStates;
     cube.solutions = savedSolutions;
     cube.soundEnabled = savedSoundEnabled;
+    cube.tracks.forEach(track => {
+      track.muted = !cube.soundEnabled;
+    });
+
+    soundButton.classList.toggle('off', !cube.soundEnabled);
     stopAnimationMode();
     cube.updateResetButtons();
     return;
@@ -430,54 +454,6 @@ speedMenuEl.addEventListener('click', event => {
 });
 
 // -------------------------Local----------------
-// function saveCubeState() {
-//   console.log('MainClickSavecubeState.U', cubeState.U);
-//   const state = {
-//     size: cubeState.size,
-//     U: cubeState.U,
-//     D: cubeState.D,
-//     F: cubeState.F,
-//     B: cubeState.B,
-//     L: cubeState.L,
-//     R: cubeState.R,
-//   };
-//   localStorage.setItem('cubeState', JSON.stringify(state));
-//   console.log('Состояние кубика сохранено');
-// }
-
-// saveBtn.addEventListener('click', saveCubeState);
-
-// function loadCubeState() {
-//   const saved = localStorage.getItem('cubeState');
-
-//   if (!saved) {
-//     console.log('Сохранённого состояния нет');
-//     return;
-//   }
-
-//   const data = JSON.parse(saved);
-//   size = data.size;
-//   cubeState = new CubeState(size);
-//   cubeState.U = data.U;
-//   cubeState.D = data.D;
-//   cubeState.F = data.F;
-//   cubeState.B = data.B;
-//   cubeState.L = data.L;
-//   cubeState.R = data.R;
-
-//   console.log('Состояние загружено');
-//   console.log(data);
-//   scene.remove(cubeGroup);
-//   cubeGroup.clear();
-
-//   scrambleBtn.disabled = false;
-//   initRender();
-
-//   camera.position.set(size, size, size);
-//   cube.updateResetButtons();
-// }
-
-// loadBtn.addEventListener('click', loadCubeState);
 
 function saveCubeState() {
   console.log('MainClickSavecubeState.U', cubeState.U);
@@ -617,84 +593,154 @@ loadBtn.addEventListener('click', loadCubeState);
 // ------------------------simply algoritms--------------------------
 let currentSolve;
 solveFisrtSide.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 0;
   startAnimationMode();
   await cube.onSolve1thSide();
 });
 
 solveSecondSide.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 1;
   startAnimationMode();
   await cube.onSolve2thSide(startAnimationMode);
 });
 
 solveThirdSide.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 2;
   startAnimationMode();
   await cube.onSolve3thSide(startAnimationMode);
 });
 
 solveFourthSide.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 3;
   startAnimationMode();
   await cube.onSolve4thSide(startAnimationMode);
 });
 
 solveFifthSixSide.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 4;
   startAnimationMode();
   await cube.onSolve5thSide(startAnimationMode);
 });
 
 solveEdges1.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 5;
   startAnimationMode();
   await cube.onSolve6thEdges(startAnimationMode);
 });
 
 solveEdges2.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 6;
   startAnimationMode();
   await cube.onSolve7thEdges(startAnimationMode);
 });
 
 solveUpCross.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 7;
   startAnimationMode();
   await cube.onSolve8thCrossSol(startAnimationMode);
 });
 
 solveUpCorners.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 8;
   startAnimationMode();
   await cube.onSolve9thCornersSol(startAnimationMode);
 });
 
 solveMiddleLayer.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 9;
   startAnimationMode();
   await cube.onSolve10thMiddleSol(startAnimationMode);
 });
 
 solveLastCollectCross.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 10;
   startAnimationMode();
   await cube.onSolve11thCrossSol(startAnimationMode);
 });
 
 solveLastCollectCorners.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 11;
   startAnimationMode();
   await cube.onSolve12thCornersSol(startAnimationMode);
 });
 
 solveLastSolveCorners.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 12;
   startAnimationMode();
   await cube.onSolve13thCornersSol(startAnimationMode);
 });
 
 solveLastSolveCross.addEventListener('click', async () => {
+  if (cube.soundEnabled) {
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
+  }
   currentSolve = 13;
   startAnimationMode();
   await cube.onSolve14thCrossSol(startAnimationMode);
@@ -702,15 +748,11 @@ solveLastSolveCross.addEventListener('click', async () => {
 
 solveBtn.addEventListener('click', async () => {
   if (cube.soundEnabled) {
-    cube.currentTrack = 0;
-    cube.tracks[0].currentTime = 0;
-    cube.tracks[0].play();
+    cube.currentTrack = Math.floor(Math.random() * cube.tracks.length);
+    cube.tracks[cube.currentTrack].currentTime = 0;
+    cube.tracks[cube.currentTrack].play();
   }
-  // cube.currentTrack = 0;
-  // cube.tracks[0].currentTime = 0;
-  // cube.tracks[0].play();
-  // cube.chopin.currentTime = 0;
-  // cube.chopin.play();
+
   currentSolve = 13;
   startAnimationMode();
   await cube.onSolve14thCrossSol(startAnimationMode);
