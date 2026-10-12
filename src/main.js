@@ -165,7 +165,8 @@ const headerEl = document.querySelector('.header');
 const solveListFirstEl = document.querySelector('.solve-list-first');
 const solveListLastEl = document.querySelector('.solve-list-last');
 const cubeControlsEl = document.querySelector('.cube-controls');
-// const speedMenuEl = document.querySelector('#speedMenu');
+const speedMenuEl = document.querySelector('#speedMenu');
+
 const soundMenuEl = document.querySelector('#soundMenu');
 const soundButton = document.querySelector('#soundButton');
 soundButton.textContent = '♫';
