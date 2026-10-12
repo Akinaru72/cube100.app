@@ -165,7 +165,7 @@ const headerEl = document.querySelector('.header');
 const solveListFirstEl = document.querySelector('.solve-list-first');
 const solveListLastEl = document.querySelector('.solve-list-last');
 const cubeControlsEl = document.querySelector('.cube-controls');
-const speedMenuEl = document.querySelector('#speedMenu');
+// const speedMenuEl = document.querySelector('#speedMenu');
 const soundMenuEl = document.querySelector('#soundMenu');
 const soundButton = document.querySelector('#soundButton');
 soundButton.textContent = '♫';
@@ -208,6 +208,11 @@ function resetCube() {
 
   // cube.soundEnabled = savedSoundEnabled;
   cube.updateResetButtons();
+  console.log(
+    'Reset-sol12',
+    cube.solLastCross1,
+    solveLastCollectCorners.disabled
+  );
 }
 //  ----------------------------------------------------------------
 solveBtn.disabled = true;
@@ -304,10 +309,19 @@ settingsCancelBtn.addEventListener('click', () => {
 
 settingsApplyBtn.addEventListener('click', () => {
   const newSize = Number(cubeSizeInput.value);
-  if (newSize > 100) {
+  if (
+    cubeSizeInput.value.trim() === '' ||
+    !Number.isInteger(newSize) ||
+    newSize < 2 ||
+    newSize > 100
+  ) {
     cubeSizeInput.value = size;
     return;
   }
+  // if (newSize > 100) {
+  //   cubeSizeInput.value = size;
+  //   return;
+  // }
   renderMode = renderModeSelect.value;
   size = newSize;
 
@@ -321,7 +335,7 @@ cubeSizeInput.addEventListener('keydown', event => {
     settingsApplyBtn.click();
   }
 });
-// =============================Scramle========================
+// =============================Scramble========================
 scrambleBtn.addEventListener('click', () => {
   startAnimationMode();
   // const savedSoundEnabled = cube.soundEnabled;
@@ -419,10 +433,18 @@ speedMenuEl.addEventListener('click', event => {
     console.log('currentSolve', currentSolve);
     console.log(cube.finalStates[currentSolve]);
     if (currentSolve !== undefined) {
-      cubeState = cube.finalStates[currentSolve];
+      const stateIndex =
+        cube.size === 2 && currentSolve === 13 ? 12 : currentSolve;
+
+      cubeState = cube.finalStates[stateIndex];
     } else {
       cubeState = cube.finalScrambleState;
     }
+    // if (currentSolve !== undefined) {
+    //   cubeState = cube.finalStates[currentSolve];
+    // } else {
+    //   cubeState = cube.finalScrambleState;
+    // }
 
     cube.isMoving = false;
     // cubeState = cube.finalState;
@@ -756,6 +778,7 @@ solveBtn.addEventListener('click', async () => {
   currentSolve = 13;
   startAnimationMode();
   await cube.onSolve14thCrossSol(startAnimationMode);
+  stopAnimationMode();
 });
 // ------------------------------------------------------------------
 // console.log('Front', cubeState.F);

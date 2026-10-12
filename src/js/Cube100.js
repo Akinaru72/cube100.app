@@ -388,7 +388,7 @@ export class Cube100 {
       this.solLastCross1
     ) {
       this.solLastCorners1 = true;
-      solveLastCollectCross.disabled = true;
+      solveLastCollectCorners.disabled = true;
       //    console.log('IF___ABLE___OFF');
     } else {
       this.solLastCorners1 = false;
@@ -1515,6 +1515,7 @@ export class Cube100 {
     });
   }
   async onSolve1thSide() {
+    console.log('Solve1__async');
     this.isSolving = true;
     this.updateResetButtons();
 
@@ -2251,6 +2252,7 @@ export class Cube100 {
   }
 
   async onSolve10thMiddleSol(startAnimationMode) {
+    console.log('УПРАВЛЯЮЩИЙ МЕТОД', this.size);
     let result;
 
     const solved = [
@@ -2326,10 +2328,23 @@ export class Cube100 {
       this.finalStates[8] = ninthResult.state;
     }
 
-    const tenthResult = onSolve10thMiddleSol(this.finalStates[8]);
+    console.log('SIZE:', this.size);
+    if (this.size === 2) {
+      console.log('!10 AUUU YYY  10!!!!');
+      this.solutions[9] = [];
+      this.finalStates[9] = this.finalStates[8];
+      console.log('Solve10IF_____');
+    } else {
+      const tenthResult = onSolve10thMiddleSol(this.finalStates[8]);
 
-    this.solutions[9] = tenthResult.solution;
-    this.finalStates[9] = tenthResult.state;
+      this.solutions[9] = tenthResult.solution;
+      this.finalStates[9] = tenthResult.state;
+    }
+
+    // const tenthResult = onSolve10thMiddleSol(this.finalStates[8]);
+
+    // this.solutions[9] = tenthResult.solution;
+    // this.finalStates[9] = tenthResult.state;
 
     this.isSolving = true;
     this.updateResetButtons();
@@ -2380,8 +2395,10 @@ export class Cube100 {
       await this.waitForSolution(this.solutions[8], false);
       startAnimationMode();
     }
-
-    await this.waitForSolution(this.solutions[9]);
+    if (this.size !== 2) {
+      await this.waitForSolution(this.solutions[9]);
+    }
+    // await this.waitForSolution(this.solutions[9]);
 
     this.isSolving = false;
     this.updateResetButtons();
@@ -2470,10 +2487,15 @@ export class Cube100 {
       this.finalStates[9] = tenthResult.state;
     }
 
-    const eleventhResult = onSolve11thCrossSol(this.finalStates[9]);
+    if (this.size === 2) {
+      this.solutions[10] = [];
+      this.finalStates[10] = this.finalStates[9];
+    } else {
+      const eleventhResult = onSolve11thCrossSol(this.finalStates[9]);
 
-    this.solutions[10] = eleventhResult.solution;
-    this.finalStates[10] = eleventhResult.state;
+      this.solutions[10] = eleventhResult.solution;
+      this.finalStates[10] = eleventhResult.state;
+    }
 
     this.isSolving = true;
     this.updateResetButtons();
@@ -2528,8 +2550,9 @@ export class Cube100 {
       await this.waitForSolution(this.solutions[9], false);
       startAnimationMode();
     }
-
-    await this.waitForSolution(this.solutions[10]);
+    if (this.size !== 2) {
+      await this.waitForSolution(this.solutions[10]);
+    }
 
     this.isSolving = false;
     this.updateResetButtons();
@@ -2865,6 +2888,7 @@ export class Cube100 {
   }
 
   async onSolve14thCrossSol(startAnimationMode) {
+    console.log('SizeCube', this.size);
     let result;
 
     const solved = [
@@ -2944,17 +2968,38 @@ export class Cube100 {
       this.finalStates[8] = ninthResult.state;
     }
 
-    if (!this.solMiddleLayer) {
-      const tenthResult = onSolve10thMiddleSol(this.finalStates[8]);
-      this.solutions[9] = tenthResult.solution;
-      this.finalStates[9] = tenthResult.state;
+    if (this.size === 2) {
+      console.log('I am here 14Sol IF2');
+      this.solutions[9] = [];
+      this.finalStates[9] = this.finalStates[8];
+
+      this.solutions[10] = [];
+      this.finalStates[10] = this.finalStates[9];
+    } else {
+      if (!this.solMiddleLayer) {
+        const tenthResult = onSolve10thMiddleSol(this.finalStates[8]);
+        this.solutions[9] = tenthResult.solution;
+        this.finalStates[9] = tenthResult.state;
+      }
+
+      if (!this.solLastCross1) {
+        const eleventhResult = onSolve11thCrossSol(this.finalStates[9]);
+        this.solutions[10] = eleventhResult.solution;
+        this.finalStates[10] = eleventhResult.state;
+      }
     }
 
-    if (!this.solLastCross1) {
-      const eleventhResult = onSolve11thCrossSol(this.finalStates[9]);
-      this.solutions[10] = eleventhResult.solution;
-      this.finalStates[10] = eleventhResult.state;
-    }
+    // if (!this.solMiddleLayer) {
+    //   const tenthResult = onSolve10thMiddleSol(this.finalStates[8]);
+    //   this.solutions[9] = tenthResult.solution;
+    //   this.finalStates[9] = tenthResult.state;
+    // }
+
+    // if (!this.solLastCross1) {
+    //   const eleventhResult = onSolve11thCrossSol(this.finalStates[9]);
+    //   this.solutions[10] = eleventhResult.solution;
+    //   this.finalStates[10] = eleventhResult.state;
+    // }
 
     if (!this.solLastCorners1) {
       const twelvthResult = onSolve12thCornersSol(this.finalStates[10]);
@@ -2967,11 +3012,18 @@ export class Cube100 {
       this.solutions[12] = thirthResult.solution;
       this.finalStates[12] = thirthResult.state;
     }
+    if (this.size !== 2) {
+      const fourtyResult = onSolve14thCrossSol(this.finalStates[12]);
 
-    const fourtyResult = onSolve14thCrossSol(this.finalStates[12]);
+      this.solutions[13] = fourtyResult.solution;
+      this.finalStates[13] = fourtyResult.state;
+    }
 
-    this.solutions[13] = fourtyResult.solution;
-    this.finalStates[13] = fourtyResult.state;
+    // const fourtyResult = onSolve14thCrossSol(this.finalStates[12]);
+    // console.log('End_onSolve14thCrossSol');
+
+    // this.solutions[13] = fourtyResult.solution;
+    // this.finalStates[13] = fourtyResult.state;
 
     this.isSolving = true;
     this.updateResetButtons();
@@ -3022,13 +3074,23 @@ export class Cube100 {
       await this.waitForSolution(this.solutions[8], false);
     }
 
-    if (!this.solMiddleLayer) {
-      await this.waitForSolution(this.solutions[9], false);
+    if (this.size !== 2) {
+      if (!this.solMiddleLayer) {
+        await this.waitForSolution(this.solutions[9], false);
+      }
+
+      if (!this.solLastCross1) {
+        await this.waitForSolution(this.solutions[10], false);
+      }
     }
 
-    if (!this.solLastCross1) {
-      await this.waitForSolution(this.solutions[10], false);
-    }
+    // if (!this.solMiddleLayer) {
+    //   await this.waitForSolution(this.solutions[9], false);
+    // }
+
+    // if (!this.solLastCross1) {
+    //   await this.waitForSolution(this.solutions[10], false);
+    // }
 
     if (!this.solLastCorners1) {
       await this.waitForSolution(this.solutions[11], false);
@@ -3040,7 +3102,10 @@ export class Cube100 {
       startAnimationMode();
     }
 
-    await this.waitForSolution(this.solutions[13]);
+    if (this.size !== 2) {
+      await this.waitForSolution(this.solutions[13]);
+    }
+    // await this.waitForSolution(this.solutions[13]);
 
     this.isSolving = false;
     this.updateResetButtons();
