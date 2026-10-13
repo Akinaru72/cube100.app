@@ -53,6 +53,12 @@ function restoreCubeState(data) {
   return state;
 }
 
+// function resetSpeedMenu() {
+//   speedMenuEl.querySelectorAll('button').forEach(button => {
+//     button.classList.toggle('active', button.dataset.speed === '1');
+//   });
+// }
+
 export class Cube100 {
   constructor(cubePieces, cubeGroup, size, cubeState, onAnimationEnd) {
     // constructor(cubePieces, cubeGroup, size, cubeState) {
@@ -88,6 +94,8 @@ export class Cube100 {
     this.solLastCorners1 = false;
     this.solLastCorners2 = false;
     this.solLastCross2 = false;
+
+    // this.isPaused = false;
 
     // this.chopin = new Audio('./public/shopen-nocturnes-op.-9.mp3');
     // this.chopin.loop = true;
@@ -806,6 +814,7 @@ export class Cube100 {
   }
 
   updateRotation() {
+    // if (this.isPaused) return;
     if (!this.currentRotation) return;
 
     if (this.instantFinish) {
@@ -938,10 +947,10 @@ export class Cube100 {
 
     if (this.rotationQueue.length === 0) {
       this.isMoving = false;
-
+      // resetSpeedMenu();
       // this.isCubeMoving = false;
       this.instantFinish = false;
-      this.rotationSpeed = 0.1;
+      // this.rotationSpeed = 0.1;
       // if (this.resolveExecute) {
       //   this.resolveExecute();
       //   this.resolveExecute = null;

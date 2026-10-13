@@ -603,3 +603,9 @@ img {
 .speed-menu {
   z-index: 99999;
 }
+
+.control-btn.active {
+  background-color: #555;
+  color: aquamarine;
+  border: 1px solid #fff;
+}

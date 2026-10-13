@@ -167,6 +167,8 @@ const solveListLastEl = document.querySelector('.solve-list-last');
 const cubeControlsEl = document.querySelector('.cube-controls');
 const speedMenuEl = document.querySelector('#speedMenu');
 
+const pauseButton = document.querySelector('#pauseButton');
+
 const soundMenuEl = document.querySelector('#soundMenu');
 const soundButton = document.querySelector('#soundButton');
 soundButton.textContent = '♫';
@@ -406,7 +408,7 @@ function showSpeedMenu() {
     // console.log('HIDE SPEED MENU BY TIMER');
     speedMenuEl.classList.remove('visible');
     soundMenuEl.classList.remove('visible');
-  }, 1000);
+  }, 2000);
 }
 
 window.addEventListener('mousemove', () => {
@@ -415,7 +417,15 @@ window.addEventListener('mousemove', () => {
   showSpeedMenu();
 });
 
+function resetSpeedMenu() {
+  speedMenuEl.querySelectorAll('button').forEach(button => {
+    button.classList.toggle('active', button.dataset.speed === '1');
+  });
+  cube.rotationSpeed = 0.1;
+}
+
 function stopAnimationMode() {
+  resetSpeedMenu();
   animationMode = false;
   clearTimeout(speedMenuTimer);
   speedMenuEl.classList.remove('visible');
@@ -426,9 +436,22 @@ function stopAnimationMode() {
   cubeControlsEl.classList.remove('is-hidden');
 }
 
+// pauseButton.addEventListener('click', () => {
+//   console.log('Pause');
+//   cube.isPaused = true;
+// });
+// speedMenuEl.querySelectorAll('button').forEach(button => {
+//   button.classList.toggle('active', button === event.target.closest('button'));
+// });
+
 speedMenuEl.addEventListener('click', event => {
   const button = event.target.closest('button');
   if (!button) return;
+
+  speedMenuEl.querySelectorAll('button').forEach(btn => {
+    btn.classList.toggle('active', btn === button);
+  });
+
   const speed = button.dataset.speed;
   if (speed === 'end') {
     console.log('currentSolve', currentSolve);
@@ -473,6 +496,7 @@ speedMenuEl.addEventListener('click', event => {
     cube.updateResetButtons();
     return;
   }
+  // cube.isPaused = false;
   cube.rotationSpeed = 0.1 * Number(speed);
 });
 
