@@ -420,8 +420,13 @@ function showSpeedMenu() {
   }, 2000);
 }
 
-window.addEventListener('mousemove', () => {
-  // console.log('MOUSE MOVE', animationMode);
+// window.addEventListener('mousemove', () => {
+//   // console.log('MOUSE MOVE', animationMode);
+//   if (!animationMode) return;
+//   showSpeedMenu();
+// });
+
+window.addEventListener('pointerdown', () => {
   if (!animationMode) return;
   showSpeedMenu();
 });
