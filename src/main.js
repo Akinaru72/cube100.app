@@ -34,7 +34,7 @@ import { DEFAULT_SIZE } from './js/constants';
 import { CubeState } from './js/CubeState.js';
 let size = DEFAULT_SIZE;
 
-let renderMode = 'classic';
+let renderMode = 'expanded';
 let cubeState = new CubeState(size);
 const scene = new THREE.Scene();
 
@@ -78,6 +78,7 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
+
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
 });
@@ -119,11 +120,6 @@ rimLight.position.set(-6, 4, -6);
 scene.add(rimLight);
 scene.background = new THREE.Color(0x444444);
 // ------------------------End Light-----------------------
-
-const controls = new OrbitControls(camera, renderer.domElement);
-controls.enableDamping = true;
-camera.position.set(size, size, size);
-camera.lookAt(0, 0, 0);
 
 // ====================
 // CAMERA
@@ -182,6 +178,15 @@ let speedMenuTimer = null;
 // -------------------------Reset-------------------------------------
 resetBtn.addEventListener('click', () => resetCube());
 
+const controls = new OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+
+// camera.position.set(size, size, size);
+const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
+// const cameraDistance = size * (390 / cubeContainer.clientWidth);
+camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+camera.lookAt(0, 0, 0);
+
 function resetCube() {
   currentSolve = undefined;
   const savedSoundEnabled = cube.soundEnabled;
@@ -190,13 +195,17 @@ function resetCube() {
   cubeGroup.clear();
   cubeState = new CubeState(size);
 
-  if (renderMode === 'bulged' || renderMode === 'spherical') {
-    const cameraDistance = size * 1.4;
+  // if (renderMode === 'bulged' || renderMode === 'spherical') {
+  //   const cameraDistance = size * 1.4;
 
-    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-  } else {
-    camera.position.set(size, size, size);
-  }
+  //   camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+  // } else {
+  //   camera.position.set(size, size, size);
+  // }
+  // const cameraDistance = size * (390 / cubeContainer.clientWidth);
+  const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
+  camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+  // camera.position.set(size, size, size);
 
   camera.lookAt(0, 0, 0);
   scrambleBtn.disabled = false;
