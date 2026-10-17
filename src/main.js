@@ -63,6 +63,17 @@ function initRender() {
   scene.add(cubeGroup);
 }
 
+const camera = new THREE.PerspectiveCamera(
+  75,
+  window.innerWidth / window.innerHeight,
+  0.1,
+  1000
+);
+const cubeContainer = document.querySelector('#cube-container');
+const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
+camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+camera.lookAt(0, 0, 0);
+
 initRender();
 cube.updateResetButtons();
 
@@ -72,18 +83,11 @@ cube.updateResetButtons();
 
 // scene.add(cubeGroup);
 
-const camera = new THREE.PerspectiveCamera(
-  75,
-  window.innerWidth / window.innerHeight,
-  0.1,
-  1000
-);
-
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
 });
 // const pmremGenerator = new THREE.PMREMGenerator(renderer);
-const cubeContainer = document.querySelector('#cube-container');
+// const cubeContainer = document.querySelector('#cube-container');
 
 cubeContainer.appendChild(renderer.domElement);
 renderer.setSize(cubeContainer.clientWidth, cubeContainer.clientHeight);
@@ -182,10 +186,11 @@ const controls = new OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 
 // camera.position.set(size, size, size);
-const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
+
 // const cameraDistance = size * (390 / cubeContainer.clientWidth);
-camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-camera.lookAt(0, 0, 0);
+// const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
+// camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+// camera.lookAt(0, 0, 0);
 
 function resetCube() {
   currentSolve = undefined;
