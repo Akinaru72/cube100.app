@@ -490,9 +490,8 @@ body {
 }
 
 #cube-container {
-  /* min-height: 100vh;
-  min-height: 100dvh; */
-  height: 90vh;
+  height: var(--viewport-height, 100dvh);
+  /* height: 90vh; */
   overflow: hidden;
 }
 

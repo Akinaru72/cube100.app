@@ -431,6 +431,13 @@ window.addEventListener('pointerdown', () => {
   showSpeedMenu();
 });
 
+const setViewportHeight = () => {
+  document.documentElement.style.setProperty(
+    '--viewport-height',
+    `${window.visualViewport.height}px`
+  );
+};
+
 function resetSpeedMenu() {
   speedMenuEl.querySelectorAll('button').forEach(button => {
     button.classList.toggle('active', button.dataset.speed === '1');
