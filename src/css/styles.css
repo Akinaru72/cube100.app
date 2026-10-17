@@ -198,7 +198,7 @@ img {
 
 .cube-controls {
   position: absolute;
-  bottom: 20px;
+  bottom: 10px;
   left: 0;
   display: flex;
   justify-content: center;
@@ -234,7 +234,7 @@ img {
 .speed-menu {
   position: absolute;
   left: 50%;
-  bottom: 20px;
+  bottom: 10px;
   display: flex;
   gap: 8px;
   transform: translate(-50%, 150%);
@@ -249,8 +249,16 @@ img {
 
 .speed-menu .control-btn {
   font-size: 7px;
-  padding: 2px;
-  border: none;
+  padding: 4px;
+  border: 1px solid #fff;
+  border-radius: 2px;
+  /* border: none; */
+}
+
+.control-btn.active {
+  background-color: #555;
+  color: aquamarine;
+  border-color: aquamarine;
 }
 
 .speed-menu.visible {
@@ -295,8 +303,8 @@ img {
 .sound-btn.off::after {
   content: '';
   position: absolute;
-  width: 3px;
-  height: 25px;
+  width: 2px;
+  height: 28px;
   background: currentColor;
   transform: rotate(45deg);
   top: 0;
@@ -461,6 +469,8 @@ img {
 .render-mode-select:focus {
   border-color: #333;
 }
+
+/* ------------------------------------------- */
 
 @media screen and (min-width: 1024px) {
   .header {
