@@ -469,6 +469,16 @@ img {
 .render-mode-select:focus {
   border-color: #333;
 }
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+#cube-container {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
 
 /* ------------------------------------------- */
 
