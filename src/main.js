@@ -62,8 +62,11 @@ function initRender() {
 
   scene.add(cubeGroup);
 }
-
+const cubeContainer = document.querySelector('#cube-container');
+console.log('До:', cubeContainer.clientHeight);
 initRender();
+console.log('После:', cubeContainer.clientHeight);
+
 cube.updateResetButtons();
 
 // const cube = new Cube100(cubePieces, cubeGroup, size);
@@ -83,7 +86,7 @@ const renderer = new THREE.WebGLRenderer({
   antialias: true,
 });
 // const pmremGenerator = new THREE.PMREMGenerator(renderer);
-const cubeContainer = document.querySelector('#cube-container');
+// const cubeContainer = document.querySelector('#cube-container');
 
 cubeContainer.appendChild(renderer.domElement);
 renderer.setSize(cubeContainer.clientWidth, cubeContainer.clientHeight);
@@ -211,7 +214,10 @@ function resetCube() {
   scrambleBtn.disabled = false;
   // const savedSoundEnabled = cube.soundEnabled;
   // cube.updateResetButtons();
+  console.log('До:', cubeContainer.clientHeight);
   initRender();
+  console.log('После:', cubeContainer.clientHeight);
+  // initRender();
   cube.soundEnabled = savedSoundEnabled;
 
   cube.tracks.forEach(track => {
