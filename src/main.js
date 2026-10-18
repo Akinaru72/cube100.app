@@ -69,14 +69,70 @@ const camera = new THREE.PerspectiveCamera(
   0.1,
   1000
 );
-const cubeContainer = document.querySelector('#cube-container');
-const cameraDistance = size * 1.4;
-// const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
-camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-camera.lookAt(0, 0, 0);
 
+const cubeContainer = document.querySelector('#cube-container');
+// const isPortrait = cubeContainer.clientHeight > cubeContainer.clientWidth;
+// // const cameraDistance = size * 1.4;
+// const cameraDistance =
+//   size *
+//   1.7 *
+//   // Math.max(
+//   //   1,
+//   //   390 / (isPortrait ? cubeContainer.clientHeight : cubeContainer.clientWidth)
+//   // );
+//   Math.max(1, 390 / cubeContainer.clientHeight);
+// camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+// camera.lookAt(0, 0, 0);
+function updateCamera() {
+  const isPortrait = cubeContainer.clientHeight > cubeContainer.clientWidth;
+
+  console.log({
+    width: cubeContainer.clientWidth,
+    height: cubeContainer.clientHeight,
+    cameraDistance: camera.position.length(),
+    portrait: cubeContainer.clientHeight > cubeContainer.clientWidth,
+  });
+
+  if (renderMode === 'bulged' || renderMode === 'spherical') {
+    const cameraDistance = size * 1.8;
+
+    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+  } else {
+    const cameraDistance = isPortrait
+      ? size * 1.7 * Math.max(1, 390 / cubeContainer.clientHeight)
+      : size * 1.2 * Math.max(1, 390 / cubeContainer.clientWidth);
+
+    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+    // camera.lookAt(0, 0, 0);
+  }
+  camera.lookAt(0, 0, 0);
+}
+
+window.addEventListener('resize', updateCamera);
+updateCamera();
 initRender();
 cube.updateResetButtons();
+
+// const performanceModal = document.querySelector('#performance-modal');
+// const performanceOk = document.querySelector('#performance-ok');
+
+// if (!localStorage.getItem('performance-notice-shown')) {
+//   performanceModal.classList.remove('is-hidden');
+// }
+
+// performanceOk.addEventListener('click', () => {
+//   performanceModal.classList.add('is-hidden');
+//   localStorage.setItem('performance-notice-shown', 'true');
+// });
+
+const performanceModal = document.querySelector('#performance-modal');
+const performanceOk = document.querySelector('#performance-ok');
+
+performanceModal.classList.remove('is-hidden');
+
+performanceOk.addEventListener('click', () => {
+  performanceModal.classList.add('is-hidden');
+});
 
 // const cube = new Cube100(cubePieces, cubeGroup, size);
 // console.log('cubePieces', cubePieces);
@@ -201,18 +257,15 @@ function resetCube() {
   cubeGroup.clear();
   cubeState = new CubeState(size);
 
-  if (renderMode === 'bulged' || renderMode === 'spherical') {
-    const cameraDistance = size * 1.4;
+  // if (renderMode === 'bulged' || renderMode === 'spherical') {
+  //   const cameraDistance = size * 1.8;
 
-    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-  } else {
-    //   camera.position.set(size, size, size);
-    // }
-    // const cameraDistance = size * (390 / cubeContainer.clientWidth);
-    const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
-    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-    // camera.position.set(size, size, size);
-  }
+  //   camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+  // } else {
+  updateCamera();
+  // const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
+  // camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+  // }
   camera.lookAt(0, 0, 0);
   scrambleBtn.disabled = false;
   // const savedSoundEnabled = cube.soundEnabled;

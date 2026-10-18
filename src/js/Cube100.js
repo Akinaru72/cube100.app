@@ -124,7 +124,7 @@ export class Cube100 {
       new Audio(`${import.meta.env.BASE_URL}shopen-nocturnes-op.-9.mp3`),
     ];
 
-    this.soundEnabled = true;
+    this.soundEnabled = false;
     this.currentTrack = 0;
 
     //
