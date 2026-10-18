@@ -70,7 +70,8 @@ const camera = new THREE.PerspectiveCamera(
   1000
 );
 const cubeContainer = document.querySelector('#cube-container');
-const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
+const cameraDistance = size * 1.4;
+// const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
 camera.position.set(cameraDistance, cameraDistance, cameraDistance);
 camera.lookAt(0, 0, 0);
 
