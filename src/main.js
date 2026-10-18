@@ -476,7 +476,7 @@ function showSpeedMenu() {
     // console.log('HIDE SPEED MENU BY TIMER');
     speedMenuEl.classList.remove('visible');
     soundMenuEl.classList.remove('visible');
-  }, 2000);
+  }, 4000);
 }
 
 // window.addEventListener('mousemove', () => {
