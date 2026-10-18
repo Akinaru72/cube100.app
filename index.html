@@ -20,7 +20,7 @@
     />
     <script type="module" crossorigin src="/cube100.app/index.js"></script>
     <link rel="modulepreload" crossorigin href="/cube100.app/assets/vendor-BxFfvzHg.js">
-    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-BJ0AHZUh.css">
+    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-Fsb9x0VG.css">
   </head>
   <body>
     <header class="header">
@@ -260,6 +260,37 @@
         </div>
       </div>
     </div>
+    <!-- Performance Notice -->
+    <div class="performance-backdrop is-hidden" id="performance-modal">
+      <div
+        class="performance-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="performance-title"
+      >
+        <h2 class="performance-title" id="performance-title">
+          Performance Notice
+        </h2>
 
+        <p class="performance-text">
+          Large cube sizes may slow down the solving process or cause delays in
+          the application.
+        </p>
+
+        <p class="performance-text">
+          Performance depends on your device's capabilities, available memory,
+          browser, cube size, and computational complexity.
+        </p>
+
+        <p class="performance-text">
+          If you experience rendering or solving issues, we recommend reducing
+          the cube size in Settings.
+        </p>
+
+        <div class="performance-actions">
+          <button class="performance-btn" id="performance-ok">OK</button>
+        </div>
+      </div>
+    </div>
   </body>
 </html>
