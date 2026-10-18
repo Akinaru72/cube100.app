@@ -200,18 +200,18 @@ function resetCube() {
   cubeGroup.clear();
   cubeState = new CubeState(size);
 
-  // if (renderMode === 'bulged' || renderMode === 'spherical') {
-  //   const cameraDistance = size * 1.4;
+  if (renderMode === 'bulged' || renderMode === 'spherical') {
+    const cameraDistance = size * 1.4;
 
-  //   camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-  // } else {
-  //   camera.position.set(size, size, size);
-  // }
-  // const cameraDistance = size * (390 / cubeContainer.clientWidth);
-  const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
-  camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-  // camera.position.set(size, size, size);
-
+    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+  } else {
+    //   camera.position.set(size, size, size);
+    // }
+    // const cameraDistance = size * (390 / cubeContainer.clientWidth);
+    const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
+    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+    // camera.position.set(size, size, size);
+  }
   camera.lookAt(0, 0, 0);
   scrambleBtn.disabled = false;
   // const savedSoundEnabled = cube.soundEnabled;
