@@ -1,0 +1,156 @@
+export function createRain(container) {
+  const canvas = container.querySelector('#rain-canvas');
+  const ctx = canvas?.getContext('2d');
+
+  if (!ctx) return () => {};
+
+  let width = 0;
+  let height = 0;
+  let animationId;
+  let lastTime = 0;
+  let glassSpawnCarry = 0;
+
+  const backgroundRain = [];
+  const glassDrops = [];
+
+  function resize() {
+    width = container.clientWidth;
+    height = container.clientHeight;
+
+    const dpr = Math.min(window.devicePixelRatio || 1, 1.5);
+    canvas.width = Math.round(width * dpr);
+    canvas.height = Math.round(height * dpr);
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+
+    // Частые мелкие полосы дождя на заднем плане.
+    const rainCount = Math.max(100, Math.round(width * height * 0.00045));
+    while (backgroundRain.length < rainCount) {
+      backgroundRain.push(makeBackgroundDrop(true));
+    }
+    backgroundRain.length = rainCount;
+  }
+
+  function makeBackgroundDrop(randomY = false) {
+    return {
+      x: Math.random() * (width + 80),
+      y: randomY ? Math.random() * height : -30,
+      length: 10 + Math.random() * 20,
+      speed: 420 + Math.random() * 480,
+      alpha: 0.18 + Math.random() * 0.28,
+      lineWidth: 0.7 + Math.random() * 0.7,
+    };
+  }
+
+  function makeGlassDrop(x = Math.random() * width, y = -5) {
+    const size = 2 + Math.random() * 2.5;
+
+    return {
+      x,
+      y,
+      size,
+      length: size * (2 + Math.random() * 2),
+      speed: 25 + Math.random() * 55,
+      alpha: 0.35 + Math.random() * 0.3,
+      sway: Math.random() * Math.PI * 2,
+    };
+  }
+
+  function drawBackgroundRain(dt) {
+    ctx.lineCap = 'round';
+
+    for (const drop of backgroundRain) {
+      const slant = 7 + drop.speed * 0.018;
+
+      ctx.beginPath();
+      ctx.strokeStyle = `rgba(195, 218, 238, ${drop.alpha})`;
+      ctx.lineWidth = drop.lineWidth;
+      ctx.moveTo(drop.x, drop.y);
+      ctx.lineTo(drop.x - slant, drop.y + drop.length);
+      ctx.stroke();
+
+      drop.x -= slant * dt;
+      drop.y += drop.speed * dt;
+
+      if (drop.y > height + 30 || drop.x < -40) {
+        Object.assign(drop, makeBackgroundDrop());
+        drop.x = Math.random() * (width + 80);
+      }
+    }
+  }
+
+  function drawGlassDrop(drop, dt) {
+    drop.sway += dt * 1.5;
+    drop.x += Math.sin(drop.sway) * 4 * dt;
+    drop.y += drop.speed * dt;
+    drop.length = Math.min(drop.length + drop.speed * dt * 0.16, 35);
+
+    const gradient = ctx.createLinearGradient(
+      drop.x,
+      drop.y - drop.length,
+      drop.x,
+      drop.y
+    );
+    gradient.addColorStop(0, 'rgba(190, 220, 245, 0)');
+    gradient.addColorStop(0.65, `rgba(190, 220, 245, ${drop.alpha * 0.4})`);
+    gradient.addColorStop(1, `rgba(240, 249, 255, ${drop.alpha})`);
+
+    ctx.beginPath();
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = drop.size;
+    ctx.lineCap = 'round';
+    ctx.moveTo(drop.x, drop.y - drop.length);
+    ctx.lineTo(drop.x, drop.y);
+    ctx.stroke();
+
+    // Светлая головка помогает увидеть каплю на стекле.
+    ctx.beginPath();
+    ctx.fillStyle = `rgba(240, 249, 255, ${drop.alpha})`;
+    ctx.ellipse(drop.x, drop.y, drop.size * 0.65, drop.size, 0, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  function draw(time) {
+    animationId = requestAnimationFrame(draw);
+
+    if (document.hidden) {
+      lastTime = time;
+      return;
+    }
+
+    const dt = lastTime ? Math.min((time - lastTime) / 1000, 0.05) : 0;
+    lastTime = time;
+
+    ctx.clearRect(0, 0, width, height);
+
+    // Сначала дождь за стеклом.
+    drawBackgroundRain(dt);
+
+    // Потом капли на стекле — они визуально ближе.
+    glassSpawnCarry += dt * Math.max(3, width * 0.012);
+    while (glassSpawnCarry >= 1) {
+      glassDrops.push(makeGlassDrop());
+      glassSpawnCarry -= 1;
+    }
+
+    for (let i = glassDrops.length - 1; i >= 0; i--) {
+      const drop = glassDrops[i];
+      drawGlassDrop(drop, dt);
+
+      if (drop.y - drop.length > height) {
+        glassDrops.splice(i, 1);
+      }
+    }
+  }
+
+  resize();
+  window.addEventListener('resize', resize);
+  animationId = requestAnimationFrame(draw);
+
+  return function stopRain() {
+    cancelAnimationFrame(animationId);
+    window.removeEventListener('resize', resize);
+    ctx.clearRect(0, 0, width, height);
+  };
+}

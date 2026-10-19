@@ -1,33 +1,14 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-// import { createCubeRenderer } from './js/cubeSimplyRenderer.js';
-// import { createCubeRenderer } from './js/cubeMidleRenderer.js';
+
+import { createRain } from './js/wrapper/rain.js';
+import { createStars } from './js/wrapper/stars.js';
+import { createSnow } from './js/wrapper/snow.js';
 
 import { createCubeRenderer as createMidleRenderer } from './js/cubeMidleRenderer.js';
 import { createCubeRenderer as createSimplyRenderer } from './js/cubeSimplyRenderer.js';
 import { createCubeRenderer as createHardRenderer } from './js/cubeRenderer.js';
 import { createCubeRenderer as createSphereRenderer } from './js/cubeSphereRenderer.js';
-// import { cubeGroup, cubePieces } from './js/cubeRenderer.js';
-// import { cubeGroup, cubePieces } from './js/cubeMidleRenderer.js';
-// import { cubeGroup, cubePieces } from './js/cubeSimplyRenderer.js';
-// let cubeGroup;
-// let cubePieces;
-// cubeMidleRenderer;
-// if (size <= 7) {
-//   ({ cubeGroup, cubePieces } = await import('./js/cubeMidleRenderer.js'));
-// } else if (size <= 14) {
-//   ({ cubeGroup, cubePieces } = await import('./js/cubeRenderer.js'));
-// } else if (size <= 30) {
-//   ({ cubeGroup, cubePieces } = await import('./js/cubeSimplyRenderer.js'));
-// } else {
-// function initRender() {
-//   ({ cubeGroup, cubePieces } = import('./js/cubeSimplyRenderer.js'));
-// }
-// // }
-// initRender();
-// const cube = new Cube100(cubePieces, cubeGroup, size);
-
-// scene.add(cubeGroup);
 
 import { Cube100 } from './js/Cube100.js';
 import { DEFAULT_SIZE } from './js/constants';
@@ -71,18 +52,7 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 const cubeContainer = document.querySelector('#cube-container');
-// const isPortrait = cubeContainer.clientHeight > cubeContainer.clientWidth;
-// // const cameraDistance = size * 1.4;
-// const cameraDistance =
-//   size *
-//   1.7 *
-//   // Math.max(
-//   //   1,
-//   //   390 / (isPortrait ? cubeContainer.clientHeight : cubeContainer.clientWidth)
-//   // );
-//   Math.max(1, 390 / cubeContainer.clientHeight);
-// camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-// camera.lookAt(0, 0, 0);
+
 function updateCamera() {
   const isPortrait = cubeContainer.clientHeight > cubeContainer.clientWidth;
 
@@ -113,6 +83,25 @@ updateCamera();
 initRender();
 cube.updateResetButtons();
 
+// -----------------------------Background------------------------------
+let stopBackground = null;
+
+function setBackground(mode) {
+  if (stopBackground) {
+    stopBackground();
+    stopBackground = null;
+  }
+
+  if (mode === 'rain') {
+    stopBackground = createRain(cubeContainer);
+  } else if (mode === 'snow') {
+    stopBackground = createSnow(cubeContainer);
+  } else if (mode === 'stars') {
+    stopBackground = createStars(cubeContainer);
+  }
+}
+// const stopRain = createRain(cubeContainer);
+
 // const performanceModal = document.querySelector('#performance-modal');
 // const performanceOk = document.querySelector('#performance-ok');
 
@@ -142,7 +131,11 @@ performanceOk.addEventListener('click', () => {
 
 const renderer = new THREE.WebGLRenderer({
   antialias: true,
+  alpha: true,
 });
+
+renderer.setClearColor(0x000000, 0);
+scene.background = null;
 // const pmremGenerator = new THREE.PMREMGenerator(renderer);
 // const cubeContainer = document.querySelector('#cube-container');
 
@@ -394,6 +387,8 @@ settingsApplyBtn.addEventListener('click', () => {
   //   return;
   // }
   renderMode = renderModeSelect.value;
+  const backgroundMode = document.querySelector('#background-mode').value;
+  setBackground(backgroundMode);
   size = newSize;
 
   settingsBackdropEl.classList.remove('is-open');

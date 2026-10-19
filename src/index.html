@@ -46,6 +46,9 @@
 
     <main class="main-content">
       <div id="cube-container">
+        <canvas id="rain-canvas" aria-hidden="true"></canvas>
+        <canvas id="snow-canvas" aria-hidden="true"></canvas>
+        <canvas id="stars-canvas" aria-hidden="true"></canvas>
         <ul class="solve-list-first">
           <li>
             <button class="solve-btn" id="solve-first-side" type="button">
@@ -244,6 +247,17 @@
             <option value="expanded">Expanded</option>
             <option value="bulged">Bulged</option>
             <option value="spherical">Spherical</option>
+          </select>
+
+          <label class="setting-label" for="background-mode">
+            Background
+          </label>
+
+          <select class="render-mode-select" id="background-mode">
+            <option value="none">None</option>
+            <option value="rain">Rain</option>
+            <option value="snow">Snow</option>
+            <option value="stars">Stars</option>
           </select>
         </div>
 
