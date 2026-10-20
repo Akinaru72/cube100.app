@@ -143,6 +143,8 @@ img {
   top: 50%;
   transform: translateY(-50%);
   left: 15px;
+  /* z-index: 100; */
+  pointer-events: auto;
   transition:
     opacity 1000ms ease,
     transform 1000ms ease;
@@ -160,6 +162,8 @@ img {
   top: 50%;
   transform: translateY(-50%);
   right: 15px;
+  /* z-index: 100; */
+  pointer-events: auto;
 
   transition:
     opacity 1000ms ease,
@@ -222,6 +226,7 @@ img {
   justify-content: center;
   gap: 10px;
   width: 100%;
+  z-index: 10;
   transition:
     opacity 1000ms ease,
     transform 1000ms ease;
@@ -547,6 +552,10 @@ body {
   height: 100%;
   pointer-events: none;
   z-index: 0;
+}
+
+#cube-container > canvas {
+  pointer-events: auto;
 }
 
 /*
