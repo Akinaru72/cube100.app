@@ -96,7 +96,7 @@
 // }
 
 export function createRain(container) {
-  const canvas = container.querySelector('#rain-canvas');
+  const canvas = document.querySelector('#rain-canvas');
   const ctx = canvas?.getContext('2d');
 
   if (!ctx) return () => {};

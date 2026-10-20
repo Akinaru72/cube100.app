@@ -285,7 +285,7 @@ img {
   pointer-events: auto;
 }
 
-/* ------------------------------Sound Menu-------------------------------------- */
+/* ------------------------------Sound Menu------------------------- */
 
 .sound-menu {
   position: absolute;
@@ -301,7 +301,7 @@ img {
   pointer-events: none;
   z-index: 1000;
 }
-
+/*
 .sound-btn {
   width: 20px;
   height: 20px;
@@ -310,14 +310,14 @@ img {
   color: #ffffff;
   border: none;
   transition: transform 250ms cubic-bezier(0.39, 0.575, 0.565, 1);
-}
+} */
 
 .sound-menu.visible {
   opacity: 1;
   transform: translate(-50%, 0);
   pointer-events: auto;
 }
-
+/*
 .sound-btn.off::after {
   content: '';
   position: absolute;
@@ -327,6 +327,30 @@ img {
   transform: rotate(45deg);
   top: 0;
   right: 5px;
+} */
+
+.sound-btn {
+  position: relative;
+  box-sizing: border-box;
+  padding: 0;
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+  background-color: transparent;
+  color: #ffffff;
+  border: none;
+  transition: transform 250ms cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.sound-btn.off::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 28px;
+  background: currentColor;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
 }
 
 /* ================Settigs===================== */
@@ -493,11 +517,24 @@ body {
   min-height: 100%;
 }
 
+.main-content {
+  /* overflow: clip; */
+  position: relative;
+  height: var(--viewport-height, 100dvh);
+}
+
 #cube-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  pointer-events: none;
   height: var(--viewport-height, 100dvh);
   /* height: 90vh; */
   overflow: hidden;
-  position: relative;
+  background: transparent;
+
+  /* isolation: isolate; */
+  z-index: 1;
 }
 
 #rain-canvas,
@@ -511,6 +548,20 @@ body {
   pointer-events: none;
   z-index: 0;
 }
+
+/*
+#cube-container > canvas {
+  position: relative;
+  z-index: 3;
+} */
+/*
+#cube-container
+  > canvas:not(#rain-canvas)
+  :not(#snow-canvas):not(#stars-canvas):not(#spaceShip-canvas) {
+  position: relative;
+  z-index: 1;
+} */
+
 /*
 #cube-container > canvas:not(#rain-canvas) {
   position: relative;
@@ -732,6 +783,7 @@ body {
   /* ------------------------Solve List------------------------------------ */
   .main-content {
     overflow: clip;
+    position: relative;
   }
   .solve-list-first {
     position: absolute;

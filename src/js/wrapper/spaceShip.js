@@ -1,5 +1,5 @@
 export function createSpaceShip(container) {
-  const canvas = container.querySelector('#spaceShip-canvas');
+  const canvas = document.querySelector('#spaceShip-canvas');
   const ctx = canvas?.getContext('2d');
 
   if (!ctx) return () => {};

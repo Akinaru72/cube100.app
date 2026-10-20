@@ -86,7 +86,7 @@
 // }
 
 export function createSnow(container) {
-  const canvas = container.querySelector('#snow-canvas');
+  const canvas = document.querySelector('#snow-canvas');
   const ctx = canvas?.getContext('2d');
 
   if (!ctx) return () => {};

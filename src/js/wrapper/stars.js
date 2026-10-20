@@ -199,7 +199,7 @@
 // }
 
 export function createStars(container) {
-  const canvas = container.querySelector('#stars-canvas');
+  const canvas = document.querySelector('#stars-canvas');
   const ctx = canvas?.getContext('2d');
   if (!ctx) return () => {};
 

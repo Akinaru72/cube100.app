@@ -139,6 +139,12 @@ const renderer = new THREE.WebGLRenderer({
 
 renderer.setClearColor(0x000000, 0);
 scene.background = null;
+
+console.log(
+  renderer.getContext().getContextAttributes().alpha,
+  renderer.getClearAlpha(),
+  scene.background
+);
 // const pmremGenerator = new THREE.PMREMGenerator(renderer);
 // const cubeContainer = document.querySelector('#cube-container');
 
@@ -175,7 +181,8 @@ scene.add(keyLight);
 const rimLight = new THREE.DirectionalLight(0xffffff, 0.8);
 rimLight.position.set(-6, 4, -6);
 scene.add(rimLight);
-scene.background = new THREE.Color(0x444444);
+// scene.background = new THREE.Color(0x444444);
+scene.background = null;
 // ------------------------End Light-----------------------
 
 // ====================
@@ -353,6 +360,11 @@ function animate() {
   controls.update();
   cube.updateRotation();
   renderer.render(scene, camera);
+  // console.log(
+  //   renderer.getContext().getContextAttributes().alpha,
+  //   renderer.getClearAlpha(),
+  //   scene.background
+  // );
 }
 
 animate();
@@ -515,14 +527,6 @@ function stopAnimationMode() {
   cubeControlsEl.classList.remove('is-hidden');
 }
 
-// pauseButton.addEventListener('click', () => {
-//   console.log('Pause');
-//   cube.isPaused = true;
-// });
-// speedMenuEl.querySelectorAll('button').forEach(button => {
-//   button.classList.toggle('active', button === event.target.closest('button'));
-// });
-
 speedMenuEl.addEventListener('click', event => {
   const button = event.target.closest('button');
   if (!button) return;
@@ -609,42 +613,25 @@ function loadCubeState() {
 
   if (!saved) {
     console.log('Сохранённого состояния нет');
-
     return;
   }
 
   const data = JSON.parse(saved);
-
   size = data.size;
-
   cubeState = new CubeState(size);
-
   cubeState.U = data.U;
-
   cubeState.D = data.D;
-
   cubeState.F = data.F;
-
   cubeState.B = data.B;
-
   cubeState.L = data.L;
-
   cubeState.R = data.R;
-
   console.log('Состояние загружено');
-
   console.log(data);
-
   scene.remove(cubeGroup);
-
   cubeGroup.clear();
-
   scrambleBtn.disabled = false;
-
   initRender();
-
   cube.solutions = data.solutions || [];
-
   cube.finalStates = (data.finalStates || []).map(state =>
     restoreCubeState(state)
   );
