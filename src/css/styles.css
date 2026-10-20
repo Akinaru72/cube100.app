@@ -142,7 +142,7 @@ img {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  left: 20px;
+  left: 15px;
   transition:
     opacity 1000ms ease,
     transform 1000ms ease;
@@ -159,7 +159,7 @@ img {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  right: 20px;
+  right: 15px;
 
   transition:
     opacity 1000ms ease,
@@ -501,6 +501,7 @@ body {
 }
 
 #rain-canvas,
+#spaceShip-canvas,
 #snow-canvas,
 #stars-canvas {
   position: absolute;

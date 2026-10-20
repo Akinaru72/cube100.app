@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { createRain } from './js/wrapper/rain.js';
 import { createStars } from './js/wrapper/stars.js';
 import { createSnow } from './js/wrapper/snow.js';
+import { createSpaceShip } from './js/wrapper/spaceShip.js';
 
 import { createCubeRenderer as createMidleRenderer } from './js/cubeMidleRenderer.js';
 import { createCubeRenderer as createSimplyRenderer } from './js/cubeSimplyRenderer.js';
@@ -98,6 +99,8 @@ function setBackground(mode) {
     stopBackground = createSnow(cubeContainer);
   } else if (mode === 'stars') {
     stopBackground = createStars(cubeContainer);
+  } else if (mode === 'spaceShip') {
+    stopBackground = createSpaceShip(cubeContainer);
   }
 }
 // const stopRain = createRain(cubeContainer);
@@ -222,7 +225,8 @@ const pauseButton = document.querySelector('#pauseButton');
 const soundMenuEl = document.querySelector('#soundMenu');
 const soundButton = document.querySelector('#soundButton');
 soundButton.textContent = '♫';
-soundButton.classList.remove('off');
+// soundButton.classList.remove('off');
+soundButton.classList.add('off');
 
 let animationMode = false;
 let speedMenuTimer = null;
@@ -474,13 +478,13 @@ function showSpeedMenu() {
   }, 4000);
 }
 
-// window.addEventListener('mousemove', () => {
-//   // console.log('MOUSE MOVE', animationMode);
-//   if (!animationMode) return;
-//   showSpeedMenu();
-// });
-
 window.addEventListener('pointerdown', () => {
+  if (!animationMode) return;
+  showSpeedMenu();
+});
+
+window.addEventListener('mousemove', () => {
+  // console.log('MOUSE MOVE', animationMode);
   if (!animationMode) return;
   showSpeedMenu();
 });
