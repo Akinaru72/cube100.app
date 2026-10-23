@@ -87,7 +87,7 @@ cube.updateResetButtons();
 // -----------------------------Background------------------------------
 let stopBackground = null;
 
-setBackground('stars');
+// setBackground('stars');
 
 function setBackground(mode) {
   if (stopBackground) {
@@ -424,7 +424,7 @@ scrambleBtn.addEventListener('click', () => {
   startAnimationMode();
   // const savedSoundEnabled = cube.soundEnabled;
   console.log('Before_Reset', cube.soundEnabled);
-  resetCube();
+  // resetCube();
   // cube.soundEnabled = savedSoundEnabled;
 
   console.log('After_reset', cube.soundEnabled);

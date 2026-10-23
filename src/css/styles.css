@@ -364,13 +364,10 @@ img {
   position: fixed;
   inset: 0;
   z-index: 9999;
-
   display: none;
   align-items: center;
   justify-content: center;
-
   padding: 20px;
-
   background: rgba(0, 0, 0, 0.6);
   backdrop-filter: blur(4px);
 }
@@ -381,15 +378,12 @@ img {
 
 .settings-modal {
   position: relative;
-
   width: 100%;
   max-width: 420px;
-
-  padding: 30px;
-
+  max-height: 320px;
+  padding: 20px;
   background: #fff;
   border-radius: 16px;
-
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
 }
 
@@ -397,18 +391,13 @@ img {
   position: absolute;
   top: 12px;
   right: 14px;
-
   width: 32px;
   height: 32px;
-
   border: none;
   border-radius: 50%;
-
   background: transparent;
-
   font-size: 26px;
   line-height: 1;
-
   cursor: pointer;
 }
 
@@ -417,37 +406,33 @@ img {
 }
 
 .settings-title {
-  margin: 0 0 28px;
-
-  font-size: 24px;
+  margin: 0 0 8px;
+  font-size: 18px;
   font-weight: 700;
 }
 
 .setting {
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .setting + .setting {
-  margin-top: 24px;
+  margin-top: 18px;
 }
 
 .setting-label {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 600;
 }
 
 .cube-size-input {
   width: 100%;
   box-sizing: border-box;
-
-  padding: 11px 14px;
-
+  padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
-
-  font-size: 16px;
+  font-size: 10px;
   outline: none;
 }
 
@@ -457,7 +442,6 @@ img {
 
 .setting-hint {
   margin: 0;
-
   font-size: 12px;
   color: #777;
 }
@@ -466,7 +450,6 @@ img {
   display: flex;
   justify-content: flex-end;
   gap: 10px;
-
   margin-top: 30px;
 }
 
@@ -475,7 +458,7 @@ img {
   padding: 10px 18px;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 600;
   cursor: pointer;
 }
@@ -499,11 +482,12 @@ img {
 .render-mode-select {
   width: 100%;
   box-sizing: border-box;
-  padding: 11px 40px 11px 14px;
+  /* padding: 11px 40px 11px 14px; */
+  padding: 6px 12px;
   border: 1px solid #ccc;
   border-radius: 8px;
   background: #fff;
-  font-size: 16px;
+  font-size: 10px;
   outline: none;
   cursor: pointer;
 
