@@ -404,8 +404,10 @@ settingsApplyBtn.addEventListener('click', () => {
   //   cubeSizeInput.value = size;
   //   return;
   // }
-  renderMode = renderModeSelect.value;
-  const backgroundMode = document.querySelector('#background-mode').value;
+  renderMode = renderModeSelect.dataset.value;
+  const backgroundMode =
+    document.querySelector('#background-mode').dataset.value;
+  console.log('Background mode:', backgroundMode);
   setBackground(backgroundMode);
   size = newSize;
 
@@ -419,12 +421,65 @@ cubeSizeInput.addEventListener('keydown', event => {
     settingsApplyBtn.click();
   }
 });
+
+document.querySelectorAll('.custom-select').forEach(select => {
+  const trigger = select.querySelector('.custom-select-trigger');
+  const valueElement = select.querySelector('.custom-select-value');
+  const options = select.querySelector('.custom-select-options');
+
+  const selected = options.querySelector('li.selected');
+
+  select.dataset.value = selected.dataset.value;
+
+  function closeMenu() {
+    select.classList.remove('open');
+    trigger.setAttribute('aria-expanded', 'false');
+  }
+
+  trigger.addEventListener('click', event => {
+    event.stopPropagation();
+
+    document.querySelectorAll('.custom-select').forEach(menu => {
+      if (menu !== select) {
+        menu.classList.remove('open');
+        menu
+          .querySelector('.custom-select-trigger')
+          .setAttribute('aria-expanded', 'false');
+      }
+    });
+
+    const isOpen = select.classList.toggle('open');
+    trigger.setAttribute('aria-expanded', isOpen);
+  });
+
+  options.addEventListener('click', event => {
+    const option = event.target.closest('li[data-value]');
+
+    if (!option) return;
+
+    select.dataset.value = option.dataset.value;
+    valueElement.textContent = option.textContent;
+
+    options.querySelectorAll('li').forEach(item => {
+      item.classList.toggle('selected', item === option);
+    });
+
+    closeMenu();
+  });
+
+  document.addEventListener('click', event => {
+    if (!select.contains(event.target)) {
+      closeMenu();
+    }
+  });
+});
+
 // =============================Scramble========================
 scrambleBtn.addEventListener('click', () => {
   startAnimationMode();
   // const savedSoundEnabled = cube.soundEnabled;
   console.log('Before_Reset', cube.soundEnabled);
-  // resetCube();
+  resetCube();
   // cube.soundEnabled = savedSoundEnabled;
 
   console.log('After_reset', cube.soundEnabled);
@@ -503,12 +558,12 @@ window.addEventListener('mousemove', () => {
   showSpeedMenu();
 });
 
-const setViewportHeight = () => {
-  document.documentElement.style.setProperty(
-    '--viewport-height',
-    `${window.visualViewport.height}px`
-  );
-};
+// const setViewportHeight = () => {
+//   document.documentElement.style.setProperty(
+//     '--viewport-height',
+//     `${window.visualViewport.height}px`
+//   );
+// };
 
 function resetSpeedMenu() {
   speedMenuEl.querySelectorAll('button').forEach(button => {
