@@ -20,7 +20,7 @@
     />
     <script type="module" crossorigin src="/cube100.app/index.js"></script>
     <link rel="modulepreload" crossorigin href="/cube100.app/assets/vendor-MCoNlKBm.js">
-    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-DuBTcRyO.css">
+    <link rel="stylesheet" crossorigin href="/cube100.app/assets/index-D68IWudi.css">
   </head>
   <body>
     <header class="header">
@@ -244,25 +244,58 @@
 
         <div class="setting">
           <label class="setting-label" for="render-mode"> Render </label>
+          <div class="custom-select" id="render-mode">
+            <button
+              class="custom-select-trigger"
+              type="button"
+              aria-expanded="false"
+            >
+              <span class="custom-select-value">Expanded</span>
+              <span class="custom-select-arrow"></span>
+            </button>
 
-          <select class="render-mode-select" id="render-mode">
+            <ul class="custom-select-options">
+              <li data-value="classic">Classic</li>
+              <li data-value="expanded" class="selected">Expanded</li>
+              <li data-value="bulged">Bulged</li>
+              <li data-value="spherical">Spherical</li>
+            </ul>
+          </div>
+          <!-- <select class="render-mode-select" id="render-mode">
             <option value="classic">Classic</option>
             <option value="expanded" selected>Expanded</option>
             <option value="bulged">Bulged</option>
             <option value="spherical">Spherical</option>
-          </select>
+          </select> -->
 
           <label class="setting-label" for="background-mode">
             Background
           </label>
+          <div class="custom-select" id="background-mode">
+            <button
+              class="custom-select-trigger"
+              type="button"
+              aria-expanded="false"
+            >
+              <span class="custom-select-value">Stars</span>
+              <span class="custom-select-arrow"></span>
+            </button>
 
-          <select class="render-mode-select" id="background-mode">
+            <ul class="custom-select-options">
+              <li data-value="none">None</li>
+              <li data-value="rain">Rain</li>
+              <li data-value="snow">Snow</li>
+              <li data-value="stars" class="selected">Stars</li>
+              <li data-value="spaceShip">Space Ship</li>
+            </ul>
+          </div>
+          <!-- <select class="render-mode-select" id="background-mode">
             <option value="none">None</option>
             <option value="rain">Rain</option>
             <option value="snow">Snow</option>
             <option value="stars">Stars</option>
             <option value="spaceShip">Space Ship</option>
-          </select>
+          </select> -->
         </div>
 
         <div class="settings-actions">
