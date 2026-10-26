@@ -1,0 +1,12 @@
+{
+  "id": "/cube100.app/",
+  "name": "CubeRelax∞3D",
+  "short_name": "Cube100",
+  "description": "Interactive 3D Rubik's Cube",
+  "start_url": "/cube100.app/",
+  "scope": "/cube100.app/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#000000",
+  "theme_color": "#000000"
+}
