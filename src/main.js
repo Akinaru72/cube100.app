@@ -53,7 +53,14 @@ const camera = new THREE.PerspectiveCamera(
 );
 
 const cubeContainer = document.querySelector('#cube-container');
+if (!CSS.supports('height', '100dvh')) {
+  const height = window.innerHeight;
 
+  document.documentElement.style.setProperty(
+    '--viewport-height',
+    `${height}px`
+  );
+}
 function updateCamera() {
   const isPortrait = cubeContainer.clientHeight > cubeContainer.clientWidth;
 
