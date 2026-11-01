@@ -1,5 +1,5 @@
 // constants.js
-export const DEFAULT_SIZE = 2;
+export const DEFAULT_SIZE = 6;
 export const cubeSize = 0.9;
 export const gap = 0.1;
 export const cellSize = cubeSize + gap;

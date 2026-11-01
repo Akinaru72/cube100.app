@@ -61,6 +61,7 @@ if (!CSS.supports('height', '100dvh')) {
     `${height}px`
   );
 }
+
 function updateCamera() {
   const isPortrait = cubeContainer.clientHeight > cubeContainer.clientWidth;
 
@@ -407,10 +408,11 @@ settingsApplyBtn.addEventListener('click', () => {
     cubeSizeInput.value = size;
     return;
   }
-  // if (newSize > 100) {
-  //   cubeSizeInput.value = size;
-  //   return;
-  // }
+  if (newSize >= 7) {
+    openPremiumModal();
+    cubeSizeInput.value = size;
+    return;
+  }
   renderMode = renderModeSelect.dataset.value;
   const backgroundMode =
     document.querySelector('#background-mode').dataset.value;
@@ -428,6 +430,21 @@ cubeSizeInput.addEventListener('keydown', event => {
     settingsApplyBtn.click();
   }
 });
+
+const premiumBackdrop = document.querySelector('.premium-backdrop');
+const premiumCloseBtn = document.querySelector('.premium-close');
+const premiumOkBtn = document.querySelector('.premium-ok');
+
+function openPremiumModal() {
+  premiumBackdrop.classList.add('is-open');
+}
+
+function closePremiumModal() {
+  premiumBackdrop.classList.remove('is-open');
+}
+
+premiumCloseBtn.addEventListener('click', closePremiumModal);
+premiumOkBtn.addEventListener('click', closePremiumModal);
 
 document.querySelectorAll('.custom-select').forEach(select => {
   const trigger = select.querySelector('.custom-select-trigger');

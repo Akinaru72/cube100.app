@@ -122,6 +122,21 @@ export class Cube100 {
         `${import.meta.env.BASE_URL}shopen-chopin-nocturne-no.-20-in-c-sharp-minor-kk-iva16.mp3`
       ),
       new Audio(`${import.meta.env.BASE_URL}shopen-nocturnes-op.-9.mp3`),
+      new Audio(
+        `${import.meta.env.BASE_URL}6d2e683e-a4da-4f79-8864-1b32ca1bfb41.mp3`
+      ),
+      new Audio(
+        `${import.meta.env.BASE_URL}245_13-chopin-nocturne-op9-in-b-flat-minor-e03f2954-8442-4fe6-90a0-a60528dbc286.mp3`
+      ),
+      new Audio(
+        `${import.meta.env.BASE_URL}971c7510-f324-45fb-8972-d7667e01155b.mp3`
+      ),
+      new Audio(
+        `${import.meta.env.BASE_URL}1089_neeman-01-etude-e12956b3-6c93-4ee9-b641-2126db53c535.mp3`
+      ),
+      new Audio(
+        `${import.meta.env.BASE_URL}2213_four-concerti-grossi-3-vivaldi-four-concerti-grossi-op8-ii-l-estate-allegro-adagio-presto-2195-7221-570d4e22-c3db-4444-9822-933b169385e2.mp3`
+      ),
     ];
 
     this.soundEnabled = false;

@@ -121,6 +121,12 @@ img {
   border: none;
 }
 
+@media (display-mode: standalone) {
+  .header .logo {
+    display: none;
+  }
+}
+
 @media screen and (min-width: 768px) {
   .header {
     max-width: 100%;
@@ -1075,6 +1081,48 @@ img {
 
 .performance-backdrop.is-hidden {
   display: none;
+}
+
+.premium-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 10000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+}
+
+.premium-backdrop.is-open {
+  display: flex;
+}
+
+.premium-modal {
+  position: relative;
+  width: 100%;
+  max-width: 320px;
+  padding: 36px 20px 20px;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+
+.premium-description {
+  font-size: 13px;
+  line-height: 1.5;
+  color: #555;
+}
+
+.premium-price {
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.premium-ok {
+  background: #222;
+  color: #fff;
 }
 
 /* ------------------------------------------- */
