@@ -408,11 +408,11 @@ settingsApplyBtn.addEventListener('click', () => {
     cubeSizeInput.value = size;
     return;
   }
-  if (newSize >= 7) {
-    openPremiumModal();
-    cubeSizeInput.value = size;
-    return;
-  }
+  // if (newSize >= 7) {
+  //   openPremiumModal();
+  //   cubeSizeInput.value = size;
+  //   return;
+  // }
   renderMode = renderModeSelect.dataset.value;
   const backgroundMode =
     document.querySelector('#background-mode').dataset.value;
