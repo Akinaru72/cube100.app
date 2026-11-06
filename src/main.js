@@ -408,11 +408,11 @@ settingsApplyBtn.addEventListener('click', () => {
     cubeSizeInput.value = size;
     return;
   }
-  // if (newSize >= 7) {
-  //   openPremiumModal();
-  //   cubeSizeInput.value = size;
-  //   return;
-  // }
+  if (newSize >= 7 && !isPremium) {
+    openPremiumModal();
+    cubeSizeInput.value = size;
+    return;
+  }
   renderMode = renderModeSelect.dataset.value;
   const backgroundMode =
     document.querySelector('#background-mode').dataset.value;
@@ -430,10 +430,33 @@ cubeSizeInput.addEventListener('keydown', event => {
     settingsApplyBtn.click();
   }
 });
+// ======================Premium===============
+// const premiumBackdrop = document.querySelector('.premium-backdrop');
+// const premiumCloseBtn = document.querySelector('.premium-close');
+// // const premiumOkBtn = document.querySelector('.premium-ok');
+// const premiumBuyBtn = document.querySelector('.premium-buy');
+
+// function openPremiumModal() {
+//   premiumBackdrop.classList.add('is-open');
+// }
+
+// function closePremiumModal() {
+//   premiumBackdrop.classList.remove('is-open');
+// }
+
+// premiumCloseBtn.addEventListener('click', closePremiumModal);
+// // premiumOkBtn.addEventListener('click', closePremiumModal);
 
 const premiumBackdrop = document.querySelector('.premium-backdrop');
 const premiumCloseBtn = document.querySelector('.premium-close');
-const premiumOkBtn = document.querySelector('.premium-ok');
+const premiumBuyBtn = document.querySelector('.premium-buy');
+
+const PREMIUM_PRODUCT_ID = 'premium_unlock';
+const BILLING_URL = 'https://play.google.com/billing';
+const VERIFY_URL = 'https://cuberelax-billing.akinaru3.workers.dev';
+
+let isPremium = false;
+let digitalGoodsService = null;
 
 function openPremiumModal() {
   premiumBackdrop.classList.add('is-open');
@@ -444,7 +467,108 @@ function closePremiumModal() {
 }
 
 premiumCloseBtn.addEventListener('click', closePremiumModal);
-premiumOkBtn.addEventListener('click', closePremiumModal);
+
+async function initBilling() {
+  if (!('getDigitalGoodsService' in window)) return;
+
+  try {
+    digitalGoodsService = await window.getDigitalGoodsService(BILLING_URL);
+
+    const products = await digitalGoodsService.getDetails([PREMIUM_PRODUCT_ID]);
+
+    console.log('Premium product:', products);
+
+    await restorePremium();
+  } catch (error) {
+    console.error('Billing initialization error:', error);
+  }
+}
+
+async function verifyPremiumPurchase(purchaseToken) {
+  const response = await fetch(VERIFY_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ purchaseToken }),
+  });
+
+  if (!response.ok) return false;
+
+  const result = await response.json();
+
+  return result.verified === true && result.productId === PREMIUM_PRODUCT_ID;
+}
+
+async function restorePremium() {
+  const purchases = await digitalGoodsService.listPurchases();
+
+  for (const purchase of purchases) {
+    if (purchase.itemId !== PREMIUM_PRODUCT_ID) continue;
+
+    if (await verifyPremiumPurchase(purchase.purchaseToken)) {
+      isPremium = true;
+      break;
+    }
+  }
+
+  console.log('Premium status:', isPremium);
+}
+
+premiumBuyBtn.addEventListener('click', async () => {
+  if (!digitalGoodsService) {
+    alert('Google Play Billing is unavailable.');
+    return;
+  }
+
+  premiumBuyBtn.disabled = true;
+
+  let paymentResponse;
+
+  try {
+    const request = new PaymentRequest(
+      [
+        {
+          supportedMethods: BILLING_URL,
+          data: { sku: PREMIUM_PRODUCT_ID },
+        },
+      ],
+      {
+        total: {
+          label: 'CubeRelax100 Premium',
+          amount: { currency: 'USD', value: '0' },
+        },
+      }
+    );
+
+    paymentResponse = await request.show();
+
+    const { purchaseToken } = paymentResponse.details;
+
+    const verified = await verifyPremiumPurchase(purchaseToken);
+
+    await paymentResponse.complete(verified ? 'success' : 'fail');
+
+    if (verified) {
+      isPremium = true;
+      closePremiumModal();
+      alert('Premium successfully activated!');
+    } else {
+      alert('Purchase verification failed.');
+    }
+  } catch (error) {
+    if (error.name !== 'AbortError') {
+      console.error('Purchase error:', error);
+      alert('Purchase error. Please try again.');
+    }
+  } finally {
+    premiumBuyBtn.disabled = false;
+  }
+});
+
+initBilling();
+
+// ========================End premium====================================
 
 document.querySelectorAll('.custom-select').forEach(select => {
   const trigger = select.querySelector('.custom-select-trigger');
