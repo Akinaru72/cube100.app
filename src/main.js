@@ -468,19 +468,40 @@ function closePremiumModal() {
 
 premiumCloseBtn.addEventListener('click', closePremiumModal);
 
+// async function initBilling() {
+//   if (!('getDigitalGoodsService' in window)) return;
+
+//   try {
+//     digitalGoodsService = await window.getDigitalGoodsService(BILLING_URL);
+
+//     const products = await digitalGoodsService.getDetails([PREMIUM_PRODUCT_ID]);
+
+//     console.log('Premium product:', products);
+
+//     await restorePremium();
+//   } catch (error) {
+//     console.error('Billing initialization error:', error);
+//   }
+// }
+
 async function initBilling() {
-  if (!('getDigitalGoodsService' in window)) return;
+  if (!('getDigitalGoodsService' in window)) {
+    console.log('Digital Goods API unavailable');
+    return;
+  }
 
   try {
+    console.log('1. Connecting to Billing...');
     digitalGoodsService = await window.getDigitalGoodsService(BILLING_URL);
+    console.log('2. Billing connected');
 
     const products = await digitalGoodsService.getDetails([PREMIUM_PRODUCT_ID]);
-
-    console.log('Premium product:', products);
+    console.log('3. Product details:', products);
 
     await restorePremium();
+    console.log('4. Purchases restored');
   } catch (error) {
-    console.error('Billing initialization error:', error);
+    console.error('Billing error at step:', error);
   }
 }
 
