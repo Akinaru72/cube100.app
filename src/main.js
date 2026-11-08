@@ -489,14 +489,20 @@ async function initBilling() {
     console.log('Digital Goods API unavailable');
     return;
   }
-
   try {
     console.log('1. Connecting to Billing...');
     digitalGoodsService = await window.getDigitalGoodsService(BILLING_URL);
     console.log('2. Billing connected');
 
-    const products = await digitalGoodsService.getDetails([PREMIUM_PRODUCT_ID]);
-    console.log('3. Product details:', products);
+    try {
+      const products = await digitalGoodsService.getDetails([
+        PREMIUM_PRODUCT_ID,
+      ]);
+      console.log('3. Product details:', products);
+    } catch (error) {
+      console.error('GET DETAILS ERROR:', error.name, error.message);
+      return;
+    }
 
     await restorePremium();
     console.log('4. Purchases restored');
