@@ -16,7 +16,7 @@ import { DEFAULT_SIZE } from './js/constants';
 import { CubeState } from './js/CubeState.js';
 let size = DEFAULT_SIZE;
 
-let renderMode = 'expanded';
+let renderMode = 'classic';
 let cubeState = new CubeState(size);
 const scene = new THREE.Scene();
 
@@ -263,7 +263,9 @@ controls.enableDamping = true;
 // camera.position.set(cameraDistance, cameraDistance, cameraDistance);
 // camera.lookAt(0, 0, 0);
 
-function resetCube() {
+function resetCube(preserveCamera = true) {
+  const savedCameraPosition = preserveCamera ? camera.position.clone() : null;
+
   currentSolve = undefined;
   const savedSoundEnabled = cube.soundEnabled;
   scene.remove(cubeGroup);
@@ -277,6 +279,9 @@ function resetCube() {
   //   camera.position.set(cameraDistance, cameraDistance, cameraDistance);
   // } else {
   updateCamera();
+  if (savedCameraPosition) {
+    camera.position.copy(savedCameraPosition);
+  }
   // const cameraDistance = size * Math.max(1, 390 / cubeContainer.clientWidth);
   // camera.position.set(cameraDistance, cameraDistance, cameraDistance);
   // }
@@ -422,7 +427,7 @@ settingsApplyBtn.addEventListener('click', () => {
 
   settingsBackdropEl.classList.remove('is-open');
 
-  resetCube();
+  resetCube(false);
 });
 
 cubeSizeInput.addEventListener('keydown', event => {
