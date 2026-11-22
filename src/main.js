@@ -95,7 +95,7 @@ cube.updateResetButtons();
 // -----------------------------Background------------------------------
 let stopBackground = null;
 
-// setBackground('stars');
+setBackground('stars');
 
 function setBackground(mode) {
   if (stopBackground) {
