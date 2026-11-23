@@ -17,8 +17,8 @@ body {
   font-size: 14px;
   line-height: 1.29;
   letter-spacing: -0.02em;
-  background-color: #000000;
-  /* background-color: #3b3b3b; */
+  /* background-color: #000000; */
+  background-color: #3b3b3b;
   height: 100%;
   display: flex;
   flex-direction: column;
@@ -122,23 +122,23 @@ img {
   border: none;
 }
 
-/* @media (display-mode: standalone) { */
-.header {
-  max-width: none;
-  /* width: 100%; */
-  max-width: 375px;
-  box-sizing: border-box;
-}
+@media (display-mode: standalone) {
+  .header {
+    max-width: none;
+    /* width: 100%; */
+    max-width: 375px;
+    box-sizing: border-box;
+  }
 
-.header .logo {
-  display: none;
-}
+  .header .logo {
+    display: none;
+  }
 
-.main-nav {
-  width: 100%;
-  justify-content: space-evenly;
+  .main-nav {
+    width: 100%;
+    justify-content: space-evenly;
+  }
 }
-/* } */
 
 @media screen and (min-width: 768px) {
   .header {

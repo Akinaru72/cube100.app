@@ -87,7 +87,19 @@ function updateCamera() {
   camera.lookAt(0, 0, 0);
 }
 
-window.addEventListener('resize', updateCamera);
+let resizeTimer;
+
+window.addEventListener('resize', () => {
+  updateCamera();
+
+  clearTimeout(resizeTimer);
+
+  resizeTimer = setTimeout(() => {
+    if (currentBackground === 'stars') {
+      setBackground('stars');
+    }
+  }, 150);
+});
 updateCamera();
 initRender();
 cube.updateResetButtons();
@@ -95,13 +107,15 @@ cube.updateResetButtons();
 // -----------------------------Background------------------------------
 let stopBackground = null;
 
-setBackground('stars');
-
+let currentBackground = 'none';
+setBackground('snow');
 function setBackground(mode) {
+  currentBackground = mode;
   if (stopBackground) {
     stopBackground();
     stopBackground = null;
   }
+  document.body.style.backgroundColor = mode === 'none' ? '#3b3b3b' : '#000000';
 
   if (mode === 'rain') {
     stopBackground = createRain(cubeContainer);
