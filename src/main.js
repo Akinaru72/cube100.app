@@ -108,7 +108,7 @@ cube.updateResetButtons();
 let stopBackground = null;
 
 let currentBackground = 'none';
-setBackground('snow');
+// setBackground('snow');
 function setBackground(mode) {
   currentBackground = mode;
   if (stopBackground) {
@@ -887,8 +887,8 @@ function loadCubeState() {
     restoreCubeState(state)
   );
 
-  camera.position.set(size, size, size);
-
+  // camera.position.set(size, size, size);
+  updateCamera();
   cube.updateResetButtons();
 }
 
