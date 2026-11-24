@@ -16,7 +16,7 @@ import { DEFAULT_SIZE } from './js/constants';
 import { CubeState } from './js/CubeState.js';
 let size = DEFAULT_SIZE;
 
-let renderMode = 'classic';
+let renderMode = 'expanded';
 let cubeState = new CubeState(size);
 const scene = new THREE.Scene();
 
