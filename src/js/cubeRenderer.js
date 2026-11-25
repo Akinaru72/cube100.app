@@ -270,7 +270,7 @@ export function createCubeRenderer(cubeState, size) {
 
   const scene = new THREE.Scene();
 
-  console.log('bulgeRadius', bulgeRadius);
+  // console.log('bulgeRadius', bulgeRadius);
 
   // ====================
   // GEOMETRY
@@ -1045,7 +1045,7 @@ export function createCubeRenderer(cubeState, size) {
 
   const stateBLD = cubeState.getCell('B', size - 1, size - 1);
   const colorCornerBLD = getMaterialSurface(stateBLD.slice(0, 1));
-  console.log(stateBLD);
+  // console.log(stateBLD);
 
   const surfaceCornerBLD = createCorners3dBegin(
     pointsCornersAB_BD,
@@ -1187,7 +1187,7 @@ export function createCubeRenderer(cubeState, size) {
 
   const stateDRB = cubeState.getCell('D', size - 1, size - 1);
   const colorCornerDRB = getMaterialSurface(stateDRB.slice(0, 1));
-  console.log(stateDRB);
+  // console.log(stateDRB);
 
   const surfaceCornerDRB = createCorners3dEnd(
     pointsCornersAB_DB,
@@ -2220,7 +2220,7 @@ export function createCubeRenderer(cubeState, size) {
     ...backPieces,
     ...downPieces
   );
-  console.log('rightPieces', rightPieces);
+  // console.log('rightPieces', rightPieces);
   // console.log('cubePieces', cubePieces);
 
   function getArcPointForZ(z, sphereCenter, startP) {

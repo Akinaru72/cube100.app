@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
-import { cubeSize, cellSize, getExpand } from './js/constants';
+import { cubeSize, cellSize, getExpand, fullsize } from './js/constants';
 
 import { createRain } from './js/wrapper/rain.js';
 import { createStars } from './js/wrapper/stars.js';
@@ -15,8 +15,11 @@ import { createCubeRenderer as createSphereRenderer } from './js/cubeSphereRende
 
 import { Cube100 } from './js/Cube100.js';
 import { DEFAULT_SIZE } from './js/constants';
+
 import { CubeState } from './js/CubeState.js';
 let size = DEFAULT_SIZE;
+
+import { getCubeParams } from './js/constants';
 
 let renderMode = 'expanded';
 let cubeState = new CubeState(size);
@@ -67,9 +70,21 @@ if (!CSS.supports('height', '100dvh')) {
 function getCubeHalf() {
   if (renderMode === 'expanded') {
     const expand = getExpand(size);
+    console.log(((size - 1) * cellSize) / 2 + cubeSize * expand - cubeSize / 2);
     return ((size - 1) * cellSize) / 2 + cubeSize * expand - cubeSize / 2;
+  } else if (renderMode === 'classic') {
+    console.log(((size - 1) * cellSize) / 2 + cubeSize / 2);
+    return ((size - 1) * cellSize) / 2 + cubeSize / 2; // classic
+  } else {
+    const { halfSize, cornerExpand, bulgeRadius, fullsize } =
+      getCubeParams(size);
+
+    const expand = fullsize / 2;
+    console.log(halfSize);
+    console.log('Burger:', halfSize + cornerExpand, bulgeRadius);
+    console.log('expandBurger:', expand);
+    return expand;
   }
-  return ((size - 1) * cellSize) / 2 + cubeSize / 2; // classic
 }
 
 function updateCamera() {
@@ -83,9 +98,12 @@ function updateCamera() {
   });
 
   if (renderMode === 'bulged' || renderMode === 'spherical') {
-    const cameraDistance = size * 1.8;
+    console.log('Bulged');
+    const fraction = isPortrait ? 0.8 : 0.7;
+    fitCameraToCube(getCubeHalf(), fraction);
+    // const cameraDistance = size * 1.8;
 
-    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
+    // camera.position.set(cameraDistance, cameraDistance, cameraDistance);
   } else // if (renderMode === 'expanded') {
   // console.log('Expanded');
   // const half = ((size - 2) * cellSize + 2 * cornerSize) / 2;
@@ -93,7 +111,7 @@ function updateCamera() {
   // fitCameraToCube(half, fraction);
   // } else
   {
-    const fraction = isPortrait ? 0.9 : 0.7;
+    const fraction = isPortrait ? 0.9 : 0.8;
     fitCameraToCube(getCubeHalf(), fraction);
     // fitCameraToCube(0.9);
     // const cameraDistance = isPortrait
