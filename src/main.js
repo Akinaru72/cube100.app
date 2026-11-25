@@ -1,6 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 
+import { cubeSize, cellSize, getExpand } from './js/constants';
+
 import { createRain } from './js/wrapper/rain.js';
 import { createStars } from './js/wrapper/stars.js';
 import { createSnow } from './js/wrapper/snow.js';
@@ -62,6 +64,14 @@ if (!CSS.supports('height', '100dvh')) {
   );
 }
 
+function getCubeHalf() {
+  if (renderMode === 'expanded') {
+    const expand = getExpand(size);
+    return ((size - 1) * cellSize) / 2 + cubeSize * expand - cubeSize / 2;
+  }
+  return ((size - 1) * cellSize) / 2 + cubeSize / 2; // classic
+}
+
 function updateCamera() {
   const isPortrait = cubeContainer.clientHeight > cubeContainer.clientWidth;
 
@@ -76,17 +86,101 @@ function updateCamera() {
     const cameraDistance = size * 1.8;
 
     camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-  } else {
-    const cameraDistance = isPortrait
-      ? size * 1.7 * Math.max(1, 390 / cubeContainer.clientHeight)
-      : size * 1.2 * Math.max(1, 390 / cubeContainer.clientWidth);
+  } else // if (renderMode === 'expanded') {
+  // console.log('Expanded');
+  // const half = ((size - 2) * cellSize + 2 * cornerSize) / 2;
+  // const fraction = isPortrait ? 0.9 : 0.7;
+  // fitCameraToCube(half, fraction);
+  // } else
+  {
+    const fraction = isPortrait ? 0.9 : 0.7;
+    fitCameraToCube(getCubeHalf(), fraction);
+    // fitCameraToCube(0.9);
+    // const cameraDistance = isPortrait
+    //   ? size * 1.7 * Math.max(1, 390 / cubeContainer.clientHeight)
+    //   : size * 1.2 * Math.max(1, 390 / cubeContainer.clientWidth);
 
-    camera.position.set(cameraDistance, cameraDistance, cameraDistance);
-    // camera.lookAt(0, 0, 0);
+    // camera.position.set(cameraDistance, cameraDistance, cameraDistance);
   }
   camera.lookAt(0, 0, 0);
 }
 
+function fitCameraToCube(half, fraction) {
+  const w = cubeContainer.clientWidth;
+  const h = cubeContainer.clientHeight;
+  const isPortrait = h > w;
+  const aspect = w / h;
+
+  camera.aspect = aspect;
+  camera.updateProjectionMatrix();
+
+  const dir = new THREE.Vector3(1, 1, 1).normalize();
+  const forward = dir.clone().negate();
+  const right = new THREE.Vector3()
+    .crossVectors(forward, new THREE.Vector3(0, 1, 0))
+    .normalize();
+  const up = new THREE.Vector3().crossVectors(right, forward).normalize();
+
+  const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+  const tanH = tanV * aspect;
+
+  let Dx = 0;
+  let Dy = 0;
+  for (const sx of [-1, 1]) {
+    for (const sy of [-1, 1]) {
+      for (const sz of [-1, 1]) {
+        const p = new THREE.Vector3(sx * half, sy * half, sz * half);
+        const depth = p.dot(dir);
+        Dx = Math.max(Dx, Math.abs(p.dot(right)) / (fraction * tanH) + depth);
+        Dy = Math.max(Dy, Math.abs(p.dot(up)) / (fraction * tanV) + depth);
+      }
+    }
+  }
+
+  camera.position.copy(dir.multiplyScalar(isPortrait ? Dx : Dy));
+  camera.lookAt(0, 0, 0);
+}
+
+// function fitCameraToCube(fraction = 0.9) {
+//   const w = cubeContainer.clientWidth;
+//   const h = cubeContainer.clientHeight;
+//   const aspect = w / h;
+
+//   camera.aspect = aspect;
+//   camera.updateProjectionMatrix();
+
+//   const half = size / 2;
+
+//   const dir = new THREE.Vector3(1, 1, 1).normalize();
+//   const forward = dir.clone().negate();
+//   const right = new THREE.Vector3()
+//     .crossVectors(forward, new THREE.Vector3(0, 1, 0))
+//     .normalize();
+//   const up = new THREE.Vector3().crossVectors(right, forward).normalize();
+
+//   const tanV = Math.tan(THREE.MathUtils.degToRad(camera.fov / 2));
+//   const tanH = tanV * aspect;
+
+//   let D = 0;
+//   for (const sx of [-1, 1]) {
+//     for (const sy of [-1, 1]) {
+//       for (const sz of [-1, 1]) {
+//         const p = new THREE.Vector3(sx * half, sy * half, sz * half);
+//         const depth = p.dot(dir);
+//         const x = Math.abs(p.dot(right));
+//         const y = Math.abs(p.dot(up));
+//         D = Math.max(
+//           D,
+//           x / (fraction * tanH) + depth,
+//           y / (fraction * tanV) + depth
+//         );
+//       }
+//     }
+//   }
+
+//   camera.position.copy(dir.multiplyScalar(D));
+//   camera.lookAt(0, 0, 0);
+// }
 let resizeTimer;
 
 window.addEventListener('resize', () => {
