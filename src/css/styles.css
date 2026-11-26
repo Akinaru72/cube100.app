@@ -223,10 +223,20 @@ img {
   font-size: 11px;
   font-weight: 600;
   letter-spacing: 0.5px;
-  background-color: rgb(59 59 59 / 30%);
+  background-color: rgb(59 59 59 / 75%);
 
   cursor: pointer;
   transition: transform 250ms cubic-bezier(0.39, 0.575, 0.565, 1);
+}
+
+.cube-controls button {
+  /* display: block;
+  box-sizing: border-box; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 80px;
 }
 
 #solve-first-side:disabled,
@@ -257,6 +267,13 @@ img {
 
   .solve-list-last {
     right: 20px;
+  }
+  .cube-controls {
+    display: flex;
+    gap: 15px;
+  }
+  .cube-controls button {
+    width: 120px;
   }
 }
 
@@ -336,7 +353,7 @@ img {
   left: 0;
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 15px;
   width: 100%;
   z-index: 10;
   transition:
@@ -372,7 +389,8 @@ img {
 /* -----------------------------Speed Menu------------------------ */
 
 .speed-menu {
-  position: absolute;
+  /* position: absolute; */
+  position: fixed;
 
   /* left: 50%; */
   left: 0;
@@ -400,7 +418,7 @@ img {
 .speed-menu .control-btn {
   flex: 0 0 40px; /* не растягивается, не сжимается, ширина 40px */
   width: 40px;
-  font-size: 7px;
+  font-size: 10px;
   padding: 7px 4px;
 
   border: 1px solid #fff;
@@ -440,13 +458,16 @@ img {
 
   .speed-menu {
     position: fixed;
-    left: 50%;
-    bottom: 20px;
+    left: 0;
+    right: 0;
+    /* bottom: 20px; */
 
     display: flex;
-    gap: 8px;
+    justify-content: center;
+    gap: 10px;
 
-    transform: translate(-50%, 150%);
+    /* transform: translate(-50%, 150%); */
+    transform: translateY(150%);
     opacity: 0;
 
     transition:
@@ -458,13 +479,15 @@ img {
   }
 
   .speed-menu .control-btn {
-    flex: 0 0 80px; /* не растягивается, не сжимается, ширина 40px */
+    flex: 0 0 80px;
+
     width: 80px;
   }
 
   .speed-menu.visible {
     opacity: 1;
-    transform: translate(-50%, 0);
+    /* transform: translate(-50%, 0); */
+    transform: translateY(0);
     pointer-events: auto;
   }
 }
