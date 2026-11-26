@@ -373,11 +373,21 @@ img {
 
 .speed-menu {
   position: absolute;
-  left: 50%;
+
+  /* left: 50%; */
+  left: 0;
+  right: 0;
   bottom: 25px;
+
+  box-sizing: border-box;
+  padding-inline: 12px;
+
   display: flex;
-  gap: 8px;
-  transform: translate(-50%, 150%);
+  /* max-width: 100%; */
+  justify-content: space-evenly;
+  /* gap: 8px; */
+  /* transform: translate(-50%, 150%); */
+  transform: translateY(150%);
   opacity: 0;
   transition:
     opacity 350ms ease,
@@ -388,11 +398,23 @@ img {
 }
 
 .speed-menu .control-btn {
+  flex: 0 0 40px; /* не растягивается, не сжимается, ширина 40px */
+  width: 40px;
   font-size: 7px;
-  padding: 4px;
+  padding: 7px 4px;
+
   border: 1px solid #fff;
   border-radius: 2px;
+
   /* border: none; */
+}
+
+.speed-menu button {
+  /* flex: 1 1 0; */
+  /* flex: 0 0 20px; /* не растягивается, не сжимается, ширина 40px */
+  /* width: 20px; */
+  min-width: 0;
+  padding-inline: 4px;
 }
 
 .control-btn.active {
@@ -403,7 +425,8 @@ img {
 
 .speed-menu.visible {
   opacity: 1;
-  transform: translate(-50%, 0);
+  /* transform: translate(-50%, 0); */
+  transform: translateY(0);
   pointer-events: auto;
 }
 
@@ -411,7 +434,7 @@ img {
   .speed-menu .control-btn {
     font-size: 15px;
     padding: 10px 20px;
-    /* border: none; */
+
     border-radius: 5px;
   }
 
@@ -432,6 +455,11 @@ img {
 
     pointer-events: none;
     z-index: 1000;
+  }
+
+  .speed-menu .control-btn {
+    flex: 0 0 80px; /* не растягивается, не сжимается, ширина 40px */
+    width: 80px;
   }
 
   .speed-menu.visible {
@@ -487,28 +515,28 @@ img {
   transform: translate(-50%, -50%) rotate(45deg);
 }
 
-@media screen and (min-width: 768px) {
-  .sound-menu {
-    position: absolute;
-    right: 40px;
-    top: 40px;
-  }
-  .sound-btn {
-    width: 30px;
-    height: 30px;
-    font-size: 30px;
-  }
-  .sound-btn.off::after {
-    content: '';
-    position: absolute;
-    width: 2px;
-    height: 40px;
-    background: currentColor;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) rotate(45deg);
-  }
+/* @media screen and (min-width: 768px) { */
+.sound-menu {
+  position: absolute;
+  right: 40px;
+  top: 40px;
 }
+.sound-btn {
+  width: 30px;
+  height: 30px;
+  font-size: 30px;
+}
+.sound-btn.off::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 40px;
+  background: currentColor;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+}
+/* } */
 
 /* ================Settigs===================== */
 
