@@ -416,9 +416,9 @@ img {
 }
 
 .speed-menu .control-btn {
-  flex: 0 0 40px; /* не растягивается, не сжимается, ширина 40px */
-  width: 40px;
-  font-size: 10px;
+  flex: 0 0 55px; /* не растягивается, не сжимается, ширина 40px */
+  width: 55px;
+  font-size: 15px;
   padding: 7px 4px;
 
   border: 1px solid #fff;

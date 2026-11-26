@@ -539,11 +539,11 @@ settingsApplyBtn.addEventListener('click', () => {
     cubeSizeInput.value = size;
     return;
   }
-  if (newSize >= 7 && !isPremium) {
-    openPremiumModal();
-    cubeSizeInput.value = size;
-    return;
-  }
+  // if (newSize >= 7 && !isPremium) {
+  //   openPremiumModal();
+  //   cubeSizeInput.value = size;
+  //   return;
+  // }
   renderMode = renderModeSelect.dataset.value;
   const backgroundMode =
     document.querySelector('#background-mode').dataset.value;
@@ -894,6 +894,19 @@ speedMenuEl.addEventListener('click', event => {
   const button = event.target.closest('button');
   if (!button) return;
 
+  if (button.id === 'playPauseButton') {
+    const isPaused = cube.rotationSpeed === 0;
+
+    cube.rotationSpeed = isPaused ? 0.1 : 0;
+
+    button.textContent = isPaused ? 'Ⅱ' : '▶';
+
+    speedMenuEl.querySelectorAll('button').forEach(btn => {
+      btn.classList.toggle('active', btn === button && !isPaused);
+    });
+
+    return;
+  }
   speedMenuEl.querySelectorAll('button').forEach(btn => {
     btn.classList.toggle('active', btn === button);
   });
@@ -944,6 +957,9 @@ speedMenuEl.addEventListener('click', event => {
   }
   // cube.isPaused = false;
   cube.rotationSpeed = 0.1 * Number(speed);
+
+  const playPauseButton = document.getElementById('playPauseButton');
+  playPauseButton.textContent = 'Ⅱ';
 });
 
 // -------------------------Local----------------
