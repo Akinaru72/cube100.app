@@ -416,8 +416,8 @@ img {
 }
 
 .speed-menu .control-btn {
-  flex: 0 0 55px; /* не растягивается, не сжимается, ширина 40px */
-  width: 55px;
+  flex: 0 0 50px; /* не растягивается, не сжимается, ширина 40px */
+  width: 50px;
   font-size: 15px;
   padding: 7px 4px;
 
@@ -1180,7 +1180,72 @@ img {
   color: #fff;
 }
 
-/* ------------------------------------------- */
+/* -------------------Hint------------------------ */
+#startHint {
+  position: absolute;
+  z-index: 100;
+  pointer-events: none;
+  text-align: center;
+  transform: translateY(-75px);
+}
+
+.start-arrow {
+  font-size: 64px;
+  color: #ffd54f;
+  animation: arrowBounce 0.8s infinite alternate;
+}
+
+.start-text {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffd54f;
+}
+
+@keyframes arrowBounce {
+  from {
+    transform: translateY(-8px);
+  }
+  to {
+    transform: translateY(8px);
+  }
+}
+
+.scramble-wrap {
+  position: relative;
+}
+
+#startHint {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  pointer-events: none;
+  z-index: 100;
+  white-space: nowrap;
+}
+
+.start-arrow {
+  font-size: 60px;
+  color: #ffd54f;
+  animation: arrowBounce 0.8s infinite alternate;
+}
+
+.start-text {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffd54f;
+}
+
+@keyframes arrowBounce {
+  from {
+    transform: translateY(-5px);
+  }
+  to {
+    transform: translateY(7px);
+  }
+}
+
 /*
 @media screen and (min-width: 1024px) {
   /* .header {

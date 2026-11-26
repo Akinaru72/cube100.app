@@ -208,9 +208,16 @@
       <nav class="cube-controls">
         <button type="button" class="control-btn" id="reset-btn">Reset</button>
         <button type="button" class="control-btn" id="solve-btn">Solve</button>
-        <button type="button" class="control-btn" id="scramble-btn">
-          Scramble
-        </button>
+        <div class="scramble-wrap">
+          <button type="button" class="control-btn" id="scramble-btn">
+            Scramble
+          </button>
+
+          <div id="startHint">
+            <div class="start-arrow">⬇</div>
+            <div class="start-text">START HERE</div>
+          </div>
+        </div>
       </nav>
       <div class="speed-menu" id="speedMenu">
         <!-- <button class="sound-btn" id="soundButton">🔊</button> -->
@@ -219,9 +226,9 @@
         <button class="control-btn active" data-speed="1">▶</button> -->
         <button class="control-btn" id="playPauseButton">Ⅱ</button>
         <button class="control-btn" data-speed="2">▶▶</button>
-        <button class="control-btn" data-speed="4">▶&nbsp;×&nbsp;4</button>
-        <button class="control-btn" data-speed="8">▶&nbsp;×&nbsp;8</button>
-        <button class="control-btn" data-speed="16">▶&nbsp;×&nbsp;16</button>
+        <button class="control-btn" data-speed="4">▶×4</button>
+        <button class="control-btn" data-speed="8">▶×8</button>
+        <button class="control-btn" data-speed="16">▶×16</button>
         <!-- <button class="control-btn" data-speed="32">▶▶&nbsp;×32</button> -->
         <button class="control-btn" data-speed="end">End</button>
       </div>

@@ -539,11 +539,11 @@ settingsApplyBtn.addEventListener('click', () => {
     cubeSizeInput.value = size;
     return;
   }
-  // if (newSize >= 7 && !isPremium) {
-  //   openPremiumModal();
-  //   cubeSizeInput.value = size;
-  //   return;
-  // }
+  if (newSize >= 7 && !isPremium) {
+    openPremiumModal();
+    cubeSizeInput.value = size;
+    return;
+  }
   renderMode = renderModeSelect.dataset.value;
   const backgroundMode =
     document.querySelector('#background-mode').dataset.value;
@@ -798,6 +798,13 @@ scrambleBtn.addEventListener('click', () => {
 
   // cube.soundEnabled = savedSoundEnabled;
   console.log('After_scramble', cube.soundEnabled);
+});
+
+// document.getElementById('startHint')?.remove();
+document.querySelector('.cube-controls').addEventListener('click', event => {
+  if (event.target.closest('button')) {
+    document.getElementById('startHint')?.classList.add('is-hidden');
+  }
 });
 
 function startAnimationMode() {
