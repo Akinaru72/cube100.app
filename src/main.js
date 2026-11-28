@@ -220,7 +220,7 @@ cube.updateResetButtons();
 let stopBackground = null;
 
 let currentBackground = 'none';
-// setBackground('snow');
+setBackground('snow');
 function setBackground(mode) {
   currentBackground = mode;
   if (stopBackground) {
