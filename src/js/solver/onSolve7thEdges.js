@@ -14,7 +14,7 @@ export function onSolve7thEdgeSol(state) {
       calcState.isSolvedEgdesL() &&
       calcState.isSolvedEgdesR()
     ) {
-      console.log('Solved__________________');
+      // console.log('Solved__________________');
       return;
     }
     let a = calcState.getCol('R', 0).slice(1, -1);
@@ -22,37 +22,37 @@ export function onSolve7thEdgeSol(state) {
     let aRev = aEl[1] + aEl[0];
 
     if (a.every(el => el === aEl || el === aRev)) {
-      console.log('return_collectEdge');
+      // console.log('return_collectEdge');
       return;
     }
 
     if (a.every(el => el === a[0])) {
-      console.log(collectEdge);
+      // console.log(collectEdge);
       return;
     }
 
     let Ra = calcState.getCol('R', 0).slice(1, -1);
     let indexMiddleEl = Math.floor(Ra.length / 2);
-    console.log(indexMiddleEl);
+    // console.log(indexMiddleEl);
     let elementRa = Ra[indexMiddleEl];
 
     let reverseRa = elementRa[1] + elementRa[0];
-    console.log(elementRa);
-    console.log(reverseRa);
+    // console.log(elementRa);
+    // console.log(reverseRa);
     let arrayRa = [];
     Ra.forEach((el, idx) => {
       if (el === Ra[indexMiddleEl] || el === reverseRa) {
         arrayRa.push(idx);
       }
     });
-    console.log(arrayRa);
+    // console.log(arrayRa);
 
     let Rc = calcState.getCol('R', calcState.size - 1).slice(1, -1);
-    console.log(indexMiddleEl);
+    // console.log(indexMiddleEl);
     let elementRc = Rc[indexMiddleEl];
     let reverseRc = elementRc[1] + elementRc[0];
-    console.log(elementRc);
-    console.log(reverseRc);
+    // console.log(elementRc);
+    // console.log(reverseRc);
 
     let arrayRc = [];
     Rc.forEach((el, idx) => {
@@ -60,8 +60,8 @@ export function onSolve7thEdgeSol(state) {
         arrayRc.push(idx);
       }
     });
-    console.log(arrayRc);
-    console.log(JSON.stringify(arrayRa) === JSON.stringify(arrayRc));
+    // console.log(arrayRc);
+    // console.log(JSON.stringify(arrayRa) === JSON.stringify(arrayRc));
 
     if (JSON.stringify(arrayRa) === JSON.stringify(arrayRc)) {
       apply('B');
@@ -71,14 +71,14 @@ export function onSolve7thEdgeSol(state) {
     }
 
     let arrayChange = [];
-    console.log(Ra[indexMiddleEl]);
-    console.log(reverseRa);
+    // console.log(Ra[indexMiddleEl]);
+    // console.log(reverseRa);
     Ra.forEach((el, idx) => {
       if (el !== Ra[indexMiddleEl] && el !== reverseRa) {
         arrayChange.push(idx + 2);
       }
     });
-    console.log(arrayChange);
+    // console.log(arrayChange);
 
     apply(`U'[${arrayChange.join(',')}]`);
     apply('B');
@@ -95,7 +95,7 @@ export function onSolve7thEdgeSol(state) {
     elementRa = Ra[indexMiddleEl];
     while (!Ra.every(el => el === Ra[indexMiddleEl] || el === reverseRa)) {
       Ra = calcState.getCol('R', 0).slice(1, -1);
-      console.log(Ra);
+      // console.log(Ra);
       elementRa = Ra[indexMiddleEl];
       reverseRa = elementRa[1] + elementRa[0];
       arrayRa = [];
@@ -104,10 +104,10 @@ export function onSolve7thEdgeSol(state) {
           arrayRa.push(idx);
         }
       });
-      console.log(arrayRa);
+      // console.log(arrayRa);
 
       Rc = calcState.getCol('R', calcState.size - 1).slice(1, -1);
-      console.log(Rc);
+      // console.log(Rc);
       elementRc = Rc[indexMiddleEl];
       reverseRc = elementRc[1] + elementRc[0];
       arrayRc = [];
@@ -116,9 +116,9 @@ export function onSolve7thEdgeSol(state) {
           arrayRc.push(idx);
         }
       });
-      console.log(arrayRc);
+      // console.log(arrayRc);
 
-      console.log(JSON.stringify(arrayRa) === JSON.stringify(arrayRc));
+      // console.log(JSON.stringify(arrayRa) === JSON.stringify(arrayRc));
 
       if (JSON.stringify(arrayRa) === JSON.stringify(arrayRc)) {
         apply('B');
@@ -129,23 +129,23 @@ export function onSolve7thEdgeSol(state) {
 
       Ra = calcState.getCol('R', 0).slice(1, -1);
       arrayChange = [];
-      console.log(Ra[indexMiddleEl]);
-      console.log(reverseRa);
+      // console.log(Ra[indexMiddleEl]);
+      // console.log(reverseRa);
       Ra.forEach((el, idx) => {
         if (el !== Ra[indexMiddleEl] && el !== reverseRa) {
           arrayChange.push(idx + 2);
         }
       });
-      console.log(arrayChange);
+      // console.log(arrayChange);
       const mid = Math.floor(Ra.length / 2);
-      console.log('mid', mid);
+      // console.log('mid', mid);
 
       const firstHarfArray = arrayChange.filter(index => index < mid + 2);
       const secondHarfArray = arrayChange.filter(
         index => index > Ra.length - mid + 1
       );
-      console.log(firstHarfArray);
-      console.log(secondHarfArray);
+      // console.log(firstHarfArray);
+      // console.log(secondHarfArray);
       if (firstHarfArray.length > secondHarfArray.length) {
         if (firstHarfArray.length > 0) {
           apply(`U'[${firstHarfArray.join(',')}]`);
@@ -160,7 +160,7 @@ export function onSolve7thEdgeSol(state) {
         }
 
         Ra = calcState.getCol('R', 0).slice(1, -1);
-        console.log(Ra);
+        // console.log(Ra);
         elementRa = Ra[indexMiddleEl];
         reverseRa = elementRa[1] + elementRa[0];
         arrayRa = [];
@@ -169,10 +169,10 @@ export function onSolve7thEdgeSol(state) {
             arrayRa.push(idx);
           }
         });
-        console.log(arrayRa);
+        // console.log(arrayRa);
 
         Rc = calcState.getCol('R', calcState.size - 1).slice(1, -1);
-        console.log(Rc);
+        // console.log(Rc);
         elementRc = Rc[indexMiddleEl];
         reverseRc = elementRc[1] + elementRc[0];
         arrayRc = [];
@@ -181,9 +181,9 @@ export function onSolve7thEdgeSol(state) {
             arrayRc.push(idx);
           }
         });
-        console.log(arrayRc);
+        // console.log(arrayRc);
 
-        console.log(JSON.stringify(arrayRa) === JSON.stringify(arrayRc));
+        // console.log(JSON.stringify(arrayRa) === JSON.stringify(arrayRc));
 
         if (JSON.stringify(arrayRa) === JSON.stringify(arrayRc)) {
           apply('B');
@@ -218,7 +218,7 @@ export function onSolve7thEdgeSol(state) {
         }
 
         Ra = calcState.getCol('R', 0).slice(1, -1);
-        console.log(Ra);
+        // console.log(Ra);
         elementRa = Ra[indexMiddleEl];
         reverseRa = elementRa[1] + elementRa[0];
         arrayRa = [];
@@ -227,10 +227,10 @@ export function onSolve7thEdgeSol(state) {
             arrayRa.push(idx);
           }
         });
-        console.log(arrayRa);
+        // console.log(arrayRa);
 
         Rc = calcState.getCol('R', calcState.size - 1).slice(1, -1);
-        console.log(Rc);
+        // console.log(Rc);
         elementRc = Rc[indexMiddleEl];
         reverseRc = elementRc[1] + elementRc[0];
         arrayRc = [];
@@ -239,9 +239,9 @@ export function onSolve7thEdgeSol(state) {
             arrayRc.push(idx);
           }
         });
-        console.log(arrayRc);
+        // console.log(arrayRc);
 
-        console.log(JSON.stringify(arrayRa) === JSON.stringify(arrayRc));
+        // console.log(JSON.stringify(arrayRa) === JSON.stringify(arrayRc));
 
         if (JSON.stringify(arrayRa) === JSON.stringify(arrayRc)) {
           apply('B');
@@ -275,32 +275,32 @@ export function onSolve7thEdgeSol(state) {
       calcState.isSolvedEgdesL() &&
       calcState.isSolvedEgdesR()
     ) {
-      console.log('Solved__________________');
+      // console.log('Solved__________________');
       return;
     }
     let Ra = calcState.getCol('R', 0).slice(1, -1);
     if (Ra.every(el => el === Ra[0])) {
-      console.log('solveEdge');
+      // console.log('solveEdge');
       return;
     }
     let indexMiddleEl = Math.floor(Ra.length / 2);
     let arrayChange = [];
-    console.log(Ra[indexMiddleEl]);
+    // console.log(Ra[indexMiddleEl]);
     // console.log(reverseRa);
     Ra.forEach((el, idx) => {
       if (el !== Ra[indexMiddleEl]) {
         arrayChange.push(idx + 2);
       }
     });
-    console.log(arrayChange);
+    // console.log(arrayChange);
     const mid = Math.floor(Ra.length / 2);
-    console.log('mid', mid);
+    // console.log('mid', mid);
 
     const firstHarfArray = arrayChange.filter(index => index < mid + 2);
     const secondHarfArray = arrayChange.filter(
       index => index > Ra.length - mid + 1
     );
-    console.log('secondHarfArray', secondHarfArray);
+    // console.log('secondHarfArray', secondHarfArray);
 
     apply(`2U'[${secondHarfArray.join(',')}]`);
     apply('2B');
@@ -331,10 +331,10 @@ export function onSolve7thEdgeSol(state) {
   let c = calcState.getCol('U', calcState.size - 1);
   // console.log(c);
   let d = calcState.getRow('U', calcState.size - 1);
-  console.log(a);
-  console.log(b);
-  console.log(c);
-  console.log(d);
+  // console.log(a);
+  // console.log(b);
+  // console.log(c);
+  // console.log(d);
 
   return {
     solution,

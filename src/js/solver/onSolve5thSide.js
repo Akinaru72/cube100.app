@@ -12,7 +12,7 @@ export function onSolve5thSideSol(state) {
     const aL = calcState.getCol('L', index).slice(1, -1);
 
     if (aL.every(el => el === 'B')) {
-      console.log('checkSideLl');
+      // console.log('checkSideLl');
       return;
     }
 
@@ -20,18 +20,18 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('aL', aL);
+    // console.log('a', a);
+    // console.log('aL', aL);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && aL[idx] !== 'B' && idx < calcState.size - index - 1) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aL', aL[idx]);
+        // console.log('aL', aL[idx]);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
         } else {
@@ -39,8 +39,8 @@ export function onSolve5thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -61,7 +61,7 @@ export function onSolve5thSideSol(state) {
     const aL = calcState.getCol('L', index).slice(1, -1);
 
     if (aL.every(el => el === 'B')) {
-      console.log('checkSideLr');
+      // console.log('checkSideLr');
       return;
     }
     apply('2B');
@@ -69,18 +69,18 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('aL', aL);
+    // console.log('a', a);
+    // console.log('aL', aL);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && aL[idx] !== 'B' && idx > index - 2) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aL', aL[idx]);
+        // console.log('aL', aL[idx]);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
         } else {
@@ -88,8 +88,8 @@ export function onSolve5thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -116,19 +116,19 @@ export function onSolve5thSideSol(state) {
     const countWc = c.filter(cell => cell === 'B').length;
     let d = calcState.getRow('L', calcState.size - index - 1).slice(1, -1);
     const countWd = d.filter(cell => cell === 'B').length;
-    console.log(calcState.getCol('L', index).slice(1, -1));
-    console.log(calcState.getRow('L', index).slice(1, -1));
-    console.log(calcState.getCol('L', calcState.size - index - 1).slice(1, -1));
-    console.log(calcState.getRow('L', calcState.size - index - 1).slice(1, -1));
-    console.log(countWa, countWb, countWc, countWd);
+    // console.log(calcState.getCol('L', index).slice(1, -1));
+    // console.log(calcState.getRow('L', index).slice(1, -1));
+    // console.log(calcState.getCol('L', calcState.size - index - 1).slice(1, -1));
+    // console.log(calcState.getRow('L', calcState.size - index - 1).slice(1, -1));
+    // console.log(countWa, countWb, countWc, countWd);
     if (countWb > countWa && countWb >= countWc && countWb >= countWd) {
       apply("L'");
-      console.log('Bmax');
+      // console.log('Bmax');
     } else if (countWc > countWa && countWc >= countWb && countWc >= countWd) {
-      console.log('Cmax');
+      // console.log('Cmax');
       apply('L');
     } else if (countWd > countWa && countWd >= countWb && countWd >= countWc) {
-      console.log('Dmax');
+      // console.log('Dmax');
       apply('L');
     }
     checkSideLl();
@@ -144,9 +144,9 @@ export function onSolve5thSideSol(state) {
 
   function checkSideLa() {
     const dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
-    console.log('dB', dB);
+    // console.log('dB', dB);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -154,18 +154,18 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('dB', dB);
+    // console.log('a', a);
+    // console.log('dB', dB);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
-      console.log('idx', idx);
-      console.log(dB[idx]);
+      // console.log('idx', idx);
+      // console.log(dB[idx]);
       if (el === 'B' && dB[idx] !== 'B' && idx < calcState.size - index - 1) {
-        console.log(el);
-        console.log('index', index);
-        console.log('idx', idx);
-        console.log('dB', dB[idx]);
+        // console.log(el);
+        // console.log('index', index);
+        // console.log('idx', idx);
+        // console.log('dB', dB[idx]);
         if (idx === calcState.size - index - 2) {
           arrayIndex.push(idx + 2);
         } else {
@@ -173,8 +173,8 @@ export function onSolve5thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -203,9 +203,9 @@ export function onSolve5thSideSol(state) {
 
   function checkSideLc() {
     const dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
-    console.log('i am here');
+    // console.log('i am here');
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLc');
+      // console.log('checkSideLc');
       return;
     }
 
@@ -213,18 +213,18 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
     c.reverse();
-    console.log('c', c);
-    console.log('dB', dB);
+    // console.log('c', c);
+    // console.log('dB', dB);
     c.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && dB[idx] !== 'B' && idx > index - 1) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aL', dB[idx]);
+        // console.log('aL', dB[idx]);
         if (idx === calcState.size - index - 2) {
           arrayIndex.push(idx + 2);
         } else {
@@ -232,8 +232,8 @@ export function onSolve5thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`D[${array.join(',')}]`);
@@ -260,7 +260,7 @@ export function onSolve5thSideSol(state) {
     checkSideLc();
     let dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -269,7 +269,7 @@ export function onSolve5thSideSol(state) {
     checkSideLc();
     dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -278,7 +278,7 @@ export function onSolve5thSideSol(state) {
     checkSideLc();
     dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -287,7 +287,7 @@ export function onSolve5thSideSol(state) {
     checkSideLc();
     dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
     // // // --------------------------Bb---------------------------------
@@ -316,7 +316,7 @@ export function onSolve5thSideSol(state) {
     checkSides();
     const dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
   }
@@ -324,7 +324,7 @@ export function onSolve5thSideSol(state) {
   function checkCentralSideLl() {
     const aL = calcState.getCol('L', index).slice(1, -1);
     if (aL.every((el, i) => i === index - 1 || el === 'B')) {
-      console.log('checkCentralSideLl');
+      // console.log('checkCentralSideLl');
       return;
     }
 
@@ -332,19 +332,19 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('index', index);
-    console.log('a', a);
-    console.log('aL', aL);
+    // console.log('index', index);
+    // console.log('a', a);
+    // console.log('aL', aL);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && aL[idx] !== 'B' && idx < index - 1) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aL', aL[idx]);
+        // console.log('aL', aL[idx]);
         // if (idx === index - 1) {
         //   arrayIndex.push(idx + 2);
         // } else {
@@ -352,8 +352,8 @@ export function onSolve5thSideSol(state) {
         // }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -366,7 +366,7 @@ export function onSolve5thSideSol(state) {
   function checkCentralSideLr() {
     const aL = calcState.getCol('L', index).slice(1, -1);
     if (aL.every((el, i) => i === index - 1 || el === 'B')) {
-      console.log('checkCentralSideLr');
+      // console.log('checkCentralSideLr');
       return;
     }
 
@@ -375,24 +375,24 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('index', index);
-    console.log('a', a);
-    console.log('aL', aL);
+    // console.log('index', index);
+    // console.log('a', a);
+    // console.log('aL', aL);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && aL[idx] !== 'B' && idx > index - 1) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aL', aL[idx]);
+        // console.log('aL', aL[idx]);
         array.push(idx + 2);
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -409,10 +409,10 @@ export function onSolve5thSideSol(state) {
     const countWa = a.filter(cell => cell === 'B').length;
     let b = calcState.getRow('L', index).slice(1, -1);
     const countWb = b.filter(cell => cell === 'B').length;
-    console.log(countWa, countWb);
+    // console.log(countWa, countWb);
     if (countWb > countWa) {
       apply('L');
-      console.log('Bmax');
+      // console.log('Bmax');
     }
     checkCentralSideLl();
     checkCentralSideLr();
@@ -424,7 +424,7 @@ export function onSolve5thSideSol(state) {
   function checkCentralSideLa() {
     const dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -432,18 +432,18 @@ export function onSolve5thSideSol(state) {
     const array = [];
     // const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('dB', dB);
+    // console.log('a', a);
+    // console.log('dB', dB);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
-      console.log('idx', idx);
-      console.log(dB[idx]);
+      // console.log('idx', idx);
+      // console.log(dB[idx]);
       if (el === 'B' && dB[idx] !== 'B' && idx < index - 1) {
-        console.log(el);
-        console.log('index', index);
-        console.log('idx', idx);
-        console.log('dB', dB[idx]);
+        // console.log(el);
+        // console.log('index', index);
+        // console.log('idx', idx);
+        // console.log('dB', dB[idx]);
         // if (idx === calcState.size - index - 2) {
         //   arrayIndex.push(idx + 2);
         // } else {
@@ -451,7 +451,7 @@ export function onSolve5thSideSol(state) {
         // }
       }
     });
-    console.log(array);
+    // console.log(array);
     // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
@@ -466,9 +466,9 @@ export function onSolve5thSideSol(state) {
 
   function checkCentralSideLc() {
     const dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
-    console.log('i am here');
+    // console.log('i am here');
     if (dB.every(el => el === 'B')) {
-      console.log('checkCentralSideLc');
+      // console.log('checkCentralSideLc');
       return;
     }
 
@@ -476,23 +476,23 @@ export function onSolve5thSideSol(state) {
     const array = [];
 
     c.reverse();
-    console.log('c', c);
-    console.log('dB', dB);
+    // console.log('c', c);
+    // console.log('dB', dB);
     c.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && dB[idx] !== 'B' && idx > index - 1) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aL', dB[idx]);
+        // console.log('aL', dB[idx]);
 
         array.push(idx + 2);
       }
     });
-    console.log(array);
+    // console.log(array);
 
     if (array.length > 0) {
       apply(`D[${array.join(',')}]`);
@@ -509,7 +509,7 @@ export function onSolve5thSideSol(state) {
     checkCentralSideLc();
     let dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -518,7 +518,7 @@ export function onSolve5thSideSol(state) {
     checkCentralSideLc();
     dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -527,7 +527,7 @@ export function onSolve5thSideSol(state) {
     checkCentralSideLc();
     dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -536,7 +536,7 @@ export function onSolve5thSideSol(state) {
     checkCentralSideLc();
     dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
   }
@@ -546,7 +546,7 @@ export function onSolve5thSideSol(state) {
     checkCentralSides();
     let dB = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('createCentralLine');
+      // console.log('createCentralLine');
       return;
     }
   }
@@ -555,7 +555,7 @@ export function onSolve5thSideSol(state) {
     const aL = calcState.getCol('L', index).slice(1, -1);
 
     if (aL.every(el => el === 'B')) {
-      console.log('checkSideLl');
+      // console.log('checkSideLl');
       return;
     }
 
@@ -563,18 +563,18 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('aL', aL);
+    // console.log('a', a);
+    // console.log('aL', aL);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && aL[idx] !== 'B' && idx < index) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aL', aL[idx]);
+        // console.log('aL', aL[idx]);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
         } else {
@@ -582,8 +582,8 @@ export function onSolve5thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -604,7 +604,7 @@ export function onSolve5thSideSol(state) {
     const aL = calcState.getCol('L', index).slice(1, -1);
 
     if (aL.every(el => el === 'B')) {
-      console.log('checkSideLr');
+      // console.log('checkSideLr');
       return;
     }
     apply('2B');
@@ -612,18 +612,18 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('aL', aL);
+    // console.log('a', a);
+    // console.log('aL', aL);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && aL[idx] !== 'B' && idx > calcState.size - index - 3) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aL', aL[idx]);
+        // console.log('aL', aL[idx]);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
         } else {
@@ -631,8 +631,8 @@ export function onSolve5thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -659,19 +659,19 @@ export function onSolve5thSideSol(state) {
     const countWc = c.filter(cell => cell === 'B').length;
     let d = calcState.getRow('L', calcState.size - index - 1).slice(1, -1);
     const countWd = d.filter(cell => cell === 'B').length;
-    console.log(calcState.getCol('L', index).slice(1, -1));
-    console.log(calcState.getRow('L', index).slice(1, -1));
-    console.log(calcState.getCol('L', calcState.size - index - 1).slice(1, -1));
-    console.log(calcState.getRow('L', calcState.size - index - 1).slice(1, -1));
-    console.log(countWa, countWb, countWc, countWd);
+    // console.log(calcState.getCol('L', index).slice(1, -1));
+    // console.log(calcState.getRow('L', index).slice(1, -1));
+    // console.log(calcState.getCol('L', calcState.size - index - 1).slice(1, -1));
+    // console.log(calcState.getRow('L', calcState.size - index - 1).slice(1, -1));
+    // console.log(countWa, countWb, countWc, countWd);
     if (countWb > countWa && countWb >= countWc && countWb >= countWd) {
       apply("L'");
-      console.log('Bmax');
+      // console.log('Bmax');
     } else if (countWc > countWa && countWc >= countWb && countWc >= countWd) {
-      console.log('Cmax');
+      // console.log('Cmax');
       apply('L');
     } else if (countWd > countWa && countWd >= countWb && countWd >= countWc) {
-      console.log('Dmax');
+      // console.log('Dmax');
       apply('L');
     }
     checkUpSideLl();
@@ -687,9 +687,9 @@ export function onSolve5thSideSol(state) {
 
   function checkUpSideLa() {
     const dB = calcState.getRow('B', index).slice(1, -1);
-    console.log('dB', dB);
+    // console.log('dB', dB);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -697,19 +697,19 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
     a.reverse();
-    console.log('a', a);
+    // console.log('a', a);
 
-    console.log('dB', dB);
+    // console.log('dB', dB);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
-      console.log('idx', idx);
-      console.log(dB[idx]);
+      // console.log('idx', idx);
+      // console.log(dB[idx]);
       if (el === 'B' && dB[idx] !== 'B' && idx > calcState.size - index - 3) {
-        console.log(el);
-        console.log('index', index);
-        console.log('idx', idx);
-        console.log('dB', dB[idx]);
+        // console.log(el);
+        // console.log('index', index);
+        // console.log('idx', idx);
+        // console.log('dB', dB[idx]);
         if (idx === calcState.size - index - 2) {
           arrayIndex.push(idx + 2);
         } else {
@@ -717,8 +717,8 @@ export function onSolve5thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`D[${array.join(',')}]`);
@@ -747,9 +747,9 @@ export function onSolve5thSideSol(state) {
 
   function checkUpSideLc() {
     const dB = calcState.getRow('B', index).slice(1, -1);
-    console.log('i am here');
+    // console.log('i am here');
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLc');
+      // console.log('checkSideLc');
       return;
     }
 
@@ -757,18 +757,18 @@ export function onSolve5thSideSol(state) {
     const array = [];
     const arrayIndex = [];
     // c.reverse();
-    console.log('c', c);
-    console.log('dB', dB);
+    // console.log('c', c);
+    // console.log('dB', dB);
     c.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'B' && dB[idx] !== 'B' && idx < index) {
-        console.log(el);
-        console.log('index', index);
-        console.log('idx', idx);
-        console.log('aL', dB[idx]);
+        // console.log(el);
+        // console.log('index', index);
+        // console.log('idx', idx);
+        // console.log('aL', dB[idx]);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
         } else {
@@ -776,8 +776,8 @@ export function onSolve5thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -810,36 +810,36 @@ export function onSolve5thSideSol(state) {
     checkUpSideLa();
     checkUpSideLc();
     let dB = calcState.getRow('B', index).slice(1, -1);
-    console.log('dB', dB);
+    // console.log('dB', dB);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
     apply('L');
     checkUpSideLa();
     checkUpSideLc();
     dB = calcState.getRow('B', index).slice(1, -1);
-    console.log('dB', dB);
+    // console.log('dB', dB);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
     apply('L');
     checkUpSideLa();
     checkUpSideLc();
     dB = calcState.getRow('B', index).slice(1, -1);
-    console.log('dB', dB);
+    // console.log('dB', dB);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
     apply('L');
     checkUpSideLa();
     checkUpSideLc();
     dB = calcState.getRow('B', index).slice(1, -1);
-    console.log('dB', dB);
+    // console.log('dB', dB);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
 
@@ -847,9 +847,9 @@ export function onSolve5thSideSol(state) {
     checkUpSideLa();
     checkUpSideLc();
     dB = calcState.getRow('B', index).slice(1, -1);
-    console.log('dB', dB);
+    // console.log('dB', dB);
     if (dB.every(el => el === 'B')) {
-      console.log('checkSideLa');
+      // console.log('checkSideLa');
       return;
     }
     // apply('L');
@@ -897,24 +897,24 @@ export function onSolve5thSideSol(state) {
   function checkInnerArray() {
     const dB = calcState.getRow('B', index).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkInnerArray');
+      // console.log('checkInnerArray');
       return;
     }
     const b = calcState.getRow('L', index).slice(1, -1);
-    console.log('dB', dB);
-    console.log('b', b);
+    // console.log('dB', dB);
+    // console.log('b', b);
     const innerArray = [];
     b.forEach((el, idx) => {
-      console.log(el);
-      console.log(dB[idx]);
-      console.log(idx);
+      // console.log(el);
+      // console.log(dB[idx]);
+      // console.log(idx);
       if (dB[idx] !== 'B' && el == 'B') {
         innerArray.push(idx + 2);
       }
     });
-    console.log('innerArray', innerArray);
+    // console.log('innerArray', innerArray);
     if (innerArray.length > 0) {
-      console.log('Go');
+      // console.log('Go');
       apply(`U'(${index + 1})`);
       apply("L'");
       apply(`D[${innerArray.join(',')}]`);
@@ -924,7 +924,7 @@ export function onSolve5thSideSol(state) {
       apply(`D'[${innerArray.join(',')}]`);
       // apply(`D'[${innerArray.join(',')}]`);
     } else {
-      console.log('No elements');
+      // console.log('No elements');
       apply("L'");
     }
   }
@@ -935,28 +935,28 @@ export function onSolve5thSideSol(state) {
     checkInnerArray();
     let dB = calcState.getRow('B', index).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkInnerArray');
+      // console.log('checkInnerArray');
       return;
     }
 
     checkInnerArray();
     dB = calcState.getRow('B', index).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkInnerArray');
+      // console.log('checkInnerArray');
       return;
     }
 
     checkInnerArray();
     dB = calcState.getRow('B', index).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkInnerArray');
+      // console.log('checkInnerArray');
       return;
     }
 
     checkInnerArray();
     dB = calcState.getRow('B', index).slice(1, -1);
     if (dB.every(el => el === 'B')) {
-      console.log('checkInnerArray');
+      // console.log('checkInnerArray');
       return;
     }
 
@@ -974,10 +974,10 @@ export function onSolve5thSideSol(state) {
   const count = Math.floor(calcState.size / 2);
   index = count - 1;
   index = 1;
-  console.log('count', count);
+  // console.log('count', count);
 
   for (let i = 1; i < count; i++) {
-    console.log('index', index);
+    // console.log('index', index);
     createLine();
 
     index = index + 1;
@@ -993,7 +993,7 @@ export function onSolve5thSideSol(state) {
   // index = 1;
 
   for (let i = 1; i < count; i++) {
-    console.log('index', index);
+    // console.log('index', index);
     createUpLine();
     // apply("B'");
     // apply(`U'(${index + 1})`);

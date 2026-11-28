@@ -72,7 +72,7 @@ export function onSolve14thCrossSol(state) {
     arrayUColors.push(c);
     let d = calcState.getCell('U', calcState.size - 1, 1)[1];
     arrayUColors.push(d);
-    console.log('arrayUColors', arrayUColors);
+    // console.log('arrayUColors', arrayUColors);
 
     if (
       calcState.getCell('U', 1, 0)[1] === 'O' &&
@@ -80,7 +80,7 @@ export function onSolve14thCrossSol(state) {
       calcState.getCell('U', 1, calcState.size - 1)[1] === 'R' &&
       calcState.getCell('U', calcState.size - 1, 1)[1] === 'B'
     ) {
-      console.log('Solve');
+      // console.log('Solve');
       return;
     }
     if (
@@ -89,32 +89,32 @@ export function onSolve14thCrossSol(state) {
       calcState.getCell('U', 1, calcState.size - 1)[1] !== 'R' &&
       calcState.getCell('U', calcState.size - 1, 1)[1] !== 'B'
     ) {
-      console.log('0-Edges');
+      // console.log('0-Edges');
       if (calcState.getCell('U', 1, 0)[1] === 'G') {
-        console.log('G-Left');
+        // console.log('G-Left');
         if (calcState.getCell('U', calcState.size - 1, 1)[1] === 'R') {
-          console.log('MoveRIght');
+          // console.log('MoveRIght');
           moveRightEdges();
         } else {
-          console.log('MoveLeft');
+          // console.log('MoveLeft');
           moveLeftEdges();
         }
       } else if (calcState.getCell('U', 1, calcState.size - 1)[1] === 'G') {
-        console.log('G-Right');
+        // console.log('G-Right');
         if (calcState.getCell('U', calcState.size - 1, 1)[1] === 'O') {
-          console.log('MoveLeft');
+          // console.log('MoveLeft');
           moveLeftEdges();
         } else {
-          console.log('MoveRight');
+          // console.log('MoveRight');
           moveRightEdges();
         }
       } else if (calcState.getCell('U', calcState.size - 1, 1)[1] === 'G') {
-        console.log('G-Front');
+        // console.log('G-Front');
         if (calcState.getCell('U', 1, 0)[1] === 'B') {
-          console.log('MoveRight');
+          // console.log('MoveRight');
           moveRightEdges();
         } else {
-          console.log('MoveLeft');
+          // console.log('MoveLeft');
           moveLeftEdges();
         }
       }
@@ -142,7 +142,7 @@ export function onSolve14thCrossSol(state) {
         calcState.getCell('U', 1, calcState.size - 1)[1] === 'R' &&
         calcState.getCell('U', calcState.size - 1, 1)[1] === 'B')
     ) {
-      console.log('ParitetMove');
+      // console.log('ParitetMove');
       paritet();
     } else if (
       calcState.getCell('U', 1, 0)[1] !== 'O' &&
@@ -150,7 +150,7 @@ export function onSolve14thCrossSol(state) {
       calcState.getCell('U', 1, calcState.size - 1)[1] !== 'R' &&
       calcState.getCell('U', calcState.size - 1, 1)[1] === 'B'
     ) {
-      console.log('MoveU&ParitetMove');
+      // console.log('MoveU&ParitetMove');
       apply('U');
       paritet();
       apply("U'");
@@ -161,47 +161,47 @@ export function onSolve14thCrossSol(state) {
       calcState.getCell('U', 1, calcState.size - 1)[1] === 'R' &&
       calcState.getCell('U', calcState.size - 1, 1)[1] === 'B'
     ) {
-      console.log('Solve');
+      // console.log('Solve');
       return;
     }
     if (calcState.getCell('U', 1, 0)[1] === 'O') {
       apply('U');
       if (calcState.getCell('U', 1, calcState.size - 1)[1] === 'B') {
-        console.log('i am here');
-        console.log('MoveRight');
+        // console.log('i am here');
+        // console.log('MoveRight');
         moveRightEdges();
       } else {
-        console.log('MoveLeft');
+        // console.log('MoveLeft');
         moveLeftEdges();
       }
       apply("U'");
     } else if (calcState.getCell('U', 1, calcState.size - 1)[1] === 'R') {
       apply("U'");
       if (calcState.getCell('U', calcState.size - 1, 1)[1] === 'B') {
-        console.log('MoveRight');
+        // console.log('MoveRight');
         moveRightEdges();
       } else {
-        console.log('MoveLeft');
+        // console.log('MoveLeft');
         moveLeftEdges();
       }
       apply('U');
     } else if (calcState.getCell('U', calcState.size - 1, 1)[1] === 'B') {
       apply('2U');
       if (calcState.getCell('U', 1, calcState.size - 1)[1] === 'R') {
-        console.log('MoveRight');
+        // console.log('MoveRight');
         moveRightEdges();
       } else {
-        console.log('MoveLeft');
+        // console.log('MoveLeft');
         moveLeftEdges();
       }
       apply('2U');
     } else {
-      console.log('NotMove');
+      // console.log('NotMove');
       if (calcState.getCell('U', calcState.size - 1, 1)[1] === 'R') {
-        console.log('MoveRight');
+        // console.log('MoveRight');
         moveRightEdges();
       } else {
-        console.log('MoveLeft');
+        // console.log('MoveLeft');
         moveLeftEdges();
       }
     }

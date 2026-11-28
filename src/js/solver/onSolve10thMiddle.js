@@ -19,10 +19,10 @@ export function onSolve10thMiddleSol(state) {
   );
 
   function findSolveEdge(edge) {
-    console.log(calcState.getCell('U', 1, 0));
-    console.log(calcState.getCell('U', 0, 1));
-    console.log(calcState.getCell('U', 1, calcState.size - 1));
-    console.log(calcState.getCell('U', calcState.size - 1, 1));
+    // console.log(calcState.getCell('U', 1, 0));
+    // console.log(calcState.getCell('U', 0, 1));
+    // console.log(calcState.getCell('U', 1, calcState.size - 1));
+    // console.log(calcState.getCell('U', calcState.size - 1, 1));
 
     if (
       (calcState.getCell('U', 1, 0).includes(edge[0]) &&
@@ -34,7 +34,7 @@ export function onSolve10thMiddleSol(state) {
       (calcState.getCell('U', calcState.size - 1, 1).includes(edge[0]) &&
         calcState.getCell('U', calcState.size - 1, 1).includes(edge[1]))
     ) {
-      console.log('Find');
+      // console.log('Find');
       //
       if (
         calcState.getCell('U', 1, 0) === edge ||
@@ -42,7 +42,7 @@ export function onSolve10thMiddleSol(state) {
         calcState.getCell('U', 1, calcState.size - 1) === edge ||
         calcState.getCell('U', calcState.size - 1, 1) === edge
       ) {
-        console.log('FindU');
+        // console.log('FindU');
 
         if (calcState.getCell('U', 1, 0) === edge) {
           apply('U');
@@ -69,7 +69,7 @@ export function onSolve10thMiddleSol(state) {
           `${edge[1] + edge[0]}` ||
         calcState.getCell('U', calcState.size - 1, 1) === `${edge[1] + edge[0]}`
       ) {
-        console.log('FindX');
+        // console.log('FindX');
         if (calcState.getCell('U', 0, 1) === `${edge[1] + edge[0]}`) {
           apply("U'");
         }
@@ -101,21 +101,21 @@ export function onSolve10thMiddleSol(state) {
 
   function solveEdge(edge) {
     let solveEdge = calcState.getCell('F', 1, calcState.size - 1);
-    console.log('solveEdge', calcState.getCell('F', 1, calcState.size - 1));
+    // console.log('solveEdge', calcState.getCell('F', 1, calcState.size - 1));
     if (calcState.getCell('F', 1, calcState.size - 1) === `${edge}`) {
-      console.log('Solve');
+      // console.log('Solve');
       return;
     }
 
     findSolveEdge(edge);
 
     if (calcState.getCell('F', 1, calcState.size - 1) === `${edge}`) {
-      console.log('Solve');
+      // console.log('Solve');
       return;
     }
 
     if (!calcState.getCell('F', 1, calcState.size - 1).includes('Y')) {
-      console.log('Need to Change');
+      // console.log('Need to Change');
       while (!calcState.getCell('U', 0, 1).includes('Y')) {
         apply('U');
       }
@@ -132,7 +132,7 @@ export function onSolve10thMiddleSol(state) {
 
   function createEdges() {
     let edgeFR = calcState.getCell('F', 1, calcState.size - 1);
-    console.log('edgeFR', calcState.getCell('F', 1, calcState.size - 1));
+    // console.log('edgeFR', calcState.getCell('F', 1, calcState.size - 1));
     solveEdge('BR');
     apply(`U[${arrayFullIndex.join(',')}]`);
     solveEdge('RG');

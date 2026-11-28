@@ -62,13 +62,13 @@ export function onSolve9thCornersSol(state) {
           .getCell('D', calcState.size - 1, calcState.size - 1)
           .includes(corner[2]))
     ) {
-      console.log('Find');
-      console.log(calcState.getCell('D', 0, 0));
-      console.log(calcState.getCell('D', 0, calcState.size - 1));
-      console.log(calcState.getCell('D', calcState.size - 1, 0));
-      console.log(
-        calcState.getCell('D', calcState.size - 1, calcState.size - 1)
-      );
+      // console.log('Find');
+      // console.log(calcState.getCell('D', 0, 0));
+      // console.log(calcState.getCell('D', 0, calcState.size - 1));
+      // console.log(calcState.getCell('D', calcState.size - 1, 0));
+      // console.log(
+      //   calcState.getCell('D', calcState.size - 1, calcState.size - 1)
+      // );
       if (
         calcState.getCell('D', 0, 0) ===
           `${corner[2] + corner[0] + corner[1]}` ||
@@ -79,14 +79,14 @@ export function onSolve9thCornersSol(state) {
         calcState.getCell('D', calcState.size - 1, calcState.size - 1) ===
           `${corner[2] + corner[0] + corner[1]}`
       ) {
-        console.log('FindL');
+        // console.log('FindL');
 
         if (
           calcState.getCell('D', 0, calcState.size - 1) ===
           `${corner[2] + corner[0] + corner[1]}`
         ) {
-          console.log('CoRnER', calcState.getCell('D', 0, calcState.size - 1));
-          console.log(corner);
+          // console.log('CoRnER', calcState.getCell('D', 0, calcState.size - 1));
+          // console.log(corner);
           apply("D'");
         }
 
@@ -94,8 +94,8 @@ export function onSolve9thCornersSol(state) {
           calcState.getCell('D', calcState.size - 1, 0) ===
           `${corner[2] + corner[0] + corner[1]}`
         ) {
-          console.log('CoRnER', calcState.getCell('D', calcState.size - 1, 0));
-          console.log(corner);
+          // console.log('CoRnER', calcState.getCell('D', calcState.size - 1, 0));
+          // console.log(corner);
           apply('D');
         }
 
@@ -103,10 +103,10 @@ export function onSolve9thCornersSol(state) {
           calcState.getCell('D', calcState.size - 1, calcState.size - 1) ===
           `${corner[2] + corner[0] + corner[1]}`
         ) {
-          console.log(
-            calcState.getCell('D', calcState.size - 1, calcState.size - 1)
-          );
-          console.log('i am here');
+          // console.log(
+          //   calcState.getCell('D', calcState.size - 1, calcState.size - 1)
+          // );
+          // console.log('i am here');
           apply("D'");
           apply("D'");
         }
@@ -124,7 +124,7 @@ export function onSolve9thCornersSol(state) {
         calcState.getCell('D', calcState.size - 1, calcState.size - 1) ===
           `${corner[1] + corner[2] + corner[0]}`
       ) {
-        console.log('FindR');
+        // console.log('FindR');
         if (
           calcState.getCell('D', 0, 0) ===
           `${corner[1] + corner[2] + corner[0]}`
@@ -157,8 +157,8 @@ export function onSolve9thCornersSol(state) {
         calcState.getCell('D', calcState.size - 1, calcState.size - 1) ===
           `${corner[0] + corner[1] + corner[2]}`
       ) {
-        console.log('FindD');
-        console.log(corner);
+        // console.log('FindD');
+        // console.log(corner);
         if (
           calcState.getCell('D', 0, 0) ===
           `${corner[0] + corner[1] + corner[2]}`
@@ -191,15 +191,15 @@ export function onSolve9thCornersSol(state) {
     }
   }
   function solveCorner(corner) {
-    console.log(
-      'solveCorner',
-      calcState.getCell('U', calcState.size - 1, calcState.size - 1)
-    );
+    // console.log(
+    //   'solveCorner',
+    //   calcState.getCell('U', calcState.size - 1, calcState.size - 1)
+    // );
     if (
       calcState.getCell('U', calcState.size - 1, calcState.size - 1) ===
       `${corner}`
     ) {
-      console.log('Solve');
+      // console.log('Solve');
       return;
     }
     findSolveCorner(corner);
@@ -207,7 +207,7 @@ export function onSolve9thCornersSol(state) {
       calcState.getCell('U', calcState.size - 1, calcState.size - 1) ===
       `${corner}`
     ) {
-      console.log('Solve');
+      // console.log('Solve');
       return;
     }
 
@@ -232,10 +232,10 @@ export function onSolve9thCornersSol(state) {
       calcState.size - 1,
       calcState.size - 1
     );
-    console.log(
-      'createCorners',
-      calcState.getCell('U', calcState.size - 1, calcState.size - 1)
-    );
+    // console.log(
+    //   'createCorners',
+    //   calcState.getCell('U', calcState.size - 1, calcState.size - 1)
+    // );
 
     solveCorner('WRG');
     apply(`U[${arrayFullIndex.join(',')}]`);

@@ -17,10 +17,10 @@ export function onSolve11thCrossSol(state) {
 
   const arrayHalfIndex = Array.from({ length: half }, (_, i) => i + 1);
 
-  console.log(calcState.getCell('U', 1, 0));
-  console.log(calcState.getCell('U', 0, 1));
-  console.log(calcState.getCell('U', 1, calcState.size - 1));
-  console.log(calcState.getCell('U', calcState.size - 1, 1));
+  // console.log(calcState.getCell('U', 1, 0));
+  // console.log(calcState.getCell('U', 0, 1));
+  // console.log(calcState.getCell('U', 1, calcState.size - 1));
+  // console.log(calcState.getCell('U', calcState.size - 1, 1));
 
   function createCross() {
     if (
@@ -53,19 +53,19 @@ export function onSolve11thCrossSol(state) {
     arrayUColors.push(c);
     let d = calcState.getCell('U', calcState.size - 1, 1)[0];
     arrayUColors.push(d);
-    console.log(arrayUColors);
+    // console.log(arrayUColors);
 
     const countY = arrayUColors.filter(el => el === 'Y').length;
-    console.log('countY', countY);
+    // console.log('countY', countY);
     if (countY === 1 || countY === 3) {
       if (countY === 1) {
         while (calcState.getCell('U', 0, 1)[0] !== 'Y') {
-          console.log('One Y');
+          // console.log('One Y');
           apply('U');
         }
       } else {
         while (calcState.getCell('U', calcState.size - 1, 1)[0] === 'Y') {
-          console.log('Three Y');
+          // console.log('Three Y');
           apply('U');
         }
       }
@@ -85,7 +85,7 @@ export function onSolve11thCrossSol(state) {
       apply('2B');
       apply(`2R[${arrayHalfIndex.join(',')}]`);
       apply('U');
-      console.log('Solving...');
+      // console.log('Solving...');
       if (
         calcState
           .getCol('U', 0)
@@ -104,7 +104,7 @@ export function onSolve11thCrossSol(state) {
           .slice(1, -1)
           .every(el => el[0] === 'Y')
       ) {
-        console.log('Solve');
+        // console.log('Solve');
         return;
       }
     } else if (countY === 0) {
@@ -116,8 +116,8 @@ export function onSolve11thCrossSol(state) {
       apply("F'");
       apply('U');
     } else if (countY === 2) {
-      console.log(calcState.getCell('U', 1, 0)[0]);
-      console.log(calcState.getCell('U', 1, calcState.size - 1)[0]);
+      // console.log(calcState.getCell('U', 1, 0)[0]);
+      // console.log(calcState.getCell('U', 1, calcState.size - 1)[0]);
 
       if (
         calcState.getCell('U', 1, 0)[0] ===
@@ -126,7 +126,7 @@ export function onSolve11thCrossSol(state) {
           calcState.getCell('U', calcState.size - 1, 1)[0]
       ) {
         while (calcState.getCell('U', calcState.size - 1, 1)[0] === 'Y') {
-          console.log('Two Y - ||');
+          // console.log('Two Y - ||');
           apply('U');
         }
       } else {
@@ -134,7 +134,7 @@ export function onSolve11thCrossSol(state) {
           calcState.getCell('U', 1, calcState.size - 1)[0] === 'Y' ||
           calcState.getCell('U', calcState.size - 1, 1)[0] === 'Y'
         ) {
-          console.log('Two Y - Г');
+          // console.log('Two Y - Г');
           apply('U');
         }
         apply('F');
@@ -154,7 +154,7 @@ export function onSolve11thCrossSol(state) {
     apply("U'");
     apply("F'");
 
-    console.log('Iam here');
+    // console.log('Iam here');
     if (
       calcState
         .getCol('U', 0)
@@ -173,7 +173,7 @@ export function onSolve11thCrossSol(state) {
         .slice(1, -1)
         .every(el => el[0] === 'Y')
     ) {
-      console.log('Solve');
+      // console.log('Solve');
       return;
     }
   }

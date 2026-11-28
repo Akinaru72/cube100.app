@@ -14,17 +14,17 @@ export function onSolve12thCornersSol(state) {
   );
   function collectCorners() {
     let arrayUColors = [];
-    console.log(calcState.getCell('U', 0, 0));
+    // console.log(calcState.getCell('U', 0, 0));
     arrayUColors.push(calcState.getCell('U', 0, 0)[0]);
-    console.log(calcState.getCell('U', 0, calcState.size - 1));
+    // console.log(calcState.getCell('U', 0, calcState.size - 1));
     arrayUColors.push(calcState.getCell('U', 0, calcState.size - 1)[0]);
-    console.log(calcState.getCell('U', calcState.size - 1, calcState.size - 1));
+    // console.log(calcState.getCell('U', calcState.size - 1, calcState.size - 1));
     arrayUColors.push(
       calcState.getCell('U', calcState.size - 1, calcState.size - 1)[0]
     );
-    console.log(calcState.getCell('U', calcState.size - 1, 0));
+    // console.log(calcState.getCell('U', calcState.size - 1, 0));
     arrayUColors.push(calcState.getCell('U', calcState.size - 1, 0)[0]);
-    console.log(arrayUColors);
+    // console.log(arrayUColors);
     const countY = arrayUColors.filter(el => el === 'Y').length;
 
     if (
@@ -34,7 +34,7 @@ export function onSolve12thCornersSol(state) {
       // calcState.getCell('U', calcState.size - 1, 0)[0] !== 'Y' &&
       // calcState.getCell('U', calcState.size - 1, calcState.size - 1)[0] !== 'Y'
     ) {
-      console.log('Y-0');
+      // console.log('Y-0');
       while (
         calcState.getCell('U', 0, 0)[1] !== 'Y' ||
         calcState.getCell('U', calcState.size - 1, 0)[2] !== 'Y'
@@ -50,7 +50,7 @@ export function onSolve12thCornersSol(state) {
       apply('2U');
       apply("R'");
     } else if (countY === 2) {
-      console.log('Y-2');
+      // console.log('Y-2');
       while (calcState.getCell('U', calcState.size - 1, 0)[1] !== 'Y') {
         apply('U');
       }
@@ -62,7 +62,7 @@ export function onSolve12thCornersSol(state) {
       apply('2U');
       apply("R'");
     } else if (countY === 4) {
-      console.log('Y-4');
+      // console.log('Y-4');
       return;
     }
 
@@ -70,7 +70,7 @@ export function onSolve12thCornersSol(state) {
       calcState.getCell('U', calcState.size - 1, 0)[1] === 'Y' ||
       calcState.getCell('U', calcState.size - 1, calcState.size - 1)[1] === 'Y'
     ) {
-      console.log('Y-Left');
+      // console.log('Y-Left');
       while (
         calcState.getCell('U', calcState.size - 1, calcState.size - 1)[0] !==
         'Y'
@@ -85,7 +85,7 @@ export function onSolve12thCornersSol(state) {
       apply('2U');
       apply('L');
     } else {
-      console.log('Y-Right');
+      // console.log('Y-Right');
       while (calcState.getCell('U', calcState.size - 1, 0)[0] !== 'Y') {
         apply('U');
       }

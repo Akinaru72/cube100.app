@@ -12,25 +12,25 @@ export function onSolve4thSideSol(state) {
     const aB = calcState.getCol('B', index).slice(1, -1);
 
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
     const a = calcState.getCol(face, index).slice(1, -1);
     const array = [];
     const arrayIndex = [];
-    console.log('a', a);
-    console.log('aB', aB);
+    // console.log('a', a);
+    // console.log('aB', aB);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'R' && aB[idx] !== 'R') {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aB', aB[idx]);
+        // console.log('aB', aB[idx]);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
         } else {
@@ -38,8 +38,8 @@ export function onSolve4thSideSol(state) {
         }
       }
     });
-    console.log(face, array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(face, array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`${move}[${array.join(',')}]`);
@@ -60,7 +60,7 @@ export function onSolve4thSideSol(state) {
     const aB = calcState.getCol('B', index).slice(1, -1);
 
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
@@ -68,18 +68,18 @@ export function onSolve4thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('aB', aB);
+    // console.log('a', a);
+    // console.log('aB', aB);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'R' && aB[idx] !== 'R' && idx < calcState.size - index - 1) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aF', aB[idx]);
+        // console.log('aF', aB[idx]);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
         } else {
@@ -87,8 +87,8 @@ export function onSolve4thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -109,7 +109,7 @@ export function onSolve4thSideSol(state) {
     const aB = calcState.getCol('B', index).slice(1, -1);
 
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
     apply('2R');
@@ -117,18 +117,18 @@ export function onSolve4thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('aB', aB);
+    // console.log('a', a);
+    // console.log('aB', aB);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'R' && aB[idx] !== 'R' && idx > index - 2) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aB', aB[idx]);
+        // console.log('aB', aB[idx]);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
         } else {
@@ -136,8 +136,8 @@ export function onSolve4thSideSol(state) {
         }
       }
     });
-    console.log(array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log(array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply(`U'[${array.join(',')}]`);
@@ -159,7 +159,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     let aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -167,7 +167,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -175,7 +175,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -183,7 +183,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -194,7 +194,7 @@ export function onSolve4thSideSol(state) {
   function checkSideBc() {
     const aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -202,19 +202,19 @@ export function onSolve4thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('c', c);
-    console.log('aB', aB);
+    // console.log('c', c);
+    // console.log('aB', aB);
     c.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
-      console.log('el', el);
-      console.log('aB', aB[calcState.size - idx - 3]);
+      // console.log('el', el);
+      // console.log('aB', aB[calcState.size - idx - 3]);
       if (el === 'R' && aB[calcState.size - idx - 3] !== 'R') {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
-        console.log('idx', idx);
-        console.log('aB', aB[calcState.size - idx - 3]);
+        // console.log('idx', idx);
+        // console.log('aB', aB[calcState.size - idx - 3]);
         // array.push(calcState.size - idx - 1);
         if (calcState.size - idx - 3 === index - 1) {
           arrayIndex.push(calcState.size - idx - 1);
@@ -228,8 +228,8 @@ export function onSolve4thSideSol(state) {
     });
     // console.log('array', array);
     array.reverse();
-    console.log('array', array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log('array', array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply('B');
@@ -255,7 +255,7 @@ export function onSolve4thSideSol(state) {
   function checkSideBb() {
     const aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -263,19 +263,19 @@ export function onSolve4thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('b', b);
-    console.log('aB', aB);
+    // console.log('b', b);
+    // console.log('aB', aB);
     b.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
-      console.log('el', el);
-      console.log('aB', aB[calcState.size - idx - 3]);
+      // console.log('el', el);
+      // console.log('aB', aB[calcState.size - idx - 3]);
       if (el === 'R' && aB[calcState.size - idx - 3] !== 'R') {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
-        console.log('idx', idx);
-        console.log('aB', aB[calcState.size - idx - 3]);
+        // console.log('idx', idx);
+        // console.log('aB', aB[calcState.size - idx - 3]);
         // array.push(calcState.size - idx - 1);
         if (calcState.size - idx - 3 === index - 1) {
           arrayIndex.push(calcState.size - idx - 1);
@@ -289,8 +289,8 @@ export function onSolve4thSideSol(state) {
     });
     // console.log('array', array);
     array.reverse();
-    console.log('array', array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log('array', array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply('B');
@@ -316,7 +316,7 @@ export function onSolve4thSideSol(state) {
   function checkSideBd() {
     const aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -324,19 +324,19 @@ export function onSolve4thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('d', d);
-    console.log('aB', aB);
+    // console.log('d', d);
+    // console.log('aB', aB);
     d.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
-      console.log('el', el);
-      console.log('aR', aB[idx]);
+      // console.log('el', el);
+      // console.log('aR', aB[idx]);
       if (el === 'R' && aB[idx] !== 'R') {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
-        console.log('idx', idx);
-        console.log('aB', aB[idx]);
+        // console.log('idx', idx);
+        // console.log('aB', aB[idx]);
         // array.push(idx + 2);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
@@ -349,8 +349,8 @@ export function onSolve4thSideSol(state) {
       }
     });
 
-    console.log('array', array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log('array', array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply("B'");
@@ -382,26 +382,26 @@ export function onSolve4thSideSol(state) {
     const countWc = c.filter(cell => cell === 'R').length;
     let d = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     const countWd = d.filter(cell => cell === 'R').length;
-    console.log(calcState.getCol('B', index).slice(1, -1));
-    console.log(calcState.getRow('B', index).slice(1, -1));
-    console.log(calcState.getCol('B', calcState.size - index - 1).slice(1, -1));
-    console.log(calcState.getRow('B', calcState.size - index - 1).slice(1, -1));
-    console.log(countWa, countWb, countWc, countWd);
+    // console.log(calcState.getCol('B', index).slice(1, -1));
+    // console.log(calcState.getRow('B', index).slice(1, -1));
+    // console.log(calcState.getCol('B', calcState.size - index - 1).slice(1, -1));
+    // console.log(calcState.getRow('B', calcState.size - index - 1).slice(1, -1));
+    // console.log(countWa, countWb, countWc, countWd);
     if (countWb > countWa && countWb >= countWc && countWb >= countWd) {
       apply("B'");
-      console.log('Bmax');
+      // console.log('Bmax');
     } else if (countWc > countWa && countWc >= countWb && countWc >= countWd) {
-      console.log('Cmax');
+      // console.log('Cmax');
       apply('B');
     } else if (countWd > countWa && countWd >= countWb && countWd >= countWc) {
-      console.log('Dmax');
+      // console.log('Dmax');
       apply('B');
     }
     checkSides();
     checkSideBc();
     let aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('CreateLine');
+      // console.log('CreateLine');
       return;
     }
     apply("B'");
@@ -418,10 +418,10 @@ export function onSolve4thSideSol(state) {
     checkSideBd();
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('CreateLine');
+      // console.log('CreateLine');
       return;
     } else {
-      console.log('Not solved');
+      // console.log('Not solved');
       createLine();
     }
   }
@@ -431,16 +431,16 @@ export function onSolve4thSideSol(state) {
     const countWa = a.filter(cell => cell === 'R').length;
     let b = calcState.getRow('B', index).slice(1, -1);
     const countWb = b.filter(cell => cell === 'R').length;
-    console.log(countWa, countWb);
+    // console.log(countWa, countWb);
     if (countWb > countWa) {
       apply('B');
-      console.log('Bmax');
+      // console.log('Bmax');
     }
     // ----------------------------Block L---------------------------
     checkSide('L', 'U', index);
     let aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
@@ -448,7 +448,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
@@ -456,7 +456,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
@@ -464,7 +464,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
     // ----------------------Block Fb2----------------
@@ -475,7 +475,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
@@ -483,7 +483,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
     // ----------------------Block Fb1----------------
@@ -494,7 +494,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
@@ -502,7 +502,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
     // ------------------------Block Fa--------------------------------
@@ -517,7 +517,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
@@ -525,7 +525,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every((el, i) => i === index - 1 || el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
 
@@ -545,7 +545,7 @@ export function onSolve4thSideSol(state) {
     const aB = calcState.getCol('B', index).slice(1, -1);
 
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnUpSideBl');
+      // console.log('ReturnUpSideBl');
       return;
     }
 
@@ -553,23 +553,23 @@ export function onSolve4thSideSol(state) {
     const array = [];
     // const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('aB', aB);
+    // console.log('a', a);
+    // console.log('aB', aB);
     a.forEach((el, idx) => {
-      console.log(calcState.size - idx - 1);
-      console.log(calcState.size - index - 1);
-      console.log('idx', idx);
-      console.log(aB[idx]);
+      // console.log(calcState.size - idx - 1);
+      // console.log(calcState.size - index - 1);
+      // console.log('idx', idx);
+      // console.log(aB[idx]);
       if (el === 'R' && aB[idx] !== 'R' && idx < index) {
-        console.log(el);
-        console.log('index', index);
-        console.log('idx', idx);
-        console.log('aB', aB[idx]);
+        // console.log(el);
+        // console.log('index', index);
+        // console.log('idx', idx);
+        // console.log('aB', aB[idx]);
 
         array.push(idx + 2);
       }
     });
-    console.log(array);
+    // console.log(array);
     // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
@@ -591,7 +591,7 @@ export function onSolve4thSideSol(state) {
     const aB = calcState.getCol('B', index).slice(1, -1);
 
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSide');
+      // console.log('ReturnSide');
       return;
     }
     apply('2R');
@@ -599,18 +599,18 @@ export function onSolve4thSideSol(state) {
     const array = [];
     // const arrayIndex = [];
 
-    console.log('a', a);
-    console.log('aB', aB);
+    // console.log('a', a);
+    // console.log('aB', aB);
     a.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
       // console.log(aF[idx]);
       if (el === 'R' && aB[idx] !== 'R' && idx > calcState.size - index - 3) {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
         // console.log('idx', idx);
-        console.log('aB', aB[idx]);
+        // console.log('aB', aB[idx]);
         // if (idx === index - 1) {
         //   arrayIndex.push(idx + 2);
         // } else {
@@ -618,7 +618,7 @@ export function onSolve4thSideSol(state) {
         // }
       }
     });
-    console.log(array);
+    // console.log(array);
     // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
@@ -641,7 +641,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     let aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -649,7 +649,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -657,7 +657,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -665,7 +665,7 @@ export function onSolve4thSideSol(state) {
     checkSide('L', 'U', index);
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
     checkUpSideBl();
@@ -675,7 +675,7 @@ export function onSolve4thSideSol(state) {
   function checkUpSideBb() {
     const aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -683,19 +683,19 @@ export function onSolve4thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('b', b);
-    console.log('aB', aB);
+    // console.log('b', b);
+    // console.log('aB', aB);
     b.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
-      console.log('el', el);
-      console.log('aB', aB[calcState.size - idx - 3]);
+      // console.log('el', el);
+      // console.log('aB', aB[calcState.size - idx - 3]);
       if (el === 'R' && aB[calcState.size - idx - 3] !== 'R') {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
-        console.log('idx', idx);
-        console.log('aB', aB[calcState.size - idx - 3]);
+        // console.log('idx', idx);
+        // console.log('aB', aB[calcState.size - idx - 3]);
         // array.push(calcState.size - idx - 1);
         if (calcState.size - idx - 3 === index - 1) {
           arrayIndex.push(calcState.size - idx - 1);
@@ -709,8 +709,8 @@ export function onSolve4thSideSol(state) {
     });
     // console.log('array', array);
     array.reverse();
-    console.log('array', array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log('array', array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply('B');
@@ -736,7 +736,7 @@ export function onSolve4thSideSol(state) {
   function checkUpSideBd() {
     const aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('ReturnSides');
+      // console.log('ReturnSides');
       return;
     }
 
@@ -744,19 +744,19 @@ export function onSolve4thSideSol(state) {
     const array = [];
     const arrayIndex = [];
 
-    console.log('d', d);
-    console.log('aB', aB);
+    // console.log('d', d);
+    // console.log('aB', aB);
     d.forEach((el, idx) => {
       // console.log(calcState.size - idx - 1);
       // console.log(calcState.size - index - 1);
       // console.log('idx', idx);
-      console.log('el', el);
-      console.log('aR', aB[idx]);
+      // console.log('el', el);
+      // console.log('aR', aB[idx]);
       if (el === 'R' && aB[idx] !== 'R') {
-        console.log(el);
+        // console.log(el);
         // console.log('index', index);
-        console.log('idx', idx);
-        console.log('aB', aB[idx]);
+        // console.log('idx', idx);
+        // console.log('aB', aB[idx]);
         // array.push(idx + 2);
         if (idx === index - 1) {
           arrayIndex.push(idx + 2);
@@ -769,8 +769,8 @@ export function onSolve4thSideSol(state) {
       }
     });
 
-    console.log('array', array);
-    console.log('arrayIndex', arrayIndex);
+    // console.log('array', array);
+    // console.log('arrayIndex', arrayIndex);
 
     if (array.length > 0) {
       apply("B'");
@@ -802,22 +802,22 @@ export function onSolve4thSideSol(state) {
     const countWc = c.filter(cell => cell === 'R').length;
     let d = calcState.getRow('B', calcState.size - index - 1).slice(1, -1);
     const countWd = d.filter(cell => cell === 'R').length;
-    console.log(countWa, countWb, countWc, countWd);
+    // console.log(countWa, countWb, countWc, countWd);
     if (countWb > countWa && countWb >= countWc && countWb >= countWd) {
       apply("B'");
-      console.log('Bmax');
+      // console.log('Bmax');
     } else if (countWc > countWa && countWc >= countWb && countWc >= countWd) {
-      console.log('Cmax');
+      // console.log('Cmax');
       apply('2B');
     } else if (countWd > countWa && countWd >= countWb && countWd >= countWc) {
-      console.log('Dmax');
+      // console.log('Dmax');
       apply('B');
     }
     checkUpSides();
     checkSideBc();
     let aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('CreateLine');
+      // console.log('CreateLine');
       return;
     }
     apply("B'");
@@ -835,7 +835,7 @@ export function onSolve4thSideSol(state) {
 
     aB = calcState.getCol('B', index).slice(1, -1);
     if (aB.every(el => el === 'R')) {
-      console.log('Not Solved');
+      // console.log('Not Solved');
       return;
     } else {
       createLineUp();
@@ -849,10 +849,10 @@ export function onSolve4thSideSol(state) {
   const count = Math.floor(calcState.size / 2);
   index = count - 1;
   index = 1;
-  console.log('count', count);
+  // console.log('count', count);
 
   for (let i = 1; i < count; i++) {
-    console.log('index', index);
+    // console.log('index', index);
     createLine();
     apply('B');
     apply(`U'(${calcState.size - index})`);
@@ -873,7 +873,7 @@ export function onSolve4thSideSol(state) {
   index = count - 1;
   // index = 7;
   for (let i = 1; i < count; i++) {
-    console.log('index', index);
+    // console.log('index', index);
     createLineUp();
     apply("B'");
     apply(`U'(${index + 1})`);

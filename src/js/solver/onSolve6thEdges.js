@@ -10,11 +10,11 @@ export function onSolve6thEdgeSol(state) {
 
   function checkSide(face, move) {
     const aFace = calcState.getCol(face, 1).slice(1, -1);
-    console.log(aFace);
+    // console.log(aFace);
     let array = [];
     aFace.forEach((el, idx) => {
-      console.log(el);
-      console.log(idx);
+      // console.log(el);
+      // console.log(idx);
       if (el === 'G') {
         array.push(idx + 2);
       }
@@ -39,7 +39,7 @@ export function onSolve6thEdgeSol(state) {
     // console.log(cFace);
 
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-    console.log('firstElementCF', firstElementCF);
+    // console.log('firstElementCF', firstElementCF);
     // const reverseElCf = firstElementCF[1] + firstElementCF[0];
     // console.log('reverseElCf', reverseElCf);
     let array = [];
@@ -57,7 +57,7 @@ export function onSolve6thEdgeSol(state) {
     // console.log(array);
   }
   function checkEdges() {
-    console.log(firstElementCF);
+    // console.log(firstElementCF);
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
     checkEdge('R', 'U');
     checkEdge('B', '2U');
@@ -96,17 +96,17 @@ export function onSolve6thEdgeSol(state) {
 
   function checkClearEdge() {
     let cR = calcState.getCol('R', calcState.size - 1).slice(1, -1);
-    console.log(cR);
+    // console.log(cR);
 
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-    console.log('firstElementCF', firstElementCF);
+    // console.log('firstElementCF', firstElementCF);
 
     const reverseElCf = firstElementCF[1] + firstElementCF[0];
-    console.log(reverseElCf);
+    // console.log(reverseElCf);
     let array = [];
     cR.forEach((el, idx) => {
-      console.log(el);
-      console.log(idx);
+      // console.log(el);
+      // console.log(idx);
       if (el === firstElementCF) {
         array.push(idx + 2);
       }
@@ -115,24 +115,24 @@ export function onSolve6thEdgeSol(state) {
       apply(`U[${array.join(',')}]`);
     }
 
-    console.log(array);
+    // console.log(array);
   }
 
   function checkUpEdge() {
     let dU = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-    console.log(dU);
+    // console.log(dU);
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-    console.log('firstElementCF', firstElementCF);
+    // console.log('firstElementCF', firstElementCF);
 
     const reverseElCf = firstElementCF[1] + firstElementCF[0];
-    console.log('reverseElCf', reverseElCf);
+    // console.log('reverseElCf', reverseElCf);
     // if (!dU.includes(`${firstElementCF}`) || !dU.includes(`${reverseElCf}`)) {
     //   console.log('Not includes');
     //   return;
     // }
     // console.log(reverseElCf);
     if (dU.includes(`${firstElementCF}`)) {
-      console.log('I am here');
+      // console.log('I am here');
       apply('B');
       apply("U'");
       apply("U'");
@@ -142,7 +142,7 @@ export function onSolve6thEdgeSol(state) {
     }
 
     if (dU.includes(`${reverseElCf}`)) {
-      console.log('I am here Reverse');
+      // console.log('I am here Reverse');
       apply("R'");
       apply("U'");
       apply('R');
@@ -157,19 +157,19 @@ export function onSolve6thEdgeSol(state) {
 
   function checkDownEdge() {
     let bD = calcState.getRow('D', 0).slice(1, -1);
-    console.log(bD);
+    // console.log(bD);
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-    console.log('firstElementCF', firstElementCF);
+    // console.log('firstElementCF', firstElementCF);
 
     const reverseElCf = firstElementCF[1] + firstElementCF[0];
-    console.log('reverseElCf', reverseElCf);
+    // console.log('reverseElCf', reverseElCf);
     // if (!dU.includes(`${firstElementCF}`) || !dU.includes(`${reverseElCf}`)) {
     //   console.log('Not includes');
     //   return;
     // }
     // console.log(reverseElCf);
     if (bD.includes(`${firstElementCF}`)) {
-      console.log('I am here');
+      // console.log('I am here');
       apply("B'");
       apply('D');
       apply('D');
@@ -179,7 +179,7 @@ export function onSolve6thEdgeSol(state) {
     }
 
     if (bD.includes(`${reverseElCf}`)) {
-      console.log('I am here Reverse');
+      // console.log('I am here Reverse');
       apply('R');
       apply('D');
       apply("R'");
@@ -200,11 +200,11 @@ export function onSolve6thEdgeSol(state) {
 
   function createEdgeForDown() {
     if (calcState.isSolvedEgdesD()) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
     firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-    console.log(firstElementCF);
+    // console.log(firstElementCF);
     checkRevEdges();
 
     let a = calcState.getCol('U', 0).slice(1, -1);
@@ -229,7 +229,7 @@ export function onSolve6thEdgeSol(state) {
     // // console.log(d.includes(`${reverseElCf}`));
 
     let cR = calcState.getCol('R', calcState.size - 1).slice(1, -1);
-    console.log(cR);
+    // console.log(cR);
     if (cR.includes(reverseElCf)) {
       apply('B');
       apply("U'");
@@ -237,7 +237,7 @@ export function onSolve6thEdgeSol(state) {
       apply("R'");
       apply('2U');
       apply('R');
-      console.log('YOOO');
+      // console.log('YOOO');
       checkClearEdge();
     }
     checkEdges();
@@ -252,7 +252,7 @@ export function onSolve6thEdgeSol(state) {
       d.includes(firstElementCF) ||
       d.includes(reverseElCf)
     ) {
-      console.log('I AM HERE');
+      // console.log('I AM HERE');
       checkClearEdge();
       checkUpEdge();
       checkRevEdges();
@@ -266,7 +266,7 @@ export function onSolve6thEdgeSol(state) {
 
     let solveEgde = calcState.getCol('F', calcState.size - 1).slice(1, -1);
     if (solveEgde.every(el => el === solveEgde[0])) {
-      console.log('Solved');
+      // console.log('Solved');
       let edgeForChahgeDown = calcState.getRow('D', 0).slice(1, -1);
       while (edgeForChahgeDown.every(el => el === edgeForChahgeDown[0])) {
         apply('D');
@@ -294,7 +294,7 @@ export function onSolve6thEdgeSol(state) {
       h.includes(firstElementCF) ||
       h.includes(reverseElCf)
     ) {
-      console.log('Iam here');
+      // console.log('Iam here');
       checkClearEdge();
       checkDownEdge();
       checkClearEdge();
@@ -306,7 +306,7 @@ export function onSolve6thEdgeSol(state) {
     }
 
     cR = calcState.getCol('R', calcState.size - 1).slice(1, -1);
-    console.log(cR);
+    // console.log(cR);
     if (cR.includes(reverseElCf)) {
       apply('B');
       apply("U'");
@@ -314,13 +314,13 @@ export function onSolve6thEdgeSol(state) {
       apply("R'");
       apply('2U');
       apply('R');
-      console.log('YOOO');
+      // console.log('YOOO');
       checkClearEdge();
     }
     checkEdges();
 
     if (calcState.isSolvedEgdesD()) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
 
@@ -345,7 +345,7 @@ export function onSolve6thEdgeSol(state) {
     // console.log('fC', fC);
 
     if (calcState.isSolvedEgdesU() && calcState.isSolvedEgdesD()) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
@@ -357,10 +357,10 @@ export function onSolve6thEdgeSol(state) {
     let b = calcState.getRow('U', 0).slice(1, -1);
     let c = calcState.getCol('U', calcState.size - 1).slice(1, -1);
     let d = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-    console.log(a);
-    console.log(b);
-    console.log(c);
-    console.log(d);
+    // console.log(a);
+    // console.log(b);
+    // console.log(c);
+    // console.log(d);
     const reverseElCf = firstElementCF[1] + firstElementCF[0];
 
     while (
@@ -373,9 +373,9 @@ export function onSolve6thEdgeSol(state) {
       d.includes(`${firstElementCF}`) ||
       d.includes(`${reverseElCf}`)
     ) {
-      console.log('I AM HERE');
+      // console.log('I AM HERE');
       if (calcState.isSolvedEgdesU() && calcState.isSolvedEgdesD()) {
-        console.log('Solved');
+        // console.log('Solved');
         return;
       }
       checkUpEdge();
@@ -399,7 +399,7 @@ export function onSolve6thEdgeSol(state) {
       let edgeCForChahgeUp = calcState
         .getRow('U', calcState.size - 1)
         .slice(1, -1);
-      console.log(edgeCForChahgeUp);
+      // console.log(edgeCForChahgeUp);
       while (edgeCForChahgeUp.every(el => el === edgeCForChahgeUp[0])) {
         apply('U');
         edgeCForChahgeUp = calcState
@@ -418,13 +418,13 @@ export function onSolve6thEdgeSol(state) {
     checkEdges();
     //  ===========================================
     if (calcState.isSolvedEgdesU() && calcState.isSolvedEgdesD()) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
     let edgeForChahgeUp = calcState
       .getRow('U', calcState.size - 1)
       .slice(1, -1);
-    console.log(edgeForChahgeUp);
+    // console.log(edgeForChahgeUp);
     while (edgeForChahgeUp.every(el => el === edgeForChahgeUp[0])) {
       apply('U');
       edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -497,7 +497,7 @@ export function onSolve6thEdgeSol(state) {
   // -----------------------------Edge1------------------------------------
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-  console.log('Global firstElementCF', firstElementCF);
+  // console.log('Global firstElementCF', firstElementCF);
   createEdgeForUp();
 
   // let edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -514,7 +514,7 @@ export function onSolve6thEdgeSol(state) {
   // -----------------------------Edge2------------------------------------
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-  console.log('Global firstElementCF', firstElementCF);
+  // console.log('Global firstElementCF', firstElementCF);
   createEdgeForUp();
 
   // edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -531,7 +531,7 @@ export function onSolve6thEdgeSol(state) {
   // // -----------------------------Edge3------------------------------------
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-  console.log('Global firstElementCF', firstElementCF);
+  // console.log('Global firstElementCF', firstElementCF);
   createEdgeForUp();
 
   // edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -548,7 +548,7 @@ export function onSolve6thEdgeSol(state) {
   // // // -----------------------------Edge4------------------------------------
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-  console.log('Global firstElementCF', firstElementCF);
+  // console.log('Global firstElementCF', firstElementCF);
   createEdgeForUp();
 
   // edgeForChahgeUp = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -567,17 +567,17 @@ export function onSolve6thEdgeSol(state) {
   // ============================From sol7=====================================
   function checkClearEdge7(face, move) {
     let cFace = calcState.getCol(face, calcState.size - 1).slice(1, -1);
-    console.log(cFace);
+    // console.log(cFace);
 
     // const firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
-    console.log('firstElementCF', firstElementCF);
+    // console.log('firstElementCF', firstElementCF);
 
     // const reverseElCf = firstElementCF[1] + firstElementCF[0];
-    console.log(reverseElCf);
+    // console.log(reverseElCf);
     let array = [];
     cFace.forEach((el, idx) => {
-      console.log(el);
-      console.log(idx);
+      // console.log(el);
+      // console.log(idx);
       if (el === firstElementCF) {
         array.push(idx + 2);
       }
@@ -586,7 +586,7 @@ export function onSolve6thEdgeSol(state) {
       apply(`${move}[${array.join(',')}]`);
     }
 
-    console.log(array);
+    // console.log(array);
   }
 
   function createEdge() {
@@ -595,7 +595,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved__________________');
+      // console.log('Solved__________________');
       return;
     }
     apply('2U');
@@ -606,7 +606,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved__________________');
+      // console.log('Solved__________________');
       return;
     }
 
@@ -621,7 +621,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved__________________');
+      // console.log('Solved__________________');
       return;
     }
 
@@ -633,7 +633,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesB()
     ) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
     checkClearEdge7('R', 'U');
@@ -654,14 +654,14 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesB()
     ) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
 
     let cR = calcState.getCol('R', calcState.size - 1).slice(1, -1);
     if (cR.includes(reverseElCf)) {
       let Ub = calcState.getRow('U', 0).slice(1, -1);
-      console.log('Ub', Ub);
+      // console.log('Ub', Ub);
 
       while (Ub.some(el => el !== Ub[0])) {
         apply('U');
@@ -672,7 +672,7 @@ export function onSolve6thEdgeSol(state) {
       apply('U');
       apply('R');
       let Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-      console.log('Ud', Ud);
+      // console.log('Ud', Ud);
       while (Ud.every(el => el === Ud[0])) {
         apply('U');
         Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -692,10 +692,10 @@ export function onSolve6thEdgeSol(state) {
     let b = calcState.getRow('U', 0).slice(1, -1);
     let c = calcState.getCol('U', calcState.size - 1).slice(1, -1);
     let d = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-    console.log(a);
-    console.log(b);
-    console.log(c);
-    console.log(d);
+    // console.log(a);
+    // console.log(b);
+    // console.log(c);
+    // console.log(d);
     reverseElCf = firstElementCF[1] + firstElementCF[0];
     while (
       a.includes(`${firstElementCF}`) ||
@@ -707,12 +707,12 @@ export function onSolve6thEdgeSol(state) {
       d.includes(`${firstElementCF}`) ||
       d.includes(`${reverseElCf}`)
     ) {
-      console.log('I AM HERE');
+      // console.log('I AM HERE');
       checkUpEdge();
       checkClearEdge7('R', 'U');
 
       let Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-      console.log('Ud', Ud);
+      // console.log('Ud', Ud);
       while (Ud.every(el => el === Ud[0])) {
         apply('U');
         Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -731,13 +731,13 @@ export function onSolve6thEdgeSol(state) {
       b = calcState.getRow('U', 0).slice(1, -1);
       c = calcState.getCol('U', calcState.size - 1).slice(1, -1);
       d = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-      console.log(a);
-      console.log(b);
-      console.log(c);
-      console.log(d);
+      // console.log(a);
+      // console.log(b);
+      // console.log(c);
+      // console.log(d);
 
-      console.log(firstElementCF);
-      console.log(reverseElCf);
+      // console.log(firstElementCF);
+      // console.log(reverseElCf);
     }
 
     if (
@@ -745,14 +745,14 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesB()
     ) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
 
     cR = calcState.getCol('R', calcState.size - 1).slice(1, -1);
     if (cR.includes(reverseElCf)) {
       let Ub = calcState.getRow('U', 0).slice(1, -1);
-      console.log('Ub', Ub);
+      // console.log('Ub', Ub);
 
       while (Ub.some(el => el !== Ub[0])) {
         apply('U');
@@ -763,7 +763,7 @@ export function onSolve6thEdgeSol(state) {
       apply('U');
       apply('R');
       let Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-      console.log('Ud', Ud);
+      // console.log('Ud', Ud);
       while (Ud.every(el => el === Ud[0])) {
         apply('U');
         Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -779,7 +779,7 @@ export function onSolve6thEdgeSol(state) {
     }
 
     let Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-    console.log('Ud', Ud);
+    // console.log('Ud', Ud);
     while (Ud.every(el => el === Ud[0])) {
       apply('U');
       Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -793,7 +793,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved__________________');
+      // console.log('Solved__________________');
       return;
     }
     apply("B'");
@@ -803,7 +803,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved__________AA________');
+      // console.log('Solved__________AA________');
       return;
     }
 
@@ -817,7 +817,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved__________AA________');
+      // console.log('Solved__________AA________');
       return;
     }
 
@@ -832,13 +832,13 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved__________________');
+      // console.log('Solved__________________');
       return;
     }
 
     apply('B');
     apply('2U');
-    console.log('createSecondEdge!!!!!!!!!!!!!!!!!!!!!');
+    // console.log('createSecondEdge!!!!!!!!!!!!!!!!!!!!!');
     apply('U');
     apply("B'");
     if (
@@ -846,7 +846,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved__________________1');
+      // console.log('Solved__________________1');
       return;
     }
 
@@ -857,13 +857,13 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved_____________________2');
+      // console.log('Solved_____________________2');
       return;
     }
     checkClearEdge7('R', 'U');
     checkRevEdge('F', 'U');
     let Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-    console.log('Ud', Ud);
+    // console.log('Ud', Ud);
     while (Ud.every(el => el === Ud[0])) {
       apply('U');
       Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -871,9 +871,9 @@ export function onSolve6thEdgeSol(state) {
     apply('R');
     apply("U'");
     apply("R'");
-    console.log('Before checkSides2');
+    // console.log('Before checkSides2');
     checkSides();
-    console.log('After checkSides2');
+    // console.log('After checkSides2');
     apply('R');
     apply('U');
     apply("R'");
@@ -883,7 +883,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesB()
     ) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
 
@@ -893,10 +893,10 @@ export function onSolve6thEdgeSol(state) {
     let d = calcState.getRow('U', calcState.size - 1).slice(1, -1);
     firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
     reverseElCf = firstElementCF[1] + firstElementCF[0];
-    console.log(firstElementCF);
-    console.log(reverseElCf);
-    console.log(d);
-    console.log(d.includes(firstElementCF) || d.includes(reverseElCf));
+    // console.log(firstElementCF);
+    // console.log(reverseElCf);
+    // console.log(d);
+    // console.log(d.includes(firstElementCF) || d.includes(reverseElCf));
     if (d.includes(firstElementCF) || d.includes(reverseElCf)) {
       while (
         a.includes(firstElementCF) ||
@@ -908,11 +908,11 @@ export function onSolve6thEdgeSol(state) {
         d.includes(firstElementCF) ||
         d.includes(reverseElCf)
       ) {
-        console.log('I AM HERE');
+        // console.log('I AM HERE');
         checkUpEdge();
         checkClearEdge7('R', 'U');
         let Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-        console.log('Ud', Ud);
+        // console.log('Ud', Ud);
         while (Ud.every(el => el === Ud[0])) {
           apply('U');
           Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -928,12 +928,12 @@ export function onSolve6thEdgeSol(state) {
         b = calcState.getRow('U', 0).slice(1, -1);
         c = calcState.getCol('U', calcState.size - 1).slice(1, -1);
         d = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-        console.log(a);
-        console.log(b);
-        console.log(c);
-        console.log(d);
-        console.log(firstElementCF);
-        console.log(reverseElCf);
+        // console.log(a);
+        // console.log(b);
+        // console.log(c);
+        // console.log(d);
+        // console.log(firstElementCF);
+        // console.log(reverseElCf);
       }
     }
 
@@ -942,7 +942,7 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesB()
     ) {
-      console.log('Solved');
+      // console.log('Solved');
       return;
     }
 
@@ -951,14 +951,14 @@ export function onSolve6thEdgeSol(state) {
       calcState.isSolvedEgdesU() &&
       calcState.isSolvedEgdesL()
     ) {
-      console.log('Solved_____________________2');
+      // console.log('Solved_____________________2');
       return;
     }
 
     let cR = calcState.getCol('R', calcState.size - 1).slice(1, -1);
     if (cR.includes(reverseElCf)) {
       let Ub = calcState.getRow('U', 0).slice(1, -1);
-      console.log('Ub', Ub);
+      // console.log('Ub', Ub);
 
       while (Ub.some(el => el !== Ub[0])) {
         apply('U');
@@ -969,7 +969,7 @@ export function onSolve6thEdgeSol(state) {
       apply('U');
       apply('R');
       let Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-      console.log('Ud', Ud);
+      // console.log('Ud', Ud);
       while (Ud.every(el => el === Ud[0])) {
         apply('U');
         Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -987,7 +987,7 @@ export function onSolve6thEdgeSol(state) {
       return;
     }
     Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
-    console.log('Ud', Ud);
+    // console.log('Ud', Ud);
     while (Ud.every(el => el === Ud[0])) {
       apply('U');
       Ud = calcState.getRow('U', calcState.size - 1).slice(1, -1);
@@ -1003,12 +1003,12 @@ export function onSolve6thEdgeSol(state) {
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   let reverseElCf = firstElementCF[1] + firstElementCF[0];
-  console.log(firstElementCF);
+  // console.log(firstElementCF);
   createEdge();
 
   firstElementCF = calcState.getCell('F', 1, calcState.size - 1);
   reverseElCf = firstElementCF[1] + firstElementCF[0];
-  console.log(firstElementCF);
+  // console.log(firstElementCF);
   createSecondEdge();
 
   return {
